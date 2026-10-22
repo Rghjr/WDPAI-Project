@@ -7,9 +7,9 @@
 </head>
 <body>
     <main>
-        <h1>404</h1>
-        <p>Taka strona nie istnieje.</p>
-        <a href="/">Wróć na stronę główną</a>
+        <h1>404 – Nie Znaleziono Strony</h1>
+        <p>Żądany zasób nie istnieje w systemie AssetFix AI.</p>
+        <a href="/">Wróć do pulpitu głównego</a>
     </main>
 </body>
 </html>
