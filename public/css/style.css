@@ -1,47 +1,25 @@
-/* ==========================================================================
-   1. ZMIENNE CSS (DESIGN TOKENS)
-   ========================================================================== */
+/* 1. Zmienne (Design Tokens z Figmy) */
 :root {
-    /* Kolory semantyczne (Jasny motyw) */
-    --color-brand: #2563eb;
-    --color-brand-hover: #1d4ed8;
-    --color-text: #0f172a;
-    --color-muted: #64748b;
-    --color-surface: #ffffff;
-    --color-background: #f8fafc;
-    --color-border: #e2e8f0;
-    /* Statusy zgłoszeń */
-    --color-status-open: #d97706;
-    --color-status-in-progress: #2563eb;
-    --color-status-resolved: #16a34a;
-    /* Odstępy i promienie */
-    --space-1: 0.5rem;
-    --space-2: 1rem;
-    --space-3: 1.5rem;
-    --space-4: 2rem;
-    --radius: 0.75rem;
-    --radius-sm: 0.375rem;
-    /* Typografia */
-    --font-main: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-size-h1: clamp(1.75rem, 4vw, 2.75rem);
-    --font-size-h2: clamp(1.25rem, 3vw, 1.75rem);
+    --clr-bg-app: #fcfcfd;
+    --clr-bg-card: #ffffff;
+    --clr-text-main: #111827;
+    --clr-text-muted: #6b7280;
+    --clr-blue: #2563eb;
+    --clr-blue-hover: #1d4ed8;
+    --clr-red: #dc2626;
+    --clr-bg-red: #fef2f2;
+    --clr-green: #059669;
+    --clr-bg-green: #d1fae5;
+    --clr-dark: #1f2937;
+    --border-color: #f3f4f6;
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --font-main: 'Inter', system-ui, sans-serif;
 }
 
-/* Motyw Ciemny */
-[data-theme="dark"] {
-    --color-text: #f8fafc;
-    --color-muted: #94a3b8;
-    --color-surface: #1e293b;
-    --color-background: #0f172a;
-    --color-border: #334155;
-}
-
-/* ==========================================================================
-   2. GLOBALNY RESET & BOX MODEL
-   ========================================================================== */
-*,
-*::before,
-*::after {
+/* 2. Reset i Baza */
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -49,228 +27,302 @@
 
 body {
     font-family: var(--font-main);
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--color-text);
-    background-color: var(--color-background);
+    background-color: #e5e7eb; /* Szare tło, by wyróżnić widok "telefonu" na PC */
+    color: var(--clr-text-main);
+    line-height: 1.5;
+}
+
+/* 3. Główny Layout (Mobile First) */
+.app-container {
+    max-width: 440px;
+    margin: 0 auto;
+    background-color: var(--clr-bg-app);
     min-height: 100vh;
+    padding: 24px 20px;
     display: flex;
     flex-direction: column;
+    gap: 28px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
-/* ==========================================================================
-   3. TYPOGRAFIA, LINKI I FOKUS (WCAG)
-   ========================================================================== */
-h1 {
-    font-size: var(--font-size-h1);
-    line-height: 1.2;
-    margin-bottom: var(--space-2);
-}
-
-h2 {
-    font-size: var(--font-size-h2);
-    margin-bottom: var(--space-1);
-}
-
-a {
-    color: var(--color-brand);
-    text-decoration-thickness: 0.12em;
-    text-underline-offset: 0.2em;
-    transition: opacity 0.2s ease;
-}
-
-    a:hover {
-        opacity: 0.8;
-    }
-
-    /* Bezpieczny i widoczny stan fokusu dla użytkowników klawiatury */
-    button:focus-visible,
-    a:focus-visible,
-    input:focus-visible,
-    select:focus-visible,
-    textarea:focus-visible {
-        outline: 3px solid color-mix(in srgb, var(--color-brand) 50%, white);
-        outline-offset: 3px;
-    }
-
-/* ==========================================================================
-   4. LAYOUT MOBILE FIRST (RESPONSYWNOŚĆ)
-   ========================================================================== */
-.page-container {
-    width: min(100% - 2rem, 72rem);
-    margin-inline: auto;
-    padding-block: var(--space-3);
-    flex: 1;
-}
-
-/* Nagłówek i Nawigacja */
-header {
-    background-color: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-    padding-block: var(--space-2);
-}
-
-.nav-container {
-    width: min(100% - 2rem, 72rem);
-    margin-inline: auto;
+/* 4. Nagłówek i Powitanie (Flexbox) */
+.header {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+    justify-content: space-between;
     align-items: center;
 }
 
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-    justify-content: center;
+.logo-title {
+    font-weight: 700;
+    font-size: 1.1rem;
 }
 
-nav a {
-    text-decoration: none;
+.logo-subtitle {
+    color: var(--clr-text-muted);
+    font-size: 0.85rem;
     font-weight: 500;
-    padding: var(--space-1) var(--space-2);
+}
+
+.user-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #ccc;
+}
+
+.greeting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.greeting-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 4px;
+}
+
+.greeting-subtitle {
+    color: var(--clr-text-muted);
+    margin-bottom: 16px;
+}
+
+.badge-green {
+    background: var(--clr-bg-green);
+    color: var(--clr-green);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.status-cloud {
+    background: #f3f4f6;
+    padding: 10px 16px;
     border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-family: monospace;
+    color: var(--clr-text-muted);
 }
 
-    nav a:hover {
-        background-color: var(--color-background);
-    }
-
-/* Stopka */
-footer {
-    background-color: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    text-align: center;
-    padding-block: var(--space-2);
-    color: var(--color-muted);
-    font-size: 0.875rem;
-    margin-top: auto;
-}
-
-/* ==========================================================================
-   5. KOMPONENTY ASSETFIX AI
-   ========================================================================== */
-/* Karty i Panele */
-.card, article, aside, form {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: var(--space-3);
-    margin-bottom: var(--space-3);
-}
-
-/* Sekcja Smart Diagnosis (Ollama AI) */
-aside {
-    border-left: 4px solid var(--color-brand);
-    background-color: color-mix(in srgb, var(--color-brand) 5%, var(--color-surface));
-}
-
-    aside blockquote {
-        font-style: italic;
-        color: var(--color-text);
-        margin-top: var(--space-1);
-    }
-
-/* Siatka dla listy zgłoszeń / urządzeń (Grid Auto-fit) */
-.grid-list {
+/* 5. Statystyki (CSS Grid) */
+.stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
-    gap: var(--space-3);
-    list-style: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
 }
 
-    .grid-list li {
-        background-color: var(--color-surface);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius);
-        padding: var(--space-2);
+.stat-card {
+    background: var(--clr-bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 16px 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+    .stat-card.critical {
+        background: var(--clr-bg-red);
+        border-color: transparent;
     }
 
-/* Status Badges */
-mark {
-    display: inline-block;
-    padding: 0.2em 0.6em;
+.stat-title {
+    font-size: 0.75rem;
+    color: var(--clr-text-muted);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.stat-desc {
+    font-size: 0.7rem;
+    color: var(--clr-text-muted);
+    font-weight: 500;
+}
+
+.text-red {
+    color: var(--clr-red);
+}
+
+.text-green {
+    color: var(--clr-green);
+}
+
+/* 6. Szybkie Operacje (CSS Grid) */
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.action-btn {
+    border: none;
+    padding: 16px 8px;
+    border-radius: var(--radius-md);
+    color: white;
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: filter 0.2s;
+}
+
+    .action-btn.blue {
+        background: var(--clr-blue);
+    }
+
+    .action-btn.red {
+        background: var(--clr-red);
+    }
+
+    .action-btn.dark {
+        background: var(--clr-dark);
+    }
+
+/* 7. Lista Zleceń (Flexbox) */
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.task-card {
+    background: var(--clr-bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+}
+
+    .task-card.border-red {
+        border-left: 6px solid var(--clr-red);
+    }
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-id {
     font-size: 0.85rem;
     font-weight: 600;
+    color: var(--clr-text-muted);
+}
+
+.badge-red {
+    background: var(--clr-bg-red);
+    color: var(--clr-red);
+    padding: 4px 8px;
     border-radius: var(--radius-sm);
-    background-color: var(--color-background);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
+    font-size: 0.75rem;
+    font-weight: 700;
 }
 
-/* Formularze */
-form div {
-    margin-bottom: var(--space-2);
+.task-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.3;
 }
 
-label {
-    display: block;
+.task-location {
+    font-size: 0.9rem;
+    color: var(--clr-text-muted);
+}
+
+.task-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 4px;
     font-weight: 500;
-    margin-bottom: 0.25rem;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-select,
-textarea {
-    width: 100%;
-    padding: var(--space-1) var(--space-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-sm);
-    background-color: var(--color-background);
-    color: var(--color-text);
-    font-family: inherit;
-    font-size: 1rem;
+    .tag.red-light {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .tag.gray-light {
+        background: #f3f4f6;
+        color: var(--clr-text-muted);
+    }
+
+.task-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
 }
 
-button[type="submit"] {
-    background-color: var(--color-brand);
-    color: #ffffff;
+.task-time {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-primary {
+    background: var(--clr-blue);
+    color: white;
     border: none;
-    padding: var(--space-1) var(--space-3);
+    padding: 10px 20px;
     border-radius: var(--radius-sm);
-    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: background 0.2s;
 }
 
-    button[type="submit"]:hover {
-        background-color: var(--color-brand-hover);
+    /* 8. Stany :hover i :focus-visible (Punkt 6 zadania) */
+    .btn-primary:hover {
+        background: var(--clr-blue-hover);
     }
 
-/* Baza Urządzeń (Tabela EAM) */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: var(--space-2);
+.action-btn:hover {
+    filter: brightness(1.15);
 }
 
-th, td {
-    padding: var(--space-1) var(--space-2);
-    border-bottom: 1px solid var(--color-border);
-    text-align: left;
+button:focus-visible, a:focus-visible {
+    outline: 3px solid var(--clr-blue);
+    outline-offset: 2px;
 }
 
-th {
-    background-color: var(--color-background);
-    font-weight: 600;
-}
-
-/* ==========================================================================
-   6. MEDIA QUERIES (DESKTOP)
-   ========================================================================== */
-@media (min-width: 48rem) {
-    .nav-container {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    nav ul {
-        justify-content: flex-end;
+/* 9. Breakpoint dla PC (Punkt 5 zadania) */
+@media (min-width: 600px) {
+    .app-container {
+        margin-top: 40px;
+        margin-bottom: 40px;
+        border-radius: var(--radius-lg);
     }
 }
