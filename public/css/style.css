@@ -1,0 +1,276 @@
+/* ==========================================================================
+   1. ZMIENNE CSS (DESIGN TOKENS)
+   ========================================================================== */
+:root {
+    /* Kolory semantyczne (Jasny motyw) */
+    --color-brand: #2563eb;
+    --color-brand-hover: #1d4ed8;
+    --color-text: #0f172a;
+    --color-muted: #64748b;
+    --color-surface: #ffffff;
+    --color-background: #f8fafc;
+    --color-border: #e2e8f0;
+    /* Statusy zgłoszeń */
+    --color-status-open: #d97706;
+    --color-status-in-progress: #2563eb;
+    --color-status-resolved: #16a34a;
+    /* Odstępy i promienie */
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2rem;
+    --radius: 0.75rem;
+    --radius-sm: 0.375rem;
+    /* Typografia */
+    --font-main: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-size-h1: clamp(1.75rem, 4vw, 2.75rem);
+    --font-size-h2: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+/* Motyw Ciemny */
+[data-theme="dark"] {
+    --color-text: #f8fafc;
+    --color-muted: #94a3b8;
+    --color-surface: #1e293b;
+    --color-background: #0f172a;
+    --color-border: #334155;
+}
+
+/* ==========================================================================
+   2. GLOBALNY RESET & BOX MODEL
+   ========================================================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-main);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--color-text);
+    background-color: var(--color-background);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   3. TYPOGRAFIA, LINKI I FOKUS (WCAG)
+   ========================================================================== */
+h1 {
+    font-size: var(--font-size-h1);
+    line-height: 1.2;
+    margin-bottom: var(--space-2);
+}
+
+h2 {
+    font-size: var(--font-size-h2);
+    margin-bottom: var(--space-1);
+}
+
+a {
+    color: var(--color-brand);
+    text-decoration-thickness: 0.12em;
+    text-underline-offset: 0.2em;
+    transition: opacity 0.2s ease;
+}
+
+    a:hover {
+        opacity: 0.8;
+    }
+
+    /* Bezpieczny i widoczny stan fokusu dla użytkowników klawiatury */
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+        outline: 3px solid color-mix(in srgb, var(--color-brand) 50%, white);
+        outline-offset: 3px;
+    }
+
+/* ==========================================================================
+   4. LAYOUT MOBILE FIRST (RESPONSYWNOŚĆ)
+   ========================================================================== */
+.page-container {
+    width: min(100% - 2rem, 72rem);
+    margin-inline: auto;
+    padding-block: var(--space-3);
+    flex: 1;
+}
+
+/* Nagłówek i Nawigacja */
+header {
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding-block: var(--space-2);
+}
+
+.nav-container {
+    width: min(100% - 2rem, 72rem);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: center;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: 500;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+}
+
+    nav a:hover {
+        background-color: var(--color-background);
+    }
+
+/* Stopka */
+footer {
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    text-align: center;
+    padding-block: var(--space-2);
+    color: var(--color-muted);
+    font-size: 0.875rem;
+    margin-top: auto;
+}
+
+/* ==========================================================================
+   5. KOMPONENTY ASSETFIX AI
+   ========================================================================== */
+/* Karty i Panele */
+.card, article, aside, form {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+/* Sekcja Smart Diagnosis (Ollama AI) */
+aside {
+    border-left: 4px solid var(--color-brand);
+    background-color: color-mix(in srgb, var(--color-brand) 5%, var(--color-surface));
+}
+
+    aside blockquote {
+        font-style: italic;
+        color: var(--color-text);
+        margin-top: var(--space-1);
+    }
+
+/* Siatka dla listy zgłoszeń / urządzeń (Grid Auto-fit) */
+.grid-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+    gap: var(--space-3);
+    list-style: none;
+}
+
+    .grid-list li {
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius);
+        padding: var(--space-2);
+    }
+
+/* Status Badges */
+mark {
+    display: inline-block;
+    padding: 0.2em 0.6em;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+}
+
+/* Formularze */
+form div {
+    margin-bottom: var(--space-2);
+}
+
+label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+button[type="submit"] {
+    background-color: var(--color-brand);
+    color: #ffffff;
+    border: none;
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    button[type="submit"]:hover {
+        background-color: var(--color-brand-hover);
+    }
+
+/* Baza Urządzeń (Tabela EAM) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--space-2);
+}
+
+th, td {
+    padding: var(--space-1) var(--space-2);
+    border-bottom: 1px solid var(--color-border);
+    text-align: left;
+}
+
+th {
+    background-color: var(--color-background);
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   6. MEDIA QUERIES (DESKTOP)
+   ========================================================================== */
+@media (min-width: 48rem) {
+    .nav-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    nav ul {
+        justify-content: flex-end;
+    }
+}
