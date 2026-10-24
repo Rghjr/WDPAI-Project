@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle) ?></title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <header>
@@ -18,7 +19,7 @@
         </nav>
     </header>
 
-    <main>
+    <main class="container">
         <article>
             <header>
                 <h1>Zgłoszenie #<?= htmlspecialchars((string) $ticketId) ?></h1>

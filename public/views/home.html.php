@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle) ?></title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <header>
@@ -18,7 +19,7 @@
         </nav>
     </header>
 
-    <main>
+    <main class="container">
         <section>
             <h2>Status Systemu</h2>
             <p>Wszystkie usługi kontenerowe uruchomione poprawnie (Nginx, PHP 8.3, PostgreSQL, Ollama AI, Mailpit)[cite: 3].</p>
