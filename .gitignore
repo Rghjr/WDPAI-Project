@@ -6,3 +6,12 @@ vendor/
 node_modules/
 docker/data/
 .vs/
+
+# Dokumentacja robocza i instrukcje dla agentów AI (tylko lokalnie)
+AGENTS.md
+docs/
+
+# Dane generowane w czasie działania aplikacji
+uploads/
+var/
+*.log
