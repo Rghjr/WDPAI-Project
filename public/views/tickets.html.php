@@ -7,10 +7,8 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <?php require __DIR__ . '/partials/navigation.html.php'; ?>
     <header>
-        <nav>
-            <a href="/">Pulpit</a> | <a href="/tickets/add">Dodaj zgłoszenie</a>
-        </nav>
         <h1><?= htmlspecialchars($pageTitle) ?></h1>
     </header>
 

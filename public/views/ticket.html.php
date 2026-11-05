@@ -7,17 +7,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/">Pulpit</a></li>
-                <li><a href="/tickets">Lista Zgłoszeń</a></li>
-                <li><a href="/tickets/add">Nowe Zgłoszenie</a></li>
-                <li><a href="/assets">Maszyny (EAM)</a></li>
-                <li><a href="/login">Konto</a></li>
-            </ul>
-        </nav>
-    </header>
+    <?php require __DIR__ . '/partials/navigation.html.php'; ?>
 
     <main class="container">
         <article>

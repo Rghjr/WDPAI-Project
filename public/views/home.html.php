@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <?php require __DIR__ . '/partials/navigation.html.php'; ?>
 
     <main class="app-container">
         
