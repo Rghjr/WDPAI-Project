@@ -6,6 +6,7 @@
     <title><?= htmlspecialchars($pageTitle) ?></title>
 </head>
 <body>
+    <?php require __DIR__ . '/partials/navigation.html.php'; ?>
     <main>
         <h1>Id przekazane przez URL, do kontrolera i na widok: <?= $projectId ?></h1>
     </main>

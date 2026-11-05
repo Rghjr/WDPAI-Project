@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <?php require __DIR__ . '/partials/navigation.html.php'; ?>
     <main class="container">
         <h1><?= htmlspecialchars($pageTitle) ?></h1>
         <form action="/login" method="POST">

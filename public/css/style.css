@@ -32,6 +32,42 @@ body {
     line-height: 1.5;
 }
 
+.site-navigation {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    padding: 16px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--clr-bg-card);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.site-navigation__brand {
+    color: var(--clr-text-main);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.site-navigation__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    list-style: none;
+}
+
+.site-navigation__links a {
+    color: var(--clr-blue);
+    text-decoration: none;
+}
+
+.site-navigation a:focus-visible {
+    outline: 3px solid var(--clr-blue);
+    outline-offset: 3px;
+}
+
 /* 3. Główny Layout (Mobile First) */
 .app-container {
     max-width: 440px;

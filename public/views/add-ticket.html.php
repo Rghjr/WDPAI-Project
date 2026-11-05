@@ -7,10 +7,8 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+    <?php require __DIR__ . '/partials/navigation.html.php'; ?>
     <header>
-        <nav>
-            <a href="/tickets">Wróć do listy</a>
-        </nav>
         <h1><?= htmlspecialchars($pageTitle) ?></h1>
     </header>
 
