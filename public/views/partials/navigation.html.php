@@ -11,4 +11,8 @@ declare(strict_types=1);
         <li><a href="/assets">Maszyny</a></li>
         <li><a href="/login">Logowanie</a></li>
     </ul>
+    <button class="theme-toggle" type="button" aria-label="Włącz ciemny motyw" aria-pressed="false">
+        <span class="theme-toggle__icon" aria-hidden="true">☾</span>
+    </button>
 </nav>
+<script src="/js/theme.js" defer></script>
