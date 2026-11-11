@@ -16,7 +16,7 @@
         <div class="form-card">
             <header class="form-header">
                 <h1>
-                    <i class="fa-solid fa-triangle-exclamation" style="color: var(--clr-red);" aria-hidden="true"></i>
+                    <i class="fa-solid fa-triangle-exclamation text-red" aria-hidden="true"></i>
                     <?= htmlspecialchars($pageTitle) ?>
                 </h1>
                 <p>
@@ -56,7 +56,7 @@
                     <label for="description">Szczegółowy opis objawów (dane dla modelu AI Ollama):</label>
                     <textarea id="description" name="description" class="form-textarea" rows="5" placeholder="Opisz objawy, kody błędów z falownika/sterownika PLC, odczyty wibracji i temperatury..." required></textarea>
                     <span class="form-hint">
-                        <i class="fa-solid fa-brain" style="color: var(--clr-ai-primary);"></i>
+                        <i class="fa-solid fa-brain text-ai"></i>
                         Im dokładniejszy opis parametrów, tym trafniejsze sugestie wygeneruje lokalny model Ollama.
                     </span>
                 </div>

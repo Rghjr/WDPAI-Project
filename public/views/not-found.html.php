@@ -11,17 +11,17 @@
 <body>
     <?php require __DIR__ . '/partials/navigation.html.php'; ?>
 
-    <main class="container" style="display: flex; justify-content: center; align-items: center; min-height: 60vh;">
-        <div class="card-block" style="text-align: center; max-width: 500px; padding: 48px 32px;">
-            <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--clr-bg-red); color: var(--clr-red); display: grid; place-items: center; font-size: 1.8rem; margin: 0 auto 20px;">
+    <main class="container error-page-container">
+        <div class="card-block error-box">
+            <div class="error-badge-icon">
                 <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
             </div>
-            <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 8px;">404</h1>
-            <h2 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; justify-content: center;">Nie znaleziono strony</h2>
-            <p style="color: var(--clr-text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5;">
+            <h1 class="text-2xl font-extrabold mb-sm">404</h1>
+            <h2 class="text-lg font-bold mb-md">Nie znaleziono strony</h2>
+            <p class="text-muted text-base mb-lg">
                 Żądany zasób lub zlecenie nie istnieje w systemie AssetFix AI albo został przeniesiony do archiwum.
             </p>
-            <a href="/" class="btn-primary" style="justify-content: center; width: 100%;">
+            <a href="/" class="btn-primary btn-full">
                 <i class="fa-solid fa-house" aria-hidden="true"></i> Wróć do pulpitu głównego
             </a>
         </div>

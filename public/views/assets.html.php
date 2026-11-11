@@ -14,19 +14,19 @@
     <main class="container">
         
         <!-- Nagłówek modułu maszyn -->
-        <header class="dashboard-header" style="margin-bottom: 20px;">
+        <header class="dashboard-header mb-lg">
             <div>
-                <h1 style="font-size: 1.6rem; font-weight: 800; display: flex; align-items: center; gap: 10px;">
-                    <i class="fa-solid fa-industry" style="color: var(--clr-blue);" aria-hidden="true"></i>
+                <h1 class="text-xl font-extrabold flex-row">
+                    <i class="fa-solid fa-industry text-blue" aria-hidden="true"></i>
                     Park Maszynowy i Rejestr Zasobów (EAM)
                 </h1>
                 <p class="greeting-subtitle">
                     Ewidencja maszyn, telemetria IoT, historia przeglądów i stan techniczny
                 </p>
             </div>
-            <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="flex-row">
                 <span class="meta-pill">
-                    Łącznie maszyn w bazie: <strong style="color: var(--clr-blue); margin-left: 4px;"><?= htmlspecialchars((string) $totalAssets) ?></strong>
+                    Łącznie maszyn w bazie: <strong class="text-blue"><?= htmlspecialchars((string) $totalAssets) ?></strong>
                 </span>
                 <a href="/tickets/add" class="btn-primary">
                     <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Zgłoś awarię maszyny
@@ -35,14 +35,14 @@
         </header>
 
         <!-- Kafelki szybkiego statusu floty -->
-        <section class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 20px;">
+        <section class="stats-grid mb-lg" aria-label="Status floty">
             <div class="stat-card">
                 <div class="stat-card__top">
                     <span class="stat-card__title">Aktywne urządzenia</span>
                     <span class="stat-card__icon"><i class="fa-solid fa-check-double"></i></span>
                 </div>
                 <div class="stat-card__value">10</div>
-                <div class="stat-card__desc text-green"><i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> Stan operacyjny OK</div>
+                <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> Stan operacyjny OK</div>
             </div>
 
             <div class="stat-card critical">
@@ -90,28 +90,26 @@
                             <th scope="col">Kategoria</th>
                             <th scope="col">Status Techniczny</th>
                             <th scope="col">Ostatni Przegląd</th>
-                            <th scope="col" style="text-align: right;">Akcja</th>
+                            <th scope="col" class="text-right">Akcja</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td class="font-mono">#1</td>
                             <td>
-                                <div style="font-weight: 700;">Turbina Wiatrowa V90 #04</div>
-                                <div style="font-size: 0.75rem; color: var(--clr-text-muted);"><i class="fa-solid fa-location-dot"></i> Farma Wiatrowa Margonin</div>
+                                <div class="font-bold">Turbina Wiatrowa V90 #04</div>
+                                <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> Farma Wiatrowa Margonin</div>
                             </td>
                             <td>
-                                <span class="font-mono" style="padding: 2px 6px; background: var(--clr-bg-card-subtle); border-radius: var(--radius-xs); border: 1px solid var(--border-color);">
-                                    TURB-2024-9004
-                                </span>
+                                <span class="badge-serial">TURB-2024-9004</span>
                             </td>
                             <td>OZE / Wiatr</td>
                             <td>
                                 <span class="badge-red"><i class="fa-solid fa-triangle-exclamation"></i> AWARIA</span>
                             </td>
                             <td>2026-01-15</td>
-                            <td style="text-align: right;">
-                                <a href="/tickets/1" class="btn-primary" style="padding: 6px 12px; font-size: 0.8rem;">
+                            <td class="text-right">
+                                <a href="/tickets/1" class="btn-primary btn-sm">
                                     <i class="fa-solid fa-wrench"></i> Serwis
                                 </a>
                             </td>
@@ -120,21 +118,19 @@
                         <tr>
                             <td class="font-mono">#2</td>
                             <td>
-                                <div style="font-weight: 700;">Winda Osobowa KONE B3</div>
-                                <div style="font-size: 0.75rem; color: var(--clr-text-muted);"><i class="fa-solid fa-location-dot"></i> Biurowiec Pixel, Poznań</div>
+                                <div class="font-bold">Winda Osobowa KONE B3</div>
+                                <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> Biurowiec Pixel, Poznań</div>
                             </td>
                             <td>
-                                <span class="font-mono" style="padding: 2px 6px; background: var(--clr-bg-card-subtle); border-radius: var(--radius-xs); border: 1px solid var(--border-color);">
-                                    ELEV-8832-K3
-                                </span>
+                                <span class="badge-serial">ELEV-8832-K3</span>
                             </td>
                             <td>Dźwigi osobowe</td>
                             <td>
                                 <span class="badge-amber"><i class="fa-solid fa-clock"></i> W NAPRAWIE</span>
                             </td>
                             <td>2026-05-10</td>
-                            <td style="text-align: right;">
-                                <a href="/tickets/2" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                            <td class="text-right">
+                                <a href="/tickets/2" class="btn-secondary btn-sm">
                                     Szczegóły
                                 </a>
                             </td>
@@ -143,21 +139,19 @@
                         <tr>
                             <td class="font-mono">#3</td>
                             <td>
-                                <div style="font-weight: 700;">Sprężarka śrubowa Atlas Copco GA 75</div>
-                                <div style="font-size: 0.75rem; color: var(--clr-text-muted);"><i class="fa-solid fa-location-dot"></i> Zakład Solaris, Bolechowo</div>
+                                <div class="font-bold">Sprężarka śrubowa Atlas Copco GA 75</div>
+                                <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> Zakład Solaris, Bolechowo</div>
                             </td>
                             <td>
-                                <span class="font-mono" style="padding: 2px 6px; background: var(--clr-bg-card-subtle); border-radius: var(--radius-xs); border: 1px solid var(--border-color);">
-                                    COMP-AC-7599
-                                </span>
+                                <span class="badge-serial">COMP-AC-7599</span>
                             </td>
                             <td>Sprężarki przemysłowe</td>
                             <td>
                                 <span class="badge-green"><i class="fa-solid fa-check"></i> SPRAWNA</span>
                             </td>
                             <td>2026-09-01</td>
-                            <td style="text-align: right;">
-                                <a href="/tickets/add" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                            <td class="text-right">
+                                <a href="/tickets/add" class="btn-secondary btn-sm">
                                     Zgłoś
                                 </a>
                             </td>
@@ -166,21 +160,19 @@
                         <tr>
                             <td class="font-mono">#4</td>
                             <td>
-                                <div style="font-weight: 700;">Agregat Chłodniczy Carrier 30XA</div>
-                                <div style="font-size: 0.75rem; color: var(--clr-text-muted);"><i class="fa-solid fa-location-dot"></i> Magazyn Komorniki</div>
+                                <div class="font-bold">Agregat Chłodniczy Carrier 30XA</div>
+                                <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> Magazyn Komorniki</div>
                             </td>
                             <td>
-                                <span class="font-mono" style="padding: 2px 6px; background: var(--clr-bg-card-subtle); border-radius: var(--radius-xs); border: 1px solid var(--border-color);">
-                                    HVAC-CAR-011
-                                </span>
+                                <span class="badge-serial">HVAC-CAR-011</span>
                             </td>
                             <td>HVAC &amp; Chłodnictwo</td>
                             <td>
                                 <span class="badge-green"><i class="fa-solid fa-check"></i> SPRAWNA</span>
                             </td>
                             <td>2026-04-18</td>
-                            <td style="text-align: right;">
-                                <a href="/tickets/3" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                            <td class="text-right">
+                                <a href="/tickets/3" class="btn-secondary btn-sm">
                                     Szczegóły
                                 </a>
                             </td>

@@ -1401,3 +1401,106 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
         display: none;
     }
 }
+
+/* ==========================================================================
+   16. Klasy Pomocnicze (Eliminacja styli inline - Kryterium 16)
+   ========================================================================== */
+.text-blue { color: var(--clr-blue); }
+.text-red { color: var(--clr-red); }
+.text-green { color: var(--clr-green); }
+.text-amber { color: var(--clr-amber); }
+.text-ai { color: var(--clr-ai-primary); }
+.text-muted { color: var(--clr-text-muted); }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+
+.font-bold { font-weight: 700; }
+.font-extrabold { font-weight: 800; }
+.font-semibold { font-weight: 600; }
+.font-medium { font-weight: 500; }
+
+.text-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.85rem; }
+.text-base { font-size: 0.95rem; }
+.text-lg { font-size: 1.15rem; }
+.text-xl { font-size: 1.6rem; }
+.text-2xl { font-size: 2rem; }
+
+.w-full { width: 100%; }
+.flex-row { display: flex; align-items: center; gap: 10px; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.flex-center { display: flex; justify-content: center; align-items: center; }
+.gap-xs { gap: 6px; }
+.gap-sm { gap: 8px; }
+.gap-md { gap: 12px; }
+
+.mb-xs { margin-bottom: 4px; }
+.mb-sm { margin-bottom: 8px; }
+.mb-md { margin-bottom: 16px; }
+.mb-lg { margin-bottom: 24px; }
+
+.description-box {
+    background: var(--clr-bg-card-subtle);
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    line-height: 1.6;
+    margin-top: 8px;
+}
+
+.asset-meta-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.85rem;
+}
+
+
+.ticket-code {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--clr-blue);
+}
+
+.btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+.btn-full { width: 100%; justify-content: center; }
+
+.upload-dropzone {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+    background: var(--clr-bg-card-subtle);
+}
+
+.upload-icon {
+    font-size: 2rem;
+    color: var(--clr-blue);
+    margin-bottom: 8px;
+}
+
+.error-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+
+.error-box {
+    text-align: center;
+    max-width: 500px;
+    padding: 48px 32px;
+}
+
+.error-badge-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--clr-bg-red);
+    color: var(--clr-red);
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+    margin: 0 auto 20px;
+}
+

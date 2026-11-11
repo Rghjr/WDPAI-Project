@@ -14,19 +14,19 @@
     <main class="container">
         
         <!-- Nagłówek modułu zleceń -->
-        <header class="dashboard-header" style="margin-bottom: 20px;">
+        <header class="dashboard-header mb-lg">
             <div>
-                <h1 style="font-size: 1.6rem; font-weight: 800; display: flex; align-items: center; gap: 10px;">
-                    <i class="fa-solid fa-clipboard-list" style="color: var(--clr-blue);" aria-hidden="true"></i>
+                <h1 class="text-xl font-extrabold flex-row">
+                    <i class="fa-solid fa-clipboard-list text-blue" aria-hidden="true"></i>
                     Rejestr Zgłoszeń i Zleceń Serwisowych
                 </h1>
                 <p class="greeting-subtitle">
                     Zarządzanie incydentami, naprawami i predykcyjną diagnostyką maszyn
                 </p>
             </div>
-            <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="flex-row">
                 <span class="meta-pill">
-                    Liczba otwartych zgłoszeń: <strong style="color: var(--clr-blue); margin-left: 4px;"><?= htmlspecialchars((string) $openTicketsCount) ?></strong>
+                    Liczba otwartych zgłoszeń: <strong class="text-blue"><?= htmlspecialchars((string) $openTicketsCount) ?></strong>
                 </span>
                 <a href="/tickets/add" class="btn-primary">
                     <i class="fa-solid fa-plus" aria-hidden="true"></i> Dodaj nowe zgłoszenie
@@ -60,23 +60,23 @@
                             <th scope="col">Priorytet</th>
                             <th scope="col">Status</th>
                             <th scope="col">Przypisany</th>
-                            <th scope="col" style="text-align: right;">Akcja</th>
+                            <th scope="col" class="text-right">Akcja</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <a href="/tickets/1" class="font-mono" style="font-weight: 700; color: var(--clr-blue);">
+                                <a href="/tickets/1" class="ticket-code">
                                     #WO-2024-8841
                                 </a>
                             </td>
                             <td>
-                                <div style="font-weight: 600;">Turbina Wiatrowa V90 #04</div>
-                                <span class="font-mono" style="font-size: 0.75rem; color: var(--clr-text-muted);">TURB-2024-9004</span>
+                                <div class="font-semibold">Turbina Wiatrowa V90 #04</div>
+                                <span class="badge-serial">TURB-2024-9004</span>
                             </td>
                             <td>
-                                <div style="font-weight: 600;">Spadek ciśnienia oleju / Wibracja</div>
-                                <span style="font-size: 0.75rem; color: var(--clr-text-muted);"><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--clr-ai-primary);"></i> Smart Diagnosis dostępna</span>
+                                <div class="font-semibold">Spadek ciśnienia oleju / Wibracja</div>
+                                <span class="text-muted text-xs"><i class="fa-solid fa-wand-magic-sparkles text-ai"></i> Smart Diagnosis dostępna</span>
                             </td>
                             <td>
                                 <span class="badge-red"><i class="fa-solid fa-fire" aria-hidden="true"></i> KRYTYCZNY</span>
@@ -85,13 +85,13 @@
                                 <span class="badge-amber"><i class="fa-solid fa-clock" aria-hidden="true"></i> W trakcie</span>
                             </td>
                             <td>
-                                <div style="display: flex; align-items: center; gap: 6px;">
-                                    <span class="user-pill__avatar" style="width: 24px; height: 24px; font-size: 0.7rem;"><i class="fa-solid fa-user"></i></span>
+                                <div class="flex-row gap-xs">
+                                    <span class="user-pill__avatar"><i class="fa-solid fa-user"></i></span>
                                     <span>Piotr Kowalski</span>
                                 </div>
                             </td>
-                            <td style="text-align: right;">
-                                <a href="/tickets/1" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                            <td class="text-right">
+                                <a href="/tickets/1" class="btn-secondary btn-sm">
                                     Szczegóły <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                 </a>
                             </td>
@@ -99,17 +99,17 @@
 
                         <tr>
                             <td>
-                                <a href="/tickets/2" class="font-mono" style="font-weight: 700; color: var(--clr-blue);">
+                                <a href="/tickets/2" class="ticket-code">
                                     #WO-2024-8839
                                 </a>
                             </td>
                             <td>
-                                <div style="font-weight: 600;">Winda Osobowa KONE B3</div>
-                                <span class="font-mono" style="font-size: 0.75rem; color: var(--clr-text-muted);">ELEV-8832-K3</span>
+                                <div class="font-semibold">Winda Osobowa KONE B3</div>
+                                <span class="badge-serial">ELEV-8832-K3</span>
                             </td>
                             <td>
-                                <div style="font-weight: 600;">Błąd czujnika krańcowego drzwi</div>
-                                <span style="font-size: 0.75rem; color: var(--clr-text-muted);">Brak reakcji na piętrze 4</span>
+                                <div class="font-semibold">Błąd czujnika krańcowego drzwi</div>
+                                <span class="text-muted text-xs">Brak reakcji na piętrze 4</span>
                             </td>
                             <td>
                                 <span class="badge-amber"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> WYSOKI</span>
@@ -118,13 +118,13 @@
                                 <span class="badge-blue"><i class="fa-solid fa-envelope-open" aria-hidden="true"></i> Otwarte</span>
                             </td>
                             <td>
-                                <div style="display: flex; align-items: center; gap: 6px;">
-                                    <span class="user-pill__avatar" style="width: 24px; height: 24px; font-size: 0.7rem;"><i class="fa-solid fa-user"></i></span>
+                                <div class="flex-row gap-xs">
+                                    <span class="user-pill__avatar"><i class="fa-solid fa-user"></i></span>
                                     <span>Piotr Kowalski</span>
                                 </div>
                             </td>
-                            <td style="text-align: right;">
-                                <a href="/tickets/2" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                            <td class="text-right">
+                                <a href="/tickets/2" class="btn-secondary btn-sm">
                                     Szczegóły <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                 </a>
                             </td>
@@ -132,17 +132,17 @@
 
                         <tr>
                             <td>
-                                <a href="/tickets/3" class="font-mono" style="font-weight: 700; color: var(--clr-blue);">
+                                <a href="/tickets/3" class="ticket-code">
                                     #WO-2024-8835
                                 </a>
                             </td>
                             <td>
-                                <div style="font-weight: 600;">Agregat Chłodniczy Carrier 30XA</div>
-                                <span class="font-mono" style="font-size: 0.75rem; color: var(--clr-text-muted);">HVAC-CAR-011</span>
+                                <div class="font-semibold">Agregat Chłodniczy Carrier 30XA</div>
+                                <span class="badge-serial">HVAC-CAR-011</span>
                             </td>
                             <td>
-                                <div style="font-weight: 600;">Wyciek czynnika chłodniczego</div>
-                                <span style="font-size: 0.75rem; color: var(--clr-text-muted);">Wymiana uszczelnień i napełnienie</span>
+                                <div class="font-semibold">Wyciek czynnika chłodniczego</div>
+                                <span class="text-muted text-xs">Wymiana uszczelnień i napełnienie</span>
                             </td>
                             <td>
                                 <span class="badge-blue"><i class="fa-solid fa-circle-info" aria-hidden="true"></i> NORMALNY</span>
@@ -151,13 +151,13 @@
                                 <span class="badge-green"><i class="fa-solid fa-check" aria-hidden="true"></i> Rozwiązane</span>
                             </td>
                             <td>
-                                <div style="display: flex; align-items: center; gap: 6px;">
-                                    <span class="user-pill__avatar" style="width: 24px; height: 24px; font-size: 0.7rem;"><i class="fa-solid fa-user"></i></span>
+                                <div class="flex-row gap-xs">
+                                    <span class="user-pill__avatar"><i class="fa-solid fa-user"></i></span>
                                     <span>Janusz Kamiński</span>
                                 </div>
                             </td>
-                            <td style="text-align: right;">
-                                <a href="/tickets/3" class="btn-secondary" style="padding: 6px 12px; font-size: 0.8rem;">
+                            <td class="text-right">
+                                <a href="/tickets/3" class="btn-secondary btn-sm">
                                     Szczegóły <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                 </a>
                             </td>

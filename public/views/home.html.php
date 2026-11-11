@@ -53,7 +53,7 @@
                     <span class="stat-card__title">Pilne / Awaria SLA</span>
                     <span class="stat-card__icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
                 </div>
-                <div class="stat-card__value">1 <span style="font-size: 0.9rem; font-weight: 600;">KRYTYCZNE</span></div>
+                <div class="stat-card__value">1 <span class="text-sm font-semibold">KRYTYCZNE</span></div>
                 <div class="stat-card__desc">
                     <i class="fa-solid fa-stopwatch" aria-hidden="true"></i> Wymagany czas reakcji: &lt; 2h
                 </div>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="stat-card__value">12</div>
                 <div class="stat-card__desc">
-                    <i class="fa-solid fa-circle" style="color: var(--clr-green); font-size: 0.6rem;"></i> 10 online • 2 w przeglądzie
+                    <i class="fa-solid fa-circle text-green text-xs"></i> 10 online • 2 w przeglądzie
                 </div>
             </article>
         </section>
@@ -95,28 +95,28 @@
                     <i class="fa-solid fa-qrcode" aria-hidden="true"></i>
                     <div>
                         <strong>Skanuj kod QR</strong>
-                        <div style="font-size:0.75rem; color:var(--clr-text-muted);">Identyfikacja maszyny</div>
+                        <div class="text-xs text-muted">Identyfikacja maszyny</div>
                     </div>
                 </button>
                 <a href="/tickets/add" class="action-btn red">
                     <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
                     <div>
                         <strong>Zgłoś nagłą awarię</strong>
-                        <div style="font-size:0.75rem; color:var(--clr-text-muted);">Priorytet krytyczny</div>
+                        <div class="text-xs text-muted">Priorytet krytyczny</div>
                     </div>
                 </a>
                 <button class="action-btn dark" type="button">
                     <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
                     <div>
                         <strong>Mapa obiektów</strong>
-                        <div style="font-size:0.75rem; color:var(--clr-text-muted);">Trasy dojazdu</div>
+                        <div class="text-xs text-muted">Trasy dojazdu</div>
                     </div>
                 </button>
                 <button class="action-btn purple" type="button">
                     <i class="fa-solid fa-brain" aria-hidden="true"></i>
                     <div>
                         <strong>Smart Diagnosis AI</strong>
-                        <div style="font-size:0.75rem; color:var(--clr-text-muted);">Silnik Ollama</div>
+                        <div class="text-xs text-muted">Silnik Ollama</div>
                     </div>
                 </button>
             </div>
@@ -139,7 +139,7 @@
                     <article class="task-card border-red">
                         <div class="task-header">
                             <span class="task-id">#WO-2024-8841</span>
-                            <span class="badge-red"><i class="fa-solid fa-circle" style="font-size: 0.5rem;"></i> KRYTYCZNY (SLA 2H)</span>
+                            <span class="badge-red"><i class="fa-solid fa-circle text-xs"></i> KRYTYCZNY (SLA 2H)</span>
                         </div>
                         <h3 class="task-title">Awaria sprężarki śrubowej Atlas Copco GA 75 VSD+</h3>
                         <p class="task-location">
@@ -155,7 +155,7 @@
                             <span class="task-time">
                                 <i class="fa-regular fa-clock" aria-hidden="true"></i> 08:30 - 10:30
                             </span>
-                            <div style="display: flex; gap: 8px;">
+                            <div class="flex-row gap-sm">
                                 <a href="/tickets/1" class="btn-primary">
                                     <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Otwórz zlecenie
                                 </a>
@@ -167,7 +167,7 @@
                     <article class="task-card border-amber">
                         <div class="task-header">
                             <span class="task-id">#WO-2024-8839</span>
-                            <span class="badge-amber"><i class="fa-solid fa-spinner fa-spin" style="font-size: 0.6rem;"></i> W TRAKCIE NAPRAWY</span>
+                            <span class="badge-amber"><i class="fa-solid fa-spinner fa-spin text-xs"></i> W TRAKCIE NAPRAWY</span>
                         </div>
                         <h3 class="task-title">Winda Osobowa KONE B3 – Błąd czujnika drzwi</h3>
                         <p class="task-location">
@@ -192,7 +192,7 @@
                     <article class="task-card border-green">
                         <div class="task-header">
                             <span class="task-id">#WO-2024-8835</span>
-                            <span class="badge-green"><i class="fa-solid fa-calendar-check" style="font-size: 0.6rem;"></i> ZAPLANOWANY PRZEGLĄD</span>
+                            <span class="badge-green"><i class="fa-solid fa-calendar-check text-xs"></i> ZAPLANOWANY PRZEGLĄD</span>
                         </div>
                         <h3 class="task-title">Agregat Chłodniczy Carrier 30XA – Kontrola szczelności</h3>
                         <p class="task-location">
@@ -229,20 +229,20 @@
                 </div>
 
                 <div class="ai-telemetry-box">
-                    <div style="font-weight: 700; margin-bottom: 8px; font-size: 0.8rem; text-transform: uppercase; color: var(--clr-text-muted);">
+                    <div class="text-xs font-bold text-muted mb-sm">
                         Telemetria na żywo: Turbina V90 #04
                     </div>
                     <div class="telemetry-row">
                         <span class="telemetry-label">Drgania osiowe FFT:</span>
-                        <span class="telemetry-value" style="color: var(--clr-red);">8.4 mm/s (kryt.)</span>
+                        <span class="telemetry-value text-red">8.4 mm/s (kryt.)</span>
                     </div>
                     <div class="telemetry-row">
                         <span class="telemetry-label">Temperatura oleju:</span>
-                        <span class="telemetry-value" style="color: var(--clr-amber);">78.2 °C (podwyższona)</span>
+                        <span class="telemetry-value text-amber">78.2 °C (podwyższona)</span>
                     </div>
                     <div class="telemetry-row">
                         <span class="telemetry-label">Ciśnienie w układzie:</span>
-                        <span class="telemetry-value" style="color: var(--clr-green);">3.4 bar (w normie)</span>
+                        <span class="telemetry-value text-green">3.4 bar (w normie)</span>
                     </div>
                 </div>
 
@@ -251,7 +251,7 @@
                     Wykryto mikropęknięcia bieżni wewnętrznej łożyska oporowego wału głównego. Zaleca się natychmiastowe wstrzymanie cyklu roboczego oraz inspekcję zespołu łożyskowego przed wystąpieniem zatarcia.
                 </div>
 
-                <a href="/tickets/1" class="btn-ai" style="width: 100%; justify-content: center; text-decoration: none;">
+                <a href="/tickets/1" class="btn-ai btn-full">
                     <i class="fa-solid fa-microchip" aria-hidden="true"></i> Zobacz pełną analizę AI
                 </a>
             </aside>

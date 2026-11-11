@@ -16,10 +16,10 @@
             
             <div class="login-brand">
                 <span class="brand-icon"><i class="fa-solid fa-gears" aria-hidden="true"></i></span>
-                <h1 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">
-                    AssetFix<span style="color: var(--clr-blue);">.AI</span>
+                <h1 class="text-xl font-extrabold">
+                    AssetFix<span class="text-blue">.AI</span>
                 </h1>
-                <p style="color: var(--clr-text-muted); font-size: 0.85rem; margin-top: 4px;">
+                <p class="text-muted text-sm mb-sm">
                     Dostęp do platformy serwisowej i predykcyjnej EAM
                 </p>
             </div>
@@ -27,29 +27,25 @@
             <form action="/login" method="POST">
                 <div class="form-group">
                     <label for="email">E-mail służbowy:</label>
-                    <div style="position: relative;">
-                        <input type="email" id="email" name="email" class="form-input" placeholder="nazwisko@assetfix.ai" required autocomplete="email">
-                    </div>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="nazwisko@assetfix.ai" required autocomplete="email">
                 </div>
 
                 <div class="form-group">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="flex-between">
                         <label for="password">Hasło dostępu:</label>
-                        <a href="#" style="font-size: 0.75rem; color: var(--clr-text-muted);">Zapomniałeś hasła?</a>
+                        <a href="#" class="text-muted text-xs">Zapomniałeś hasła?</a>
                     </div>
-                    <div style="position: relative;">
-                        <input type="password" id="password" name="password" class="form-input" placeholder="••••••••••••" required autocomplete="current-password">
-                    </div>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••••••" required autocomplete="current-password">
                 </div>
 
-                <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
-                    <input type="checkbox" id="remember" name="remember" style="accent-color: var(--clr-blue); width: 16px; height: 16px;">
-                    <label for="remember" style="font-size: 0.85rem; color: var(--clr-text-muted); cursor: pointer;">
+                <div class="flex-row mb-lg">
+                    <input type="checkbox" id="remember" name="remember" class="form-checkbox">
+                    <label for="remember" class="text-muted text-sm cursor-pointer">
                         Zapamiętaj tę sesję na 30 dni
                     </label>
                 </div>
 
-                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 1rem;">
+                <button type="submit" class="btn-primary btn-full">
                     <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Zaloguj się do systemu
                 </button>
             </form>
@@ -63,17 +59,17 @@
                     <div class="demo-account-pill" onclick="document.getElementById('email').value='admin@assetfix.ai'; document.getElementById('password').value='Admin123!';">
                         <div>
                             <strong>Menedżer (ADMIN)</strong>
-                            <div style="font-size: 0.7rem; color: var(--clr-text-muted);">admin@assetfix.ai • pełne uprawnienia</div>
+                            <div class="text-muted text-xs">admin@assetfix.ai • pełne uprawnienia</div>
                         </div>
-                        <span class="badge-blue" style="font-size: 0.7rem;">Wstaw</span>
+                        <span class="badge-blue text-xs">Wstaw</span>
                     </div>
 
                     <div class="demo-account-pill" onclick="document.getElementById('email').value='technik@assetfix.ai'; document.getElementById('password').value='Technik123!';">
                         <div>
                             <strong>Technik (TECHNICIAN)</strong>
-                            <div style="font-size: 0.7rem; color: var(--clr-text-muted);">technik@assetfix.ai • zlecenia i diagnoza</div>
+                            <div class="text-muted text-xs">technik@assetfix.ai • zlecenia i diagnoza</div>
                         </div>
-                        <span class="badge-green" style="font-size: 0.7rem;">Wstaw</span>
+                        <span class="badge-green text-xs">Wstaw</span>
                     </div>
                 </div>
             </div>
