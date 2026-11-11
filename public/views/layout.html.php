@@ -34,6 +34,8 @@ $content = $content ?? '';
         })();
     </script>
     <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/1c520e4603.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <?php require __DIR__ . '/partials/navigation.html.php'; ?>
