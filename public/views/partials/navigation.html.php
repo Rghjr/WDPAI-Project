@@ -11,7 +11,7 @@ $path = parse_url($currentUri, PHP_URL_PATH) ?: '/';
             <span class="brand-icon"><i class="fa-solid fa-gears" aria-hidden="true"></i></span>
             <span class="brand-text">AssetFix<span class="brand-accent">.AI</span></span>
         </a>
-        <span class="brand-badge">Enterprise Core</span>
+        <span class="brand-badge">Enterprise EAM / FSM</span>
     </div>
 
     <ul class="site-navigation__links">
@@ -35,9 +35,22 @@ $path = parse_url($currentUri, PHP_URL_PATH) ?: '/';
             </a>
         </li>
         <li>
-            <a href="/maintenance" class="<?= ($path === '/maintenance' ? 'active' : '') ?>">
-                <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
-                <span>Przeglądy EAM</span>
+            <a href="/map" class="<?= ($path === '/map' ? 'active' : '') ?>">
+                <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+                <span>Mapa serwisu</span>
+            </a>
+        </li>
+        <li>
+            <a href="/schedule" class="<?= ($path === '/schedule' || $path === '/maintenance' ? 'active' : '') ?>">
+                <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+                <span>Harmonogramy</span>
+            </a>
+        </li>
+        <li>
+            <a href="/diagnostics" class="<?= ($path === '/diagnostics' ? 'active' : '') ?>" title="Centrum Predykcyjnej Analityki AI">
+                <i class="fa-solid fa-brain" aria-hidden="true"></i>
+                <span>Smart Diagnosis</span>
+                <span class="nav-ai-pill">AI</span>
             </a>
         </li>
         <li>
@@ -49,9 +62,9 @@ $path = parse_url($currentUri, PHP_URL_PATH) ?: '/';
     </ul>
 
     <div class="site-navigation__actions">
-        <div class="system-status-indicator" title="Status łączności z infrastrukturą">
+        <div class="system-status-indicator" title="Status łączności z infrastrukturą CAN-bus i IoT">
             <span class="status-dot"></span>
-            <span class="status-label">Baza Poznań • IoT Hub 99.9%</span>
+            <span class="status-label">Baza Poznań • IoT 99.98%</span>
         </div>
 
         <button class="theme-toggle" type="button" aria-label="Włącz ciemny motyw" aria-pressed="false">

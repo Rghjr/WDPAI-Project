@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Controller\AssetController;
 use App\Controller\DefaultController;
+use App\Controller\DiagnosticController;
+use App\Controller\DispatchController;
 use App\Controller\TicketController;
 use App\Controller\UserController;
 use App\Routing;
@@ -20,11 +22,18 @@ $routing->get('/tickets', TicketController::class, 'index');
 $routing->get('/tickets/add', TicketController::class, 'add');
 $routing->get('/tickets/{id}', TicketController::class, 'show');
 
-// Moduł EAM – Park Maszynowy i Dozór Techniczny (AssetController)
+// Moduł EAM – Park Maszynowy i Paszport Techniczny (AssetController)
 $routing->get('/assets', AssetController::class, 'index');
 $routing->get('/assets/add', AssetController::class, 'add');
 $routing->get('/assets/{id}', AssetController::class, 'show');
-$routing->get('/maintenance', AssetController::class, 'maintenance');
+
+// Moduł Centrum Dyspozytorskiego, Mapy GIS i Harmonogramów UR (DispatchController)
+$routing->get('/map', DispatchController::class, 'map');
+$routing->get('/schedule', DispatchController::class, 'schedule');
+$routing->get('/maintenance', DispatchController::class, 'schedule'); // Zintegrowane z harmonogramem dozoru UDT (bez powielania!)
+
+// Moduł Predykcyjnej Analityki i Smart Diagnosis AI (DiagnosticController)
+$routing->get('/diagnostics', DiagnosticController::class, 'index');
 
 // Moduł Użytkowników, Kwalifikacji i Auth (UserController)
 $routing->get('/admin/users', UserController::class, 'index');

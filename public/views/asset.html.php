@@ -13,145 +13,198 @@
 
     <main class="container">
         
-        <!-- Pasek powrotu i szybkich akcji -->
-        <div class="flex-between mb-lg">
-            <a href="/assets" class="btn-secondary btn-sm">
-                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Wróć do parku maszynowego
-            </a>
-            <div class="flex-row">
-                <button type="button" class="btn-secondary btn-sm" onclick="window.print()">
-                    <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Drukuj paszport DTR
-                </button>
-                <a href="/tickets/add" class="btn-primary btn-sm">
-                    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Zgłoś awarię tej maszyny
-                </a>
+        <!-- Pasek Kontekstowy i Telemetria CAN-bus (Wzór ze Stitch w3) -->
+        <div class="asset-context-bar mb-md">
+            <div class="flex-row gap-xs text-xs text-muted">
+                <a href="/assets" class="text-muted hover-underline">Park maszynowy</a>
+                <span class="text-dim">/</span>
+                <span class="text-muted"><?= htmlspecialchars($asset['category']) ?></span>
+                <span class="text-dim">/</span>
+                <span class="font-mono bg-card px-xs py-0.5 rounded text-main font-semibold">SN: <?= htmlspecialchars($asset['serialNumber']) ?></span>
+            </div>
+
+            <div class="flex-row gap-xs font-mono text-xs">
+                <span class="text-muted">Ostatni odczyt CAN-bus:</span>
+                <span class="font-bold text-main">14:02:18 (teraz)</span>
+                <span class="status-dot green animate-pulse"></span>
             </div>
         </div>
 
-        <!-- Układ dwukolumnowy paszportu EAM -->
+        <!-- Nagłówek Urządzenia z Badgami i Przyciskami Akcji -->
+        <header class="card-block mb-lg">
+            <div class="flex-between flex-wrap gap-md">
+                <div>
+                    <div class="flex-row flex-wrap gap-sm mb-xs">
+                        <h1 class="text-xl font-extrabold text-main">
+                            <?= htmlspecialchars($asset['name']) ?>
+                        </h1>
+                        <span class="text-muted text-sm font-normal">• <?= htmlspecialchars($asset['model']) ?></span>
+                    </div>
+
+                    <div class="flex-row flex-wrap gap-xs">
+                        <?php if ($asset['status'] === 'AWARIA'): ?>
+                            <span class="badge-red"><i class="fa-solid fa-triangle-exclamation"></i> <?= htmlspecialchars($asset['statusLabel']) ?></span>
+                        <?php elseif ($asset['status'] === 'W_NAPRAWIE'): ?>
+                            <span class="badge-amber"><i class="fa-solid fa-clock"></i> <?= htmlspecialchars($asset['statusLabel']) ?></span>
+                        <?php else: ?>
+                            <span class="badge-green"><i class="fa-solid fa-circle-check"></i> <?= htmlspecialchars($asset['statusLabel']) ?></span>
+                        <?php endif; ?>
+
+                        <span class="meta-pill text-xs">
+                            <i class="fa-solid fa-tag"></i> Kategoria: <?= htmlspecialchars($asset['category']) ?>
+                        </span>
+                        <span class="meta-pill text-xs">
+                            <i class="fa-solid fa-location-dot text-red"></i> <?= htmlspecialchars($asset['clientName']) ?>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex-row flex-wrap gap-sm">
+                    <button type="button" class="btn-secondary btn-sm" onclick="window.print()">
+                        <i class="fa-solid fa-file-pdf"></i> Drukuj paszport DTR
+                    </button>
+                    <a href="/tickets/add" class="btn-primary btn-sm">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Nowe zgłoszenie awarii
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- 4 Kafelki Telemetrii na Żywo (Wibracje, Temp, Ciśnienie, Motogodziny) -->
+        <section class="stats-grid mb-lg" aria-label="Odczyty sensorów maszyny">
+            <div class="stat-card <?= ($asset['tempSensor'] > 65 ? 'critical' : '') ?>">
+                <div class="stat-card__top">
+                    <span class="stat-card__title">Temperatura łożyska</span>
+                    <span class="stat-card__icon"><i class="fa-solid fa-temperature-high"></i></span>
+                </div>
+                <div class="stat-card__value <?= ($asset['tempSensor'] > 65 ? 'text-red' : 'text-main') ?>">
+                    <?= htmlspecialchars((string) $asset['tempSensor']) ?> °C
+                </div>
+                <div class="stat-card__desc">
+                    <i class="fa-solid fa-gauge"></i> Norma ISO: &lt; 65 °C (Próg alarmowy 75 °C)
+                </div>
+            </div>
+
+            <div class="stat-card <?= ($asset['vibrationSensor'] > 2.5 ? 'critical' : '') ?>">
+                <div class="stat-card__top">
+                    <span class="stat-card__title">Wibracje osiowe FFT</span>
+                    <span class="stat-card__icon"><i class="fa-solid fa-wave-square"></i></span>
+                </div>
+                <div class="stat-card__value <?= ($asset['vibrationSensor'] > 2.5 ? 'text-red' : 'text-green') ?>">
+                    <?= htmlspecialchars((string) $asset['vibrationSensor']) ?> mm/s
+                </div>
+                <div class="stat-card__desc">
+                    <i class="fa-solid fa-chart-line"></i> Widmo wibracji FFT (Częstotliwość 142 Hz)
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card__top">
+                    <span class="stat-card__title">Ciśnienie w układzie</span>
+                    <span class="stat-card__icon"><i class="fa-solid fa-gauge-simple-high"></i></span>
+                </div>
+                <div class="stat-card__value text-blue"><?= htmlspecialchars((string) $asset['pressureSensor']) ?> bar</div>
+                <div class="stat-card__desc text-blue"><i class="fa-solid fa-check"></i> Ciśnienie robocze stabilne</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-card__top">
+                    <span class="stat-card__title">Przepracowane motogodziny</span>
+                    <span class="stat-card__icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                </div>
+                <div class="stat-card__value text-main font-mono"><?= number_format((float) $asset['operatingHours'], 0, ',', ' ') ?> h</div>
+                <div class="stat-card__desc text-muted"><i class="fa-solid fa-wrench"></i> Następny przegląd za 1 580 h</div>
+            </div>
+        </section>
+
+        <!-- Główny Układ Paszportu: Specyfikacja i Historia + Prawy Pasek Diagnostyki -->
         <div class="detail-layout">
             
-            <!-- Lewa kolumna: Dane techniczne, dozór UDT, historia awarii -->
+            <!-- Lewa Kolumna: Specyfikacja DTR, Dozór UDT, Historia Incydentów -->
             <div class="detail-main">
                 
-                <!-- Karta nagłówkowa maszyny -->
+                <!-- Specyfikacja techniczna DTR -->
                 <article class="card-block">
                     <div class="flex-between mb-md">
-                        <div>
-                            <span class="task-id">EAM Asset Passport #<?= htmlspecialchars((string) $assetId) ?></span>
-                            <h1 class="text-xl font-extrabold flex-row">
-                                <i class="fa-solid fa-industry text-blue" aria-hidden="true"></i>
-                                <?= htmlspecialchars($asset['name']) ?>
-                            </h1>
-                        </div>
-                        <div>
-                            <?php if ($asset['status'] === 'AWARIA'): ?>
-                                <span class="badge-red"><i class="fa-solid fa-triangle-exclamation"></i> AWARIA</span>
-                            <?php elseif ($asset['status'] === 'W_NAPRAWIE'): ?>
-                                <span class="badge-amber"><i class="fa-solid fa-clock"></i> W NAPRAWIE</span>
-                            <?php else: ?>
-                                <span class="badge-green"><i class="fa-solid fa-circle-check"></i> OPERACYJNA</span>
-                            <?php endif; ?>
-                        </div>
+                        <h2><i class="fa-solid fa-sliders text-blue" aria-hidden="true"></i> Metryka Fabryczna i Parametry Robocze (DTR)</h2>
+                        <span class="meta-pill text-xs">Paszport EAM #<?= htmlspecialchars((string) $assetId) ?></span>
                     </div>
 
                     <div class="meta-grid">
                         <div class="meta-item">
-                            <div class="meta-label">Numer seryjny (S/N)</div>
-                            <div class="meta-value font-mono"><?= htmlspecialchars($asset['serialNumber']) ?></div>
+                            <div class="meta-label">Producent urządzenia</div>
+                            <div class="meta-value font-bold"><?= htmlspecialchars($asset['manufacturer']) ?></div>
                         </div>
                         <div class="meta-item">
-                            <div class="meta-label">Kategoria floty</div>
-                            <div class="meta-value"><?= htmlspecialchars($asset['category']) ?></div>
+                            <div class="meta-label">Model i wariant</div>
+                            <div class="meta-value"><?= htmlspecialchars($asset['model']) ?></div>
                         </div>
                         <div class="meta-item">
-                            <div class="meta-label">Właściciel / Klient</div>
-                            <div class="meta-value font-bold"><?= htmlspecialchars($asset['clientName']) ?></div>
+                            <div class="meta-label">Rok produkcji i data odbioru</div>
+                            <div class="meta-value"><?= htmlspecialchars((string) $asset['productionYear']) ?> (Uruchomienie: <?= htmlspecialchars($asset['commissioningDate']) ?>)</div>
                         </div>
                         <div class="meta-item">
-                            <div class="meta-label">Lokalizacja i sektor</div>
-                            <div class="meta-value text-xs text-muted">
-                                <i class="fa-solid fa-location-dot text-red"></i>
-                                <?= htmlspecialchars($asset['location']) ?>
-                            </div>
+                            <div class="meta-label">Moc znamionowa silnika</div>
+                            <div class="meta-value text-blue font-bold"><?= htmlspecialchars($asset['powerRating']) ?></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Zasilanie elektryczne</div>
+                            <div class="meta-value font-mono"><?= htmlspecialchars($asset['operatingVoltage']) ?></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Lokalizacja fizyczna</div>
+                            <div class="meta-value text-xs text-muted"><i class="fa-solid fa-location-dot text-red"></i> <?= htmlspecialchars($asset['location']) ?></div>
                         </div>
                     </div>
                 </article>
 
-                <!-- Specyfikacja techniczna i DTR -->
+                <!-- Status Dozoru Technicznego UDT -->
                 <section class="card-block">
-                    <h2><i class="fa-solid fa-sliders" aria-hidden="true"></i> Specyfikacja Techniczna i Metryka DTR</h2>
-                    
-                    <div class="meta-grid mt-md">
-                        <div class="meta-item">
-                            <div class="meta-label">Producent urządzenia</div>
-                            <div class="meta-value"><?= htmlspecialchars($asset['manufacturer']) ?></div>
-                        </div>
-                        <div class="meta-item">
-                            <div class="meta-label">Model i seria</div>
-                            <div class="meta-value"><?= htmlspecialchars($asset['model']) ?></div>
-                        </div>
-                        <div class="meta-item">
-                            <div class="meta-label">Rok produkcji / Uruchomienie</div>
-                            <div class="meta-value"><?= htmlspecialchars((string) $asset['productionYear']) ?> (Oddano: <?= htmlspecialchars($asset['commissioningDate']) ?>)</div>
-                        </div>
-                        <div class="meta-item">
-                            <div class="meta-label">Moc znamionowa</div>
-                            <div class="meta-value font-bold text-blue"><?= htmlspecialchars($asset['powerRating']) ?></div>
-                        </div>
-                        <div class="meta-item">
-                            <div class="meta-label">Napięcie i zasilanie</div>
-                            <div class="meta-value font-mono"><?= htmlspecialchars($asset['operatingVoltage']) ?></div>
-                        </div>
-                        <div class="meta-item">
-                            <div class="meta-label">Łączny czas pracy (Motogodziny)</div>
-                            <div class="meta-value font-mono font-bold"><?= number_format((float) $asset['operatingHours'], 0, ',', ' ') ?> h</div>
-                        </div>
+                    <div class="flex-between mb-md">
+                        <h2><i class="fa-solid fa-shield-halved text-amber" aria-hidden="true"></i> Status Dozoru Technicznego (UDT)</h2>
+                        <a href="/schedule?tab=udt" class="btn-secondary btn-sm">
+                            <i class="fa-solid fa-calendar-check"></i> Terminarz UDT
+                        </a>
                     </div>
-                </section>
 
-                <!-- Dozór techniczny i UDT -->
-                <section class="card-block">
-                    <h2><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Status Dozoru Technicznego (UDT)</h2>
-                    
-                    <div class="meta-grid mt-md">
+                    <div class="meta-grid">
                         <div class="meta-item">
                             <div class="meta-label">Numer księgi rewizyjnej UDT</div>
-                            <div class="meta-value font-mono"><?= htmlspecialchars($asset['udtNumber']) ?></div>
+                            <div class="meta-value font-mono font-bold"><?= htmlspecialchars($asset['udtNumber']) ?></div>
                         </div>
                         <div class="meta-item">
-                            <div class="meta-label">Data ostatniego badania</div>
+                            <div class="meta-label">Ostatnie badanie okresowe</div>
                             <div class="meta-value"><?= htmlspecialchars($asset['lastInspectionDate']) ?></div>
                         </div>
                         <div class="meta-item">
-                            <div class="meta-label">Termin kolejnego badania okresowego</div>
+                            <div class="meta-label">Termin kolejnej rewizji UDT</div>
                             <div class="meta-value font-bold <?= (strtotime($asset['nextInspectionDate']) < strtotime('+14 days') ? 'text-red' : 'text-green') ?>">
                                 <i class="fa-solid fa-calendar-day"></i> <?= htmlspecialchars($asset['nextInspectionDate']) ?>
                             </div>
                         </div>
                         <div class="meta-item">
-                            <div class="meta-label">Decyzja zezwalająca na eksploatację</div>
+                            <div class="meta-label">Decyzja eksploatacyjna UDT</div>
                             <div class="meta-value text-green font-bold">Ważna do: <?= htmlspecialchars($asset['udtDecisionValidUntil']) ?></div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Historia awarii i incydentów dla tej maszyny -->
+                <!-- Historia Zleceń i Awarii #WO dla tej maszyny -->
                 <section class="card-block">
                     <div class="flex-between mb-md">
-                        <h2><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i> Historia Awarii i Zleceń Serwisowych</h2>
+                        <h2><i class="fa-solid fa-clipboard-list text-blue" aria-hidden="true"></i> Historia Zleceń Serwisowych #WO</h2>
                         <a href="/tickets/add" class="btn-primary btn-sm">
-                            <i class="fa-solid fa-plus"></i> Nowe zgłoszenie
+                            <i class="fa-solid fa-plus"></i> Nowe zlecenie
                         </a>
                     </div>
 
                     <div class="table-responsive">
-                        <table class="data-table" aria-label="Historia awarii maszyny">
+                        <table class="data-table" aria-label="Zlecenia dla tej maszyny">
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Data zgłoszenia</th>
-                                    <th scope="col">Tytuł usterki</th>
+                                    <th scope="col">Zlecenie</th>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Tytuł problemu</th>
                                     <th scope="col">Serwisant</th>
                                     <th scope="col">Status</th>
                                     <th scope="col" class="text-right">Akcja</th>
@@ -160,40 +213,34 @@
                             <tbody>
                                 <?php if (!empty($asset['activeTicketId'])): ?>
                                     <tr>
-                                        <td class="font-mono">#<?= htmlspecialchars((string) $asset['activeTicketId']) ?></td>
+                                        <td class="font-mono font-bold text-red">#WO-8911</td>
                                         <td>2026-10-22</td>
-                                        <td class="font-bold">Niski poziom oleju w przekładni głównej, przegrzanie</td>
-                                        <td>Piotr Kowalski</td>
-                                        <td><span class="badge-amber"><i class="fa-solid fa-clock"></i> W TRAKCIE</span></td>
+                                        <td class="font-bold">Niski poziom oleju, wzrost temperatury łożyska</td>
+                                        <td><?= htmlspecialchars($asset['assignedTechnician']) ?></td>
+                                        <td><span class="badge-amber"><i class="fa-solid fa-clock"></i> W TOKU</span></td>
                                         <td class="text-right">
-                                            <a href="/tickets/<?= htmlspecialchars((string) $asset['activeTicketId']) ?>" class="btn-primary btn-sm">
-                                                Podgląd zlecenia &rarr;
-                                            </a>
+                                            <a href="/tickets/<?= htmlspecialchars((string) $asset['activeTicketId']) ?>" class="btn-primary btn-sm">Podgląd &rarr;</a>
                                         </td>
                                     </tr>
                                 <?php endif; ?>
                                 <tr>
-                                    <td class="font-mono">#108</td>
+                                    <td class="font-mono">#WO-8801</td>
                                     <td>2026-05-12</td>
-                                    <td>Okresowy przegląd roczny, wymiana filtrów hydraulicznych</td>
+                                    <td>Przegląd okresowy roczny, wymiana filtrów i uszczelek</td>
                                     <td>Marek Nowak</td>
-                                    <td><span class="badge-green"><i class="fa-solid fa-check"></i> ROZWIĄZANE</span></td>
+                                    <td><span class="badge-green"><i class="fa-solid fa-check"></i> ZAMKNIĘTE</span></td>
                                     <td class="text-right">
-                                        <a href="/tickets/1" class="btn-secondary btn-sm">
-                                            Szczegóły
-                                        </a>
+                                        <a href="/tickets/1" class="btn-secondary btn-sm">Szczegóły</a>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="font-mono">#089</td>
+                                    <td class="font-mono">#WO-8650</td>
                                     <td>2025-11-04</td>
-                                    <td>Kalibracja czujników wibracji FFT oraz przetwornika ciśnienia</td>
+                                    <td>Kalibracja przetworników ciśnienia i czujników FFT</td>
                                     <td>Piotr Kowalski</td>
-                                    <td><span class="badge-green"><i class="fa-solid fa-check"></i> ROZWIĄZANE</span></td>
+                                    <td><span class="badge-green"><i class="fa-solid fa-check"></i> ZAMKNIĘTE</span></td>
                                     <td class="text-right">
-                                        <a href="/tickets/1" class="btn-secondary btn-sm">
-                                            Szczegóły
-                                        </a>
+                                        <a href="/tickets/1" class="btn-secondary btn-sm">Szczegóły</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -203,109 +250,78 @@
 
             </div>
 
-            <!-- Prawa kolumna: Telemetria na żywo, dokumentacja DTR, opiekun -->
+            <!-- Prawa Kolumna: Diagnostyka AI, Dokumenty DTR i Opiekun -->
             <aside class="detail-sidebar">
                 
-                <!-- Telemetria IoT na żywo -->
-                <div class="ai-diagnosis-widget mb-lg">
-                    <div class="ai-header">
-                        <div class="ai-badge">
-                            <i class="fa-solid fa-tower-broadcast" aria-hidden="true"></i> IoT Telemetry Hub
+                <!-- Karta Smart Diagnosis AI dla tej maszyny -->
+                <div class="card-block mb-lg" style="border: 1px solid var(--clr-ai-border); background: var(--clr-ai-bg);">
+                    <div class="flex-between mb-sm">
+                        <div class="flex-row">
+                            <i class="fa-solid fa-brain text-ai text-lg"></i>
+                            <h2 class="text-sm font-bold text-ai">Ollama Smart Diagnosis AI</h2>
                         </div>
-                        <span class="ai-confidence">Live MQTT 50Hz</span>
+                        <span class="ai-confidence">Live Anomaly</span>
                     </div>
 
-                    <p class="text-sm text-muted mb-md">
-                        Aktualne pomiary z przemysłowej magistrali Modbus / IoT zainstalowanej na maszynie:
+                    <p class="text-xs text-muted mb-md">
+                        Analiza odczytów telemetrii z czujników wibracji i temperatury dla urządzenia <?= htmlspecialchars($asset['serialNumber']) ?>:
                     </p>
 
-                    <div class="telemetry-box">
-                        <div class="telemetry-item">
-                            <span class="telemetry-label">Temperatura łożyska</span>
-                            <span class="telemetry-val text-red">
-                                <?= htmlspecialchars((string) $asset['tempSensor']) ?> °C
-                                <i class="fa-solid fa-arrow-trend-up"></i>
-                            </span>
-                        </div>
-                        <div class="telemetry-item">
-                            <span class="telemetry-label">Wibracje osiowe FFT</span>
-                            <span class="telemetry-val text-green">
-                                <?= htmlspecialchars((string) $asset['vibrationSensor']) ?> mm/s RMS
-                            </span>
-                        </div>
-                        <div class="telemetry-item">
-                            <span class="telemetry-label">Ciśnienie w układzie</span>
-                            <span class="telemetry-val text-blue">
-                                <?= htmlspecialchars((string) $asset['pressureSensor']) ?> bar
-                            </span>
-                        </div>
-                        <div class="telemetry-item">
-                            <span class="telemetry-label">Wskaźnik MTBF</span>
-                            <span class="telemetry-val">840 h bezawaryjnie</span>
-                        </div>
+                    <div class="ai-insight-box">
+                        <div class="font-bold text-xs text-red mb-xs"><i class="fa-solid fa-triangle-exclamation"></i> Wykryto ryzyko przegrzania łożyska</div>
+                        <p class="text-xs text-muted leading-relaxed">
+                            Pomiary FFT wskazują na anomalne piki przy 142 Hz (faza 3 degradacji bieżni). Zalecana inspekcja poziomu oleju oraz wymiana filtra w ciągu 4 godzin roboczych.
+                        </p>
                     </div>
 
-                    <button type="button" class="btn-ai btn-sm btn-full mt-md" onclick="alert('Odczytano bieżące pakiety telemetryczne z bramki IoT w Margoninie.')">
-                        <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Odśwież telemetrię
-                    </button>
+                    <a href="/diagnostics" class="btn-ai btn-sm btn-full mt-md">
+                        <i class="fa-solid fa-chart-line"></i> Otwórz pełne spektrum FFT
+                    </a>
                 </div>
 
-                <!-- Dokumentacja DTR i schematy -->
+                <!-- Pliki DTR i Dokumentacja Techniczna -->
                 <div class="card-block mb-lg">
-                    <h2><i class="fa-solid fa-folder-open" aria-hidden="true"></i> Dokumentacja DTR i Pliki</h2>
+                    <h2><i class="fa-solid fa-folder-open text-blue" aria-hidden="true"></i> Dokumentacja Techniczna DTR</h2>
+                    
                     <ul class="file-list mt-md">
                         <li class="file-item">
                             <div class="flex-row">
                                 <i class="fa-solid fa-file-pdf text-red text-lg"></i>
                                 <div>
-                                    <div class="font-bold text-sm">Instrukcja DTR_V90_v3.pdf</div>
+                                    <div class="font-bold text-xs">Instrukcja_DTR_<?= htmlspecialchars($asset['serialNumber']) ?>.pdf</div>
                                     <div class="text-xs text-muted">14.8 MB • Dokumentacja producenta</div>
                                 </div>
                             </div>
-                            <a href="#" class="btn-secondary btn-sm" onclick="alert('Pobieranie dokumentacji DTR...')">
+                            <button type="button" class="btn-secondary btn-sm" onclick="alert('Pobieranie dokumentacji DTR...')">
                                 <i class="fa-solid fa-download"></i>
-                            </a>
+                            </button>
                         </li>
                         <li class="file-item">
                             <div class="flex-row">
                                 <i class="fa-solid fa-file-waveform text-blue text-lg"></i>
                                 <div>
-                                    <div class="font-bold text-sm">Schemat_Elektryczny_E04.pdf</div>
-                                    <div class="text-xs text-muted">6.2 MB • Rozdzielnica 690V</div>
+                                    <div class="font-bold text-xs">Schemat_Elektryczny_Rozdzielnicy.pdf</div>
+                                    <div class="text-xs text-muted">6.2 MB • Schemat ideowy</div>
                                 </div>
                             </div>
-                            <a href="#" class="btn-secondary btn-sm" onclick="alert('Pobieranie schematu elektrycznego...')">
+                            <button type="button" class="btn-secondary btn-sm" onclick="alert('Pobieranie schematu elektrycznego...')">
                                 <i class="fa-solid fa-download"></i>
-                            </a>
-                        </li>
-                        <li class="file-item">
-                            <div class="flex-row">
-                                <i class="fa-solid fa-stamp text-amber text-lg"></i>
-                                <div>
-                                    <div class="font-bold text-sm">Protokol_UDT_Rewizja_2026.pdf</div>
-                                    <div class="text-xs text-muted">2.1 MB • Podpisany cyfrowo</div>
-                                </div>
-                            </div>
-                            <a href="#" class="btn-secondary btn-sm" onclick="alert('Pobieranie protokołu UDT...')">
-                                <i class="fa-solid fa-download"></i>
-                            </a>
+                            </button>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Przypisany główny inżynier / technik -->
+                <!-- Opiekun Maszyny -->
                 <div class="card-block">
-                    <h2><i class="fa-solid fa-user-shield" aria-hidden="true"></i> Opiekun Techniczny</h2>
+                    <h2><i class="fa-solid fa-user-shield text-blue" aria-hidden="true"></i> Opiekun Techniczny</h2>
                     <div class="user-profile-preview mt-md">
                         <div class="avatar-circle">
                             <i class="fa-solid fa-user-gear"></i>
                         </div>
                         <div>
-                            <div class="font-bold"><?= htmlspecialchars($asset['assignedTechnician']) ?></div>
-                            <div class="text-xs text-muted">Dział Utrzymania Ruchu • Rejon Wielkopolska</div>
-                            <div class="text-xs text-blue mt-xs">
-                                <i class="fa-solid fa-phone"></i> +48 601 234 567
-                            </div>
+                            <div class="font-bold text-sm"><?= htmlspecialchars($asset['assignedTechnician']) ?></div>
+                            <div class="text-xs text-muted">Dział Utrzymania Ruchu • Aglomeracja Poznań</div>
+                            <div class="text-xs text-blue mt-xs"><i class="fa-solid fa-phone"></i> +48 601 234 567</div>
                         </div>
                     </div>
                 </div>
