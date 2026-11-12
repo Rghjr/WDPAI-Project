@@ -5,23 +5,31 @@ declare(strict_types=1);
 use App\Controller\AssetController;
 use App\Controller\DefaultController;
 use App\Controller\TicketController;
+use App\Controller\UserController;
 use App\Routing;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 $routing = new Routing();
 
-// Strona główna (DefaultController)
+// Strona główna (Pulpit operacyjny)
 $routing->get('/', DefaultController::class, 'index');
 
-// Trasy zwykłe
+// Moduł Zgłoszeń i Awarie (TicketController)
 $routing->get('/tickets', TicketController::class, 'index');
 $routing->get('/tickets/add', TicketController::class, 'add');
-$routing->get('/assets', AssetController::class, 'index');
-$routing->get('/login', AssetController::class, 'login');
-
-// Trasa z parametrem
 $routing->get('/tickets/{id}', TicketController::class, 'show');
+
+// Moduł EAM – Park Maszynowy i Dozór Techniczny (AssetController)
+$routing->get('/assets', AssetController::class, 'index');
+$routing->get('/assets/add', AssetController::class, 'add');
+$routing->get('/assets/{id}', AssetController::class, 'show');
+$routing->get('/maintenance', AssetController::class, 'maintenance');
+
+// Moduł Użytkowników, Kwalifikacji i Auth (UserController)
+$routing->get('/admin/users', UserController::class, 'index');
+$routing->get('/profile', UserController::class, 'profile');
+$routing->get('/login', UserController::class, 'login');
 
 $routeFound = $routing->dispatch(
     $_SERVER['REQUEST_METHOD'],

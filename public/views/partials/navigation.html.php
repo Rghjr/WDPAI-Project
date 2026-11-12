@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 $currentUri = $_SERVER['REQUEST_URI'] ?? '/';
+$path = parse_url($currentUri, PHP_URL_PATH) ?: '/';
 ?>
 <nav class="site-navigation" aria-label="Nawigacja główna">
     <div class="site-navigation__brand-wrapper">
@@ -15,28 +16,34 @@ $currentUri = $_SERVER['REQUEST_URI'] ?? '/';
 
     <ul class="site-navigation__links">
         <li>
-            <a href="/" class="<?= ($currentUri === '/' ? 'active' : '') ?>">
+            <a href="/" class="<?= ($path === '/' ? 'active' : '') ?>">
                 <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
                 <span>Pulpit</span>
             </a>
         </li>
         <li>
-            <a href="/tickets" class="<?= (str_starts_with($currentUri, '/tickets') && $currentUri !== '/tickets/add' ? 'active' : '') ?>">
+            <a href="/tickets" class="<?= (str_starts_with($path, '/tickets') && $path !== '/tickets/add' ? 'active' : '') ?>">
                 <i class="fa-solid fa-clipboard-list" aria-hidden="true"></i>
                 <span>Zgłoszenia</span>
                 <span class="nav-counter">3</span>
             </a>
         </li>
         <li>
-            <a href="/tickets/add" class="<?= ($currentUri === '/tickets/add' ? 'active' : '') ?>">
-                <i class="fa-solid fa-circle-plus" aria-hidden="true"></i>
-                <span>Zgłoś awarię</span>
+            <a href="/assets" class="<?= (str_starts_with($path, '/assets') ? 'active' : '') ?>">
+                <i class="fa-solid fa-industry" aria-hidden="true"></i>
+                <span>Park maszynowy</span>
             </a>
         </li>
         <li>
-            <a href="/assets" class="<?= (str_starts_with($currentUri, '/assets') ? 'active' : '') ?>">
-                <i class="fa-solid fa-industry" aria-hidden="true"></i>
-                <span>Park maszynowy</span>
+            <a href="/maintenance" class="<?= ($path === '/maintenance' ? 'active' : '') ?>">
+                <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+                <span>Przeglądy EAM</span>
+            </a>
+        </li>
+        <li>
+            <a href="/admin/users" class="<?= ($path === '/admin/users' ? 'active' : '') ?>">
+                <i class="fa-solid fa-users-gear" aria-hidden="true"></i>
+                <span>Zespół</span>
             </a>
         </li>
     </ul>
@@ -51,7 +58,7 @@ $currentUri = $_SERVER['REQUEST_URI'] ?? '/';
             <span class="theme-toggle__icon" aria-hidden="true">☾</span>
         </button>
 
-        <a href="/login" class="user-pill" title="Konto użytkownika">
+        <a href="/profile" class="user-pill <?= ($path === '/profile' ? 'active' : '') ?>" title="Karta i profil serwisanta (Piotr Kowalski)">
             <span class="user-pill__avatar"><i class="fa-solid fa-user-gear" aria-hidden="true"></i></span>
             <span class="user-pill__name">Piotr Kowalski</span>
         </a>
