@@ -38,6 +38,11 @@
                             <h1 class="text-xl font-extrabold">
                                 <?= htmlspecialchars($assetName) ?>
                             </h1>
+                            <div class="mt-xs">
+                                <a href="/assets/1" class="text-xs text-blue font-semibold">
+                                    <i class="fa-solid fa-passport"></i> Otwórz paszport techniczny maszyny w EAM &rarr;
+                                </a>
+                            </div>
                         </div>
                         <div>
                             <?php if ($status === 'w_trakcie'): ?>

@@ -28,8 +28,11 @@
                 <span class="meta-pill">
                     Łącznie maszyn w bazie: <strong class="text-blue"><?= htmlspecialchars((string) $totalAssets) ?></strong>
                 </span>
-                <a href="/tickets/add" class="btn-primary">
-                    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Zgłoś awarię maszyny
+                <a href="/tickets/add" class="btn-secondary">
+                    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Zgłoś awarię
+                </a>
+                <a href="/assets/add" class="btn-primary">
+                    <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> Zarejestruj nową maszynę
                 </a>
             </div>
         </header>
@@ -97,7 +100,7 @@
                         <tr>
                             <td class="font-mono">#1</td>
                             <td>
-                                <div class="font-bold">Turbina Wiatrowa V90 #04</div>
+                                <a href="/assets/1" class="font-bold text-blue">Turbina Wiatrowa V90 #04</a>
                                 <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> Farma Wiatrowa Margonin</div>
                             </td>
                             <td>
@@ -109,6 +112,9 @@
                             </td>
                             <td>2026-01-15</td>
                             <td class="text-right">
+                                <a href="/assets/1" class="btn-secondary btn-sm">
+                                    <i class="fa-solid fa-passport"></i> Paszport EAM
+                                </a>
                                 <a href="/tickets/1" class="btn-primary btn-sm">
                                     <i class="fa-solid fa-wrench"></i> Serwis
                                 </a>
@@ -118,7 +124,7 @@
                         <tr>
                             <td class="font-mono">#2</td>
                             <td>
-                                <div class="font-bold">Winda Osobowa KONE B3</div>
+                                <a href="/assets/2" class="font-bold text-blue">Winda Osobowa KONE B3</a>
                                 <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> Biurowiec Pixel, Poznań</div>
                             </td>
                             <td>
@@ -130,8 +136,11 @@
                             </td>
                             <td>2026-05-10</td>
                             <td class="text-right">
-                                <a href="/tickets/2" class="btn-secondary btn-sm">
-                                    Szczegóły
+                                <a href="/assets/2" class="btn-secondary btn-sm">
+                                    <i class="fa-solid fa-passport"></i> Paszport EAM
+                                </a>
+                                <a href="/tickets/2" class="btn-primary btn-sm">
+                                    <i class="fa-solid fa-wrench"></i> Serwis
                                 </a>
                             </td>
                         </tr>
@@ -139,7 +148,7 @@
                         <tr>
                             <td class="font-mono">#3</td>
                             <td>
-                                <div class="font-bold">Sprężarka śrubowa Atlas Copco GA 75</div>
+                                <a href="/assets/3" class="font-bold text-blue">Sprężarka śrubowa Atlas Copco GA 75</a>
                                 <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> Zakład Solaris, Bolechowo</div>
                             </td>
                             <td>
@@ -151,8 +160,8 @@
                             </td>
                             <td>2026-09-01</td>
                             <td class="text-right">
-                                <a href="/tickets/add" class="btn-secondary btn-sm">
-                                    Zgłoś
+                                <a href="/assets/3" class="btn-secondary btn-sm">
+                                    <i class="fa-solid fa-passport"></i> Paszport EAM
                                 </a>
                             </td>
                         </tr>
@@ -160,7 +169,7 @@
                         <tr>
                             <td class="font-mono">#4</td>
                             <td>
-                                <div class="font-bold">Agregat Chłodniczy Carrier 30XA</div>
+                                <a href="/assets/4" class="font-bold text-blue">Agregat Chłodniczy Carrier 30XA</a>
                                 <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> Magazyn Komorniki</div>
                             </td>
                             <td>
@@ -172,8 +181,8 @@
                             </td>
                             <td>2026-04-18</td>
                             <td class="text-right">
-                                <a href="/tickets/3" class="btn-secondary btn-sm">
-                                    Szczegóły
+                                <a href="/assets/4" class="btn-secondary btn-sm">
+                                    <i class="fa-solid fa-passport"></i> Paszport EAM
                                 </a>
                             </td>
                         </tr>
