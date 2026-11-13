@@ -2129,3 +2129,99 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 
 
+
+/* Registration card styling */
+.register-card {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 24px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--clr-bg-card);
+    box-shadow: var(--clr-shadow-soft);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Compact layout for form groups */
+.register-card .form-group {
+    margin-bottom: 12px;
+}
+
+.register-card .form-input {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--clr-bg-card-subtle);
+    color: var(--clr-text-main);
+}
+
+.register-card .btn-primary {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1rem;
+}
+
+/* Error state – red frame */
+.register-card.error {
+    border-color: var(--clr-red);
+    background: var(--clr-bg-red);
+}
+
+/* Alert styling – ensure prominence */
+.alert {
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+}
+
+.alert-danger {
+    background: var(--clr-bg-red);
+    border: 1px solid var(--clr-red);
+    color: var(--clr-red-tag-text);
+}
+
+.alert-success {
+    background: var(--clr-bg-green);
+    border: 1px solid var(--clr-green);
+    color: var(--clr-green-tag-text);
+}
+
+/* Login card styling (mirrors registration) */
+.login-card {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 24px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--clr-bg-card);
+    box-shadow: var(--clr-shadow-soft);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.login-card.error {
+    border-color: var(--clr-red);
+    background: var(--clr-bg-red);
+}
+
+.login-card .form-group {
+    margin-bottom: 12px;
+}
+
+.login-card .form-input {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 0.95rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--clr-bg-card-subtle);
+    color: var(--clr-text-main);
+}
+
+.login-card .btn-primary {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 1rem;
+}

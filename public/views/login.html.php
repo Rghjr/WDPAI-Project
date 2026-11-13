@@ -12,9 +12,9 @@
     <?php require __DIR__ . '/partials/navigation.html.php'; ?>
 
     <main class="container login-wrapper">
-        <div class="login-card">
-            
-            <div class="login-brand">
+    <?php $cardClass = !empty($errors) ? 'login-card error' : 'login-card'; ?>
+
+            <div class="<?= $cardClass ?>">            <div class="login-brand">
                 <span class="brand-icon"><i class="fa-solid fa-gears" aria-hidden="true"></i></span>
                 <h1 class="text-xl font-extrabold">
                     AssetFix<span class="text-blue">.AI</span>
@@ -24,12 +24,28 @@
                 </p>
             </div>
 
-            <form action="/login" method="POST">
+            <?php if (!empty($errors)): ?>
+                <div class="alert alert-danger">
+                    <ul>
+                        <?php foreach ($errors as $error): ?>
+                            <li><?= htmlspecialchars($error) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+            <?php endif; ?>
+
+            <?php if (!empty($success ?? null)): ?>
+                <div class="alert alert-success">
+                    <?= htmlspecialchars($success) ?>
+                </div>
+            <?php endif; ?>
+<form action="/login" method="POST">
                 <div class="form-group">
                     <label for="email">E-mail służbowy:</label>
                     <input type="email" id="email" name="email" class="form-input" placeholder="nazwisko@assetfix.ai" required autocomplete="email">
                 </div>
 
+<form action="/login" method="POST">
                 <div class="form-group">
                     <div class="flex-between">
                         <label for="password">Hasło dostępu:</label>

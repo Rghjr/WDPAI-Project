@@ -39,6 +39,9 @@ $routing->get('/diagnostics', DiagnosticController::class, 'index');
 $routing->get('/admin/users', UserController::class, 'index');
 $routing->get('/profile', UserController::class, 'profile');
 $routing->get('/login', UserController::class, 'login');
+$routing->post('/login', UserController::class, 'login');
+$routing->get('/register', UserController::class, 'register');
+$routing->post('/register', UserController::class, 'register');
 
 $routeFound = $routing->dispatch(
     $_SERVER['REQUEST_METHOD'],
