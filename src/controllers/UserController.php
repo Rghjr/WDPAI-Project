@@ -41,8 +41,68 @@ final class UserController extends AppController
     // Trasa zwykła: /login
     public function login(): void
     {
+        $errors = [];
+        $data = ['email' => ''];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data['email'] = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+            if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'Nieprawidłowy adres e‑mail.';
+            }
+            if (strlen($password) < 6) {
+                $errors[] = 'Hasło musi mieć co najmniej 6 znaków.';
+            }
+            if (empty($errors)) {
+                // Fake success – normally you would verify against DB
+                // Successful login – redirect to main panel
+                header('Location: /');
+                exit;
+            }
+        }
         $this->render('login', [
             'pageTitle' => 'Logowanie do systemu AssetFix AI',
+            'errors' => $errors,
+            'data' => $data,
+        ]);
+    }
+
+    // Trasa zwykła: /register (rejestracja)
+    public function register(): void
+    {
+        // Simple handling without DB
+        $errors = [];
+        $data = ['username' => '', 'email' => ''];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data['username'] = $_POST['username'] ?? '';
+            $data['email'] = $_POST['email'] ?? '';
+            $password = $_POST['password'] ?? '';
+            $confirm = $_POST['confirm'] ?? '';
+            if (strlen($data['username']) < 3) {
+                $errors[] = 'Nazwa użytkownika musi mieć co najmniej 3 znaki.';
+            }
+            if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'Nieprawidłowy adres e‑mail.';
+            }
+            if (strlen($password) < 6) {
+                $errors[] = 'Hasło musi mieć co najmniej 6 znaków.';
+            }
+            if ($password !== $confirm) {
+                $errors[] = 'Hasła nie są zgodne.';
+            }
+            if (empty($errors)) {
+                // Fake success – normally you would save to DB
+                $this->render('login', [
+                    'pageTitle' => 'Logowanie do systemu AssetFix AI',
+                    'success' => 'Rejestracja udana. Zaloguj się.'
+                ]);
+                return;
+            }
+        }
+        $this->render('register', [
+            'pageTitle' => 'Rejestracja',
+            'errors' => $errors,
+            'data' => $data,
         ]);
     }
 }
+
