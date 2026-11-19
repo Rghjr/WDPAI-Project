@@ -37,49 +37,57 @@
 
         <!-- Statystyki KPI -->
         <section class="stats-grid" aria-label="Wskaźniki operacyjne">
-            <article class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Dzisiejsze zlecenia</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
-                </div>
-                <div class="stat-card__value">5</div>
-                <div class="stat-card__desc">
-                    <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> 3 zaplanowane • 1 w toku
-                </div>
-            </article>
+            <a href="/tickets?filter=today" class="stat-card-link">
+                <article class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Dzisiejsze zlecenia</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="stat-card__value">5</div>
+                    <div class="stat-card__desc">
+                        <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> 3 zaplanowane • 1 w toku
+                    </div>
+                </article>
+            </a>
 
-            <article class="stat-card critical">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Pilne / Awaria SLA</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
-                </div>
-                <div class="stat-card__value">1 <span class="text-sm font-semibold">KRYTYCZNE</span></div>
-                <div class="stat-card__desc">
-                    <i class="fa-solid fa-stopwatch" aria-hidden="true"></i> Wymagany czas reakcji: &lt; 2h
-                </div>
-            </article>
+            <a href="/tickets?filter=urgent" class="stat-card-link">
+                <article class="stat-card critical">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Pilne / Awaria SLA</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="stat-card__value">1 <span class="text-sm font-semibold">KRYTYCZNE</span></div>
+                    <div class="stat-card__desc">
+                        <i class="fa-solid fa-stopwatch" aria-hidden="true"></i> Wymagany czas reakcji: < 2h
+                    </div>
+                </article>
+            </a>
 
-            <article class="stat-card success">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Sprawność Floty (SLA)</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
-                </div>
-                <div class="stat-card__value">98.4%</div>
-                <div class="stat-card__desc">
-                    <i class="fa-solid fa-circle-check" aria-hidden="true"></i> +1.2% względem ubiegłego tyg.
-                </div>
-            </article>
+            <a href="/diagnostics" class="stat-card-link">
+                <article class="stat-card success">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Sprawność Flotu (SLA)</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="stat-card__value">98.4%</div>
+                    <div class="stat-card__desc">
+                        <i class="fa-solid fa-circle-check" aria-hidden="true"></i> +1.2% względem ubiegłego tyg.
+                    </div>
+                </article>
+            </a>
 
-            <article class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Park Maszynowy</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-server" aria-hidden="true"></i></span>
-                </div>
-                <div class="stat-card__value">12</div>
-                <div class="stat-card__desc">
-                    <i class="fa-solid fa-circle text-green text-xs"></i> 10 online • 2 w przeglądzie
-                </div>
-            </article>
+            <a href="/assets" class="stat-card-link">
+                <article class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Park Maszynowy</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-server" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="stat-card__value">12</div>
+                    <div class="stat-card__desc">
+                        <i class="fa-solid fa-circle text-green text-xs"></i> 10 online • 2 w przeglądzie
+                    </div>
+                </article>
+            </a>
         </section>
 
         <!-- Szybkie operacje -->
@@ -91,13 +99,13 @@
                 <span class="section-subtitle">Gotowość do akcji mobilnej</span>
             </div>
             <div class="actions-grid">
-                <button class="action-btn blue" type="button">
+                <a href="/assets" class="action-btn blue" style="display: inline-block;" onclick="event.preventDefault(); alert('Skanowanie kodu QR: Otwórz aplikację Kamerą telefonu i naszkiecz kod znajdujący się na płytce/zewnętrznej etykiecie maszyny. Link do rejestracji urządzenia: /assets');">
                     <i class="fa-solid fa-qrcode" aria-hidden="true"></i>
                     <div>
                         <strong>Skanuj kod QR</strong>
                         <div class="text-xs text-muted">Identyfikacja maszyny</div>
                     </div>
-                </button>
+                </a>
                 <a href="/tickets/add" class="action-btn red">
                     <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
                     <div>
@@ -105,20 +113,20 @@
                         <div class="text-xs text-muted">Priorytet krytyczny</div>
                     </div>
                 </a>
-                <button class="action-btn dark" type="button">
+<a href="/map" class="action-btn dark" style="display: inline-block;">
                     <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
                     <div>
                         <strong>Mapa obiektów</strong>
                         <div class="text-xs text-muted">Trasy dojazdu</div>
                     </div>
-                </button>
-                <button class="action-btn purple" type="button">
+                </a>
+<a href="/diagnostics" class="action-btn purple" style="display: inline-block;">
                     <i class="fa-solid fa-brain" aria-hidden="true"></i>
                     <div>
                         <strong>Smart Diagnosis AI</strong>
                         <div class="text-xs text-muted">Silnik Ollama</div>
                     </div>
-                </button>
+                </a>
             </div>
         </section>
 
@@ -144,7 +152,7 @@
                         <h3 class="task-title">Awaria sprężarki śrubowej Atlas Copco GA 75 VSD+</h3>
                         <p class="task-location">
                             <i class="fa-solid fa-building" aria-hidden="true"></i>
-                            Zakład Produkcyjny Solaris Bus &amp; Coach, Bolechowo
+                            Zakład Produkcyjny Solaris Bus & Coach, Bolechowo
                         </p>
                         <div class="task-tags">
                             <span class="tag red-light"><i class="fa-solid fa-wave-square" aria-hidden="true"></i> Wysoka wibracja łożyska</span>

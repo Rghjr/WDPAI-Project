@@ -43,43 +43,51 @@
             </div>
         </header>
 
-        <!-- 4 Czyste Karty Wskaźników KPI -->
+<!-- 4 Czyste Karty Wskaźników KPI -->
         <section class="stats-grid mb-lg" aria-label="Wskaźniki dyspozycji">
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Zaplanowane Zlecenia</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-calendar-check"></i></span>
+            <a href="/tickets" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Zaplanowane Zlecenia</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-calendar-check"></i></span>
+                    </div>
+                    <div class="stat-card__value text-blue"><?= htmlspecialchars((string) $assignedTicketsCount) ?> / <?= htmlspecialchars((string) $totalPlannedTickets) ?></div>
+                    <div class="stat-card__desc text-muted"><i class="fa-solid fa-check"></i> 90% pokrycia zapotrzebowania</div>
                 </div>
-                <div class="stat-card__value text-blue"><?= htmlspecialchars((string) $assignedTicketsCount) ?> / <?= htmlspecialchars((string) $totalPlannedTickets) ?></div>
-                <div class="stat-card__desc text-muted"><i class="fa-solid fa-check"></i> 90% pokrycia zapotrzebowania</div>
-            </div>
+            </a>
 
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Obciążenie Zespołu</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-gauge-high"></i></span>
+            <a href="/users" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Obciążenie Zespołu</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-gauge-high"></i></span>
+                    </div>
+                    <div class="stat-card__value text-green"><?= htmlspecialchars((string) $teamUtilizationPercent) ?> %</div>
+                    <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> Równomierny rozkład godzin</div>
                 </div>
-                <div class="stat-card__value text-green"><?= htmlspecialchars((string) $teamUtilizationPercent) ?> %</div>
-                <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> Równomierny rozkład godzin</div>
-            </div>
+            </a>
 
-            <div class="stat-card <?= ($dueUdtInSevenDays > 0 ? 'critical' : '') ?>">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Przeglądy UDT (&lt; 7 dni)</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-bell"></i></span>
+            <a href="/schedule?tab=udt" class="stat-card-link">
+                <div class="stat-card <?= ($dueUdtInSevenDays > 0 ? 'critical' : '') ?>">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Przeglądy UDT (< 7 dni)</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-bell"></i></span>
+                    </div>
+                    <div class="stat-card__value text-red"><?= htmlspecialchars((string) $dueUdtInSevenDays) ?></div>
+                    <div class="stat-card__desc text-red"><i class="fa-solid fa-triangle-exclamation"></i> Alert CRON wysłany do menedżera</div>
                 </div>
-                <div class="stat-card__value text-red"><?= htmlspecialchars((string) $dueUdtInSevenDays) ?></div>
-                <div class="stat-card__desc text-red"><i class="fa-solid fa-triangle-exclamation"></i> Alert CRON wysłany do menedżera</div>
-            </div>
+            </a>
 
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Średni Czas Dojazdu</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-route"></i></span>
+            <a href="/map" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Średni Czas Dojazdu</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-route"></i></span>
+                    </div>
+                    <div class="stat-card__value text-blue"><?= htmlspecialchars((string) $avgTravelMinutes) ?> min</div>
+                    <div class="stat-card__desc text-blue"><i class="fa-solid fa-car-side"></i> Rejon aglomeracji poznańskiej</div>
                 </div>
-                <div class="stat-card__value text-blue"><?= htmlspecialchars((string) $avgTravelMinutes) ?> min</div>
-                <div class="stat-card__desc text-blue"><i class="fa-solid fa-car-side"></i> Rejon aglomeracji poznańskiej</div>
-            </div>
+            </a>
         </section>
 
         <?php if ($activeTab !== 'udt'): ?>
