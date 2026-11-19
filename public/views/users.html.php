@@ -34,43 +34,51 @@
             </div>
         </header>
 
-        <!-- 4 Czyste Metryki KPI Zespołu -->
+<!-- 4 Czyste Metryki KPI Zespołu -->
         <section class="stats-grid mb-lg" aria-label="Wskaźniki zespołu">
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Aktywni w terenie</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-truck-fast"></i></span>
+            <a href="/schedule" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Aktywni w terenie</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-truck-fast"></i></span>
+                    </div>
+                    <div class="stat-card__value text-blue">10 <span class="text-sm font-normal text-muted">/ 14</span></div>
+                    <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> 4 techników w gotowości na bazie</div>
                 </div>
-                <div class="stat-card__value text-blue">10 <span class="text-sm font-normal text-muted">/ 14</span></div>
-                <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> 4 techników w gotowości na bazie</div>
-            </div>
+            </a>
 
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Ważność Certyfikatów SEP/UDT</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-certificate"></i></span>
+            <a href="/users" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Ważność Certyfikatów SEP/UDT</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-certificate"></i></span>
+                    </div>
+                    <div class="stat-card__value text-green">100%</div>
+                    <div class="stat-card__desc text-green"><i class="fa-solid fa-shield-check"></i> 0 wygasających uprawnień w tym miesiącu</div>
                 </div>
-                <div class="stat-card__value text-green">100%</div>
-                <div class="stat-card__desc text-green"><i class="fa-solid fa-shield-check"></i> 0 wygasających uprawnień w tym miesiącu</div>
-            </div>
+            </a>
 
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Średni Czas Reakcji SLA</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-stopwatch"></i></span>
+            <a href="/tickets" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Średni Czas Reakcji SLA</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-stopwatch"></i></span>
+                    </div>
+                    <div class="stat-card__value text-blue">28 min</div>
+                    <div class="stat-card__desc text-blue"><i class="fa-solid fa-chart-line"></i> Cel SLA < 45 min spełniony</div>
                 </div>
-                <div class="stat-card__value text-blue">28 min</div>
-                <div class="stat-card__desc text-blue"><i class="fa-solid fa-chart-line"></i> Cel SLA &lt; 45 min spełniony</div>
-            </div>
+            </a>
 
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Otwarte Zlecenia w Toku</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-wrench"></i></span>
+            <a href="/tickets?filter=urgent" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Otwarte Zlecenia w Toku</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-wrench"></i></span>
+                    </div>
+                    <div class="stat-card__value text-amber">8</div>
+                    <div class="stat-card__desc text-muted"><i class="fa-solid fa-calendar-check"></i> 1 zlecenie krytyczne P1</div>
                 </div>
-                <div class="stat-card__value text-amber">8</div>
-                <div class="stat-card__desc text-muted"><i class="fa-solid fa-calendar-check"></i> 1 zlecenie krytyczne P1</div>
-            </div>
+            </a>
         </section>
 
         <!-- Rejestr Pracowników i Uprawnień -->

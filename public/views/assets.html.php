@@ -39,32 +39,38 @@
 
         <!-- Kafelki szybkiego statusu floty -->
         <section class="stats-grid mb-lg" aria-label="Status floty">
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Aktywne urządzenia</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-check-double"></i></span>
+            <a href="/assets" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Aktywne urządzenia</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-check-double"></i></span>
+                    </div>
+                    <div class="stat-card__value">10</div>
+                    <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> Stan operacyjny OK</div>
                 </div>
-                <div class="stat-card__value">10</div>
-                <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> Stan operacyjny OK</div>
-            </div>
+            </a>
 
-            <div class="stat-card critical">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Awarie w toku</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+            <a href="/tickets?filter=urgent" class="stat-card-link">
+                <div class="stat-card critical">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Awarie w toku</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+                    </div>
+                    <div class="stat-card__value">1</div>
+                    <div class="stat-card__desc"><i class="fa-solid fa-fire"></i> Przestój produkcyjny</div>
                 </div>
-                <div class="stat-card__value">1</div>
-                <div class="stat-card__desc"><i class="fa-solid fa-fire"></i> Przestój produkcyjny</div>
-            </div>
+            </a>
 
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Przeglądy w 30 dni</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <a href="/schedule" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Przeglądy w 30 dni</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-calendar-days"></i></span>
+                    </div>
+                    <div class="stat-card__value">2</div>
+                    <div class="stat-card__desc"><i class="fa-solid fa-bell"></i> Wymagany audyt CRON</div>
                 </div>
-                <div class="stat-card__value">2</div>
-                <div class="stat-card__desc"><i class="fa-solid fa-bell"></i> Wymagany audyt CRON</div>
-            </div>
+            </a>
         </section>
 
         <!-- Tabela rejestru maszyn -->

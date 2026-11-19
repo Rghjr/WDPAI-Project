@@ -48,41 +48,49 @@
 
         <!-- Kafelki KPI Analityki Predykcyjnej -->
         <section class="stats-grid mb-lg" aria-label="Wskaźniki AI">
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Średni MTBF Floty</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-chart-line"></i></span>
+            <a href="/assets" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Średni MTBF Floty</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-chart-line"></i></span>
+                    </div>
+                    <div class="stat-card__value text-blue"><?= htmlspecialchars((string) $fleetMtbfHours) ?> h</div>
+                    <div class="stat-card__desc text-muted"><i class="fa-solid fa-clock-rotate-left"></i> Czas bezawaryjnej pracy urządzeń</div>
                 </div>
-                <div class="stat-card__value text-blue"><?= htmlspecialchars((string) $fleetMtbfHours) ?> h</div>
-                <div class="stat-card__desc text-muted"><i class="fa-solid fa-clock-rotate-left"></i> Czas bezawaryjnej pracy urządzeń</div>
-            </div>
+            </a>
 
-            <div class="stat-card critical">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Wykryte Anomalie (24h)</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-bug"></i></span>
+            <a href="/tickets" class="stat-card-link">
+                <div class="stat-card critical">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Wykryte Anomalie (24h)</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-bug"></i></span>
+                    </div>
+                    <div class="stat-card__value text-red"><?= htmlspecialchars((string) $predictedAnomaliesCount) ?></div>
+                    <div class="stat-card__desc text-red"><i class="fa-solid fa-triangle-exclamation"></i> Wymagana interwencja prewencyjna</div>
                 </div>
-                <div class="stat-card__value text-red"><?= htmlspecialchars((string) $predictedAnomaliesCount) ?></div>
-                <div class="stat-card__desc text-red"><i class="fa-solid fa-triangle-exclamation"></i> Wymagana interwencja prewencyjna</div>
-            </div>
+            </a>
 
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Aktywne Sensory CAN/IoT</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-tower-broadcast"></i></span>
+            <a href="/map" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Aktywne Sensory CAN/IoT</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-tower-broadcast"></i></span>
+                    </div>
+                    <div class="stat-card__value text-green"><?= htmlspecialchars((string) $activeSensorsCount) ?></div>
+                    <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> Telemetria 50Hz online</div>
                 </div>
-                <div class="stat-card__value text-green"><?= htmlspecialchars((string) $activeSensorsCount) ?></div>
-                <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> Telemetria 50Hz online</div>
-            </div>
+            </a>
 
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Skuteczność Modelu Ollama</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-brain"></i></span>
+            <a href="/diagnostics" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Skuteczność Modelu Ollama</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-brain"></i></span>
+                    </div>
+                    <div class="stat-card__value text-ai"><?= htmlspecialchars((string) $aiAccuracyRate) ?> %</div>
+                    <div class="stat-card__desc text-ai"><i class="fa-solid fa-check-double"></i> Model: Llama-3-AssetFix-8B</div>
                 </div>
-                <div class="stat-card__value text-ai"><?= htmlspecialchars((string) $aiAccuracyRate) ?> %</div>
-                <div class="stat-card__desc text-ai"><i class="fa-solid fa-check-double"></i> Model: Llama-3-AssetFix-8B</div>
-            </div>
+            </a>
         </section>
 
         <!-- Układ Dwukolumnowy: Analiza Spektralna FFT + Wnioskowanie LLM -->
