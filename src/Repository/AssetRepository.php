@@ -6,6 +6,7 @@ namespace App\Repository;
 
 use App\Database;
 use App\Model\Asset;
+use App\Model\AssetStatus;
 use PDO;
 
 final class AssetRepository
@@ -172,5 +173,43 @@ final class AssetRepository
         $row = $stmt->fetch() ?: [];
 
         return $row;
+    }
+
+    public function create(
+        int $clientId,
+        int $categoryId,
+        string $name,
+        string $serialNumber,
+        AssetStatus $status = AssetStatus::OPERATIONAL,
+        ?string $manufacturer = null,
+        ?string $model = null,
+        ?int $productionYear = null,
+        ?string $udtNumber = null,
+        ?string $locationDetails = null,
+    ): int {
+        $stmt = $this->pdo->prepare(
+            'INSERT INTO assets (
+                client_id, category_id, name, serial_number, status,
+                manufacturer, model, production_year, udt_number, location_details
+            ) VALUES (
+                :client_id, :category_id, :name, :serial_number, :status::asset_status,
+                :manufacturer, :model, :production_year, :udt_number, :location_details
+            )
+            RETURNING id'
+        );
+        $stmt->execute([
+            'client_id' => $clientId,
+            'category_id' => $categoryId,
+            'name' => $name,
+            'serial_number' => $serialNumber,
+            'status' => $status->value,
+            'manufacturer' => $manufacturer,
+            'model' => $model,
+            'production_year' => $productionYear,
+            'udt_number' => $udtNumber,
+            'location_details' => $locationDetails,
+        ]);
+
+        return (int) $stmt->fetchColumn();
     }
 }

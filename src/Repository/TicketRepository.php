@@ -6,6 +6,8 @@ namespace App\Repository;
 
 use App\Database;
 use App\Model\Ticket;
+use App\Model\TicketPriority;
+use App\Model\TicketStatus;
 use PDO;
 
 final class TicketRepository
@@ -174,5 +176,82 @@ final class TicketRepository
         $row = $stmt->fetch() ?: [];
 
         return $row;
+    }
+
+    public function create(
+        int $assetId,
+        int $reportedBy,
+        ?int $assignedTo,
+        string $title,
+        string $description,
+        TicketPriority $priority = TicketPriority::MEDIUM,
+    ): int {
+        $stmt = $this->pdo->prepare(
+            'SELECT fn_create_ticket(:asset_id, :reported_by, :assigned_to, :title, :description, :priority::ticket_priority)'
+        );
+        $stmt->execute([
+            'asset_id' => $assetId,
+            'reported_by' => $reportedBy,
+            'assigned_to' => $assignedTo,
+            'title' => $title,
+            'description' => $description,
+            'priority' => $priority->value,
+        ]);
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function updateStatus(
+        int $ticketId,
+        TicketStatus $newStatus,
+        ?int $changedBy = null,
+        ?string $note = null,
+    ): void {
+        $this->pdo->beginTransaction();
+
+        try {
+            $stmt = $this->pdo->prepare(
+                'UPDATE tickets
+                 SET status = :status::ticket_status
+                 WHERE id = :id'
+            );
+            $stmt->execute([
+                'id' => $ticketId,
+                'status' => $newStatus->value,
+            ]);
+
+            if ($note !== null && trim($note) !== '') {
+                $historyStmt = $this->pdo->prepare(
+                    'UPDATE ticket_history
+                     SET note = :note,
+                         changed_by = COALESCE(:changed_by, changed_by)
+                     WHERE id = (
+                         SELECT id
+                         FROM ticket_history
+                         WHERE ticket_id = :ticket_id
+                         ORDER BY created_at DESC, id DESC
+                         LIMIT 1
+                     )'
+                );
+                $historyStmt->execute([
+                    'ticket_id' => $ticketId,
+                    'changed_by' => $changedBy,
+                    'note' => trim($note),
+                ]);
+            }
+
+            $this->pdo->commit();
+        } catch (\Throwable $exception) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $exception;
+        }
+    }
+
+    public function delete(int $id): void
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM tickets WHERE id = :id');
+        $stmt->execute(['id' => $id]);
     }
 }
