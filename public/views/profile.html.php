@@ -34,6 +34,17 @@
             <!-- Lewa kolumna: Dane pracownika, uprawnienia państwowe, zmiana hasła -->
             <div class="detail-main">
                 
+                <?php
+                $employeeId = (string) ($user['employee_code'] ?? 'TECH-000');
+                $name = trim((string) (($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? ''))) ?: 'Serwisant';
+                $roleTitle = ($user['role_name'] ?? 'TECHNICIAN') === 'ADMIN' ? 'Menedżer Serwisu (ADMIN)' : 'Technik Serwisu (TECHNICIAN)';
+                $email = (string) ($user['email'] ?? '—');
+                $phone = (string) ($user['phone'] ?? '—');
+                $baseLocation = (string) ($user['base_location'] ?? '—');
+                $hireDate = substr((string) ($user['created_at'] ?? ''), 0, 10) ?: '—';
+                $completedTicketsCount = (int) ($user['completed_tickets_count'] ?? 0);
+                $openTicketsCount = (int) ($user['open_tickets_count'] ?? 0);
+                ?>
                 <!-- Karta tożsamości -->
                 <article class="card-block">
                     <div class="flex-between mb-md">
@@ -48,7 +59,7 @@
                             </div>
                         </div>
                         <div>
-                            <span class="badge-blue font-bold"><i class="fa-solid fa-circle-check"></i> ROZLICZONY (AKTYWNY)</span>
+                            <span class="badge-blue font-bold"><i class="fa-solid fa-circle-check"></i> AKTYWNY</span>
                         </div>
                     </div>
 
@@ -66,7 +77,7 @@
                             <div class="meta-value"><?= htmlspecialchars($baseLocation) ?></div>
                         </div>
                         <div class="meta-item">
-                            <div class="meta-label">W zespole od</div>
+                            <div class="meta-label">Konto w bazie od</div>
                             <div class="meta-value"><?= htmlspecialchars($hireDate) ?></div>
                         </div>
                     </div>
@@ -149,20 +160,16 @@
                     
                     <div class="telemetry-box mt-md">
                         <div class="telemetry-item">
-                            <span class="telemetry-label">Rozwiązane zlecenia</span>
-                            <span class="telemetry-val text-green font-bold"><?= htmlspecialchars((string) $completedTicketsCount) ?></span>
+                            <span class="telemetry-label">Rozwiązane / zamknięte zlecenia</span>
+                            <span class="telemetry-val text-green font-bold"><?= $completedTicketsCount ?></span>
                         </div>
                         <div class="telemetry-item">
-                            <span class="telemetry-label">First-Time Fix Rate</span>
-                            <span class="telemetry-val text-blue font-bold"><?= htmlspecialchars((string) $firstTimeFixRate) ?> %</span>
+                            <span class="telemetry-label">Otwarte / w toku zlecenia</span>
+                            <span class="telemetry-val text-blue font-bold"><?= $openTicketsCount ?></span>
                         </div>
                         <div class="telemetry-item">
-                            <span class="telemetry-label">Średni czas naprawy</span>
-                            <span class="telemetry-val"><?= htmlspecialchars((string) $avgRepairHours) ?> godz.</span>
-                        </div>
-                        <div class="telemetry-item">
-                            <span class="telemetry-label">Zgodność z SLA</span>
-                            <span class="telemetry-val text-green font-bold"><?= htmlspecialchars((string) $slaComplianceRate) ?> %</span>
+                            <span class="telemetry-label">Rola w systemie</span>
+                            <span class="telemetry-val"><?= htmlspecialchars((string) ($user['role_name'] ?? 'TECHNICIAN')) ?></span>
                         </div>
                     </div>
                 </div>
