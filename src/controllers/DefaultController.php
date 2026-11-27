@@ -10,19 +10,22 @@ use App\Repository\UserRepository;
 
 final class DefaultController extends AppController
 {
+    public function __construct(
+        private TicketRepository $ticketRepository,
+        private AssetRepository $assetRepository,
+        private UserRepository $userRepository,
+    ) {
+    }
+
     public function index(): void
     {
-        $ticketRepo = new TicketRepository();
-        $assetRepo = new AssetRepository();
-        $userRepo = new UserRepository();
-
         $this->render('home', [
             'pageTitle' => 'Pulpit Operacyjny | AssetFix AI',
-            'currentUser' => $userRepo->findDefaultTechnician(),
-            'ticketStats' => $ticketRepo->getStats(),
-            'assetStats' => $assetRepo->getStats(),
-            'activeTickets' => $ticketRepo->findLatestActive(3),
-            'criticalIncident' => $ticketRepo->findLatestCriticalIncident(),
+            'currentUser' => $this->userRepository->findDefaultTechnician(),
+            'ticketStats' => $this->ticketRepository->getStats(),
+            'assetStats' => $this->assetRepository->getStats(),
+            'activeTickets' => $this->ticketRepository->findLatestActive(3),
+            'criticalIncident' => $this->ticketRepository->findLatestCriticalIncident(),
         ]);
     }
 

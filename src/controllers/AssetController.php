@@ -8,20 +8,23 @@ use App\Repository\AssetRepository;
 
 final class AssetController extends AppController
 {
+    public function __construct(
+        private AssetRepository $assetRepository,
+    ) {
+    }
+
     // Trasa zwykła: /assets (Rejestr parku maszynowego EAM)
     public function index(): void
     {
-        $assetRepo = new AssetRepository();
-
         $category = isset($_GET['category']) && is_string($_GET['category']) ? $_GET['category'] : null;
         $status = isset($_GET['status']) && is_string($_GET['status']) ? strtoupper($_GET['status']) : null;
         $search = isset($_GET['q']) && is_string($_GET['q']) ? $_GET['q'] : null;
 
         $this->render('assets', [
             'pageTitle' => 'EAM – Park Maszynowy i Urządzenia',
-            'assets' => $assetRepo->findAll($category, $status, $search),
-            'categories' => $assetRepo->findCategories(),
-            'stats' => $assetRepo->getStats(),
+            'assets' => $this->assetRepository->findAll($category, $status, $search),
+            'categories' => $this->assetRepository->findCategories(),
+            'stats' => $this->assetRepository->getStats(),
             'activeCategory' => $category ?? '',
             'searchQuery' => $search ?? '',
         ]);
@@ -36,8 +39,7 @@ final class AssetController extends AppController
             return;
         }
 
-        $assetRepo = new AssetRepository();
-        $asset = $assetRepo->findById($id);
+        $asset = $this->assetRepository->findById($id);
 
         if ($asset === null) {
             http_response_code(404);
@@ -54,12 +56,10 @@ final class AssetController extends AppController
     // Trasa zwykła: /assets/add
     public function add(): void
     {
-        $assetRepo = new AssetRepository();
-
         $this->render('add-asset', [
             'pageTitle' => 'Rejestracja Nowej Maszyny w EAM',
-            'categories' => $assetRepo->findCategories(),
-            'clients' => $assetRepo->findClientLocations(),
+            'categories' => $this->assetRepository->findCategories(),
+            'clients' => $this->assetRepository->findClientLocations(),
         ]);
     }
 }

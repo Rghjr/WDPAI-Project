@@ -165,6 +165,14 @@ erDiagram
     }
 ```
 
+## Moduł projektów
+
+Tabela `projects` jest tworzona przez idempotentną migrację `docker/db/04-create-projects.sql`. Po uruchomieniu aplikacji lista projektów jest dostępna pod `/projects`, a szczegóły rekordu pod `/projects/{id}`. W istniejącym wolumenie PostgreSQL migrację można zastosować bez resetowania danych:
+
+```bash
+docker compose exec -T db psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f /docker-entrypoint-initdb.d/04-create-projects.sql
+```
+
 ## Zasady developmentu
 
 - Branch dla każdej funkcji.

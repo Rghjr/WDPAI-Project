@@ -35,6 +35,12 @@ $path = parse_url($currentUri, PHP_URL_PATH) ?: '/';
             </a>
         </li>
         <li>
+            <a href="/projects" class="<?= (str_starts_with($path, '/projects') ? 'active' : '') ?>">
+                <i class="fa-solid fa-diagram-project" aria-hidden="true"></i>
+                <span>Projekty</span>
+            </a>
+        </li>
+        <li>
             <a href="/map" class="<?= ($path === '/map' ? 'active' : '') ?>">
                 <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
                 <span>Mapa serwisu</span>
