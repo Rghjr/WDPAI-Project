@@ -14,6 +14,7 @@
             <header>
                 <p class="text-muted font-mono">PROJEKT #<?= $project->id ?></p>
                 <h1 class="text-xl font-extrabold"><?= htmlspecialchars($project->title) ?></h1>
+                <a class="btn-primary" href="/projects/<?= $project->id ?>/edit">Edytuj projekt</a>
             </header>
             <dl>
                 <dt>Status</dt><dd><?= htmlspecialchars($project->status) ?></dd>
@@ -21,6 +22,9 @@
                 <dt>Ostatnia aktualizacja</dt><dd><?= htmlspecialchars($project->updatedAt) ?></dd>
                 <dt>Opis</dt><dd><?= nl2br(htmlspecialchars($project->description ?? 'Brak opisu.')) ?></dd>
             </dl>
+            <form action="/projects/<?= $project->id ?>/delete" method="POST" onsubmit="return confirm('Usunąć ten projekt?');">
+                <button class="btn-secondary" type="submit">Usuń projekt</button>
+            </form>
         </article>
     </main>
 </body>

@@ -14,6 +14,7 @@
                 <h1 class="text-xl font-extrabold">Projekty</h1>
                 <p class="greeting-subtitle">Lista prowadzonych projektów serwisowych.</p>
             </div>
+            <a class="btn-primary" href="/projects/add">Dodaj projekt</a>
         </header>
         <section class="data-table-container" aria-labelledby="projects-heading">
             <h2 id="projects-heading" class="sr-only">Lista projektów</h2>
