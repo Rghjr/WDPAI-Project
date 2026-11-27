@@ -16,10 +16,10 @@
         <!-- Powitanie i status operacyjny -->
         <header class="dashboard-header">
             <div class="greeting-info">
-                <h1>Cześć, Piotr! 👋</h1>
+                <h1>Cześć, <?= htmlspecialchars($currentUser?->firstName ?? 'Serwisant') ?>! 👋</h1>
                 <p class="greeting-subtitle">
                     <i class="fa-solid fa-wrench" aria-hidden="true"></i>
-                    Główny Technik Serwisu • Zmiana Poranna
+                    <?= htmlspecialchars($currentUser?->employeeCode ?? 'TECH') ?> • <?= htmlspecialchars($currentUser?->baseLocation ?? 'Centrala') ?>
                 </p>
             </div>
             <div class="greeting-meta">
@@ -27,7 +27,7 @@
                     <span class="status-dot"></span> Dostępny w terenie
                 </span>
                 <span class="meta-pill">
-                    <i class="fa-solid fa-cloud-arrow-up" aria-hidden="true"></i> Baza Poznań sync: 2m temu
+                    <i class="fa-solid fa-database" aria-hidden="true"></i> PostgreSQL połączono
                 </span>
                 <a href="/tickets/add" class="btn-primary">
                     <i class="fa-solid fa-plus" aria-hidden="true"></i> Nowe zgłoszenie
@@ -35,58 +35,57 @@
             </div>
         </header>
 
+        <?php
+        $totalAssets = max(1, (int) ($assetStats['total'] ?? 0));
+        $operationalAssets = (int) ($assetStats['operational_count'] ?? 0);
+        $fleetHealth = number_format(($operationalAssets / $totalAssets) * 100, 1);
+        $inServiceAssets = (int) ($assetStats['in_repair_count'] ?? 0) + (int) ($assetStats['out_of_service_count'] ?? 0);
+        ?>
+
         <!-- Statystyki KPI -->
         <section class="stats-grid" aria-label="Wskaźniki operacyjne">
-            <a href="/tickets?filter=today" class="stat-card-link">
-                <article class="stat-card">
-                    <div class="stat-card__top">
-                        <span class="stat-card__title">Dzisiejsze zlecenia</span>
-                        <span class="stat-card__icon"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="stat-card__value">5</div>
-                    <div class="stat-card__desc">
-                        <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> 3 zaplanowane • 1 w toku
-                    </div>
-                </article>
+            <a href="/tickets?filter=today" class="stat-card">
+                <div class="stat-card__top">
+                    <span class="stat-card__title">Aktywne zlecenia</span>
+                    <span class="stat-card__icon"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></span>
+                </div>
+                <div class="stat-card__value"><?= (int) ($ticketStats['active_count'] ?? 0) ?></div>
+                <div class="stat-card__desc">
+                    <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> <?= (int) ($ticketStats['open_count'] ?? 0) ?> otwartych • <?= (int) ($ticketStats['in_progress_count'] ?? 0) ?> w toku
+                </div>
             </a>
 
-            <a href="/tickets?filter=urgent" class="stat-card-link">
-                <article class="stat-card critical">
-                    <div class="stat-card__top">
-                        <span class="stat-card__title">Pilne / Awaria SLA</span>
-                        <span class="stat-card__icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="stat-card__value">1 <span class="text-sm font-semibold">KRYTYCZNE</span></div>
-                    <div class="stat-card__desc">
-                        <i class="fa-solid fa-stopwatch" aria-hidden="true"></i> Wymagany czas reakcji: < 2h
-                    </div>
-                </article>
+            <a href="/tickets?filter=urgent" class="stat-card critical">
+                <div class="stat-card__top">
+                    <span class="stat-card__title">Pilne / Awaria SLA</span>
+                    <span class="stat-card__icon"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
+                </div>
+                <div class="stat-card__value"><?= (int) ($ticketStats['critical_count'] ?? 0) ?> <span class="text-sm font-semibold">KRYTYCZNE</span></div>
+                <div class="stat-card__desc">
+                    <i class="fa-solid fa-stopwatch" aria-hidden="true"></i> Łącznie pilnych (HIGH/CRIT): <?= (int) ($ticketStats['urgent_count'] ?? 0) ?>
+                </div>
             </a>
 
-            <a href="/diagnostics" class="stat-card-link">
-                <article class="stat-card success">
-                    <div class="stat-card__top">
-                        <span class="stat-card__title">Sprawność Flotu (SLA)</span>
-                        <span class="stat-card__icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="stat-card__value">98.4%</div>
-                    <div class="stat-card__desc">
-                        <i class="fa-solid fa-circle-check" aria-hidden="true"></i> +1.2% względem ubiegłego tyg.
-                    </div>
-                </article>
+            <a href="/assets" class="stat-card success">
+                <div class="stat-card__top">
+                    <span class="stat-card__title">Sprawność Floty (SLA)</span>
+                    <span class="stat-card__icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+                </div>
+                <div class="stat-card__value"><?= htmlspecialchars($fleetHealth) ?>%</div>
+                <div class="stat-card__desc">
+                    <i class="fa-solid fa-circle-check" aria-hidden="true"></i> <?= $operationalAssets ?> z <?= (int) ($assetStats['total'] ?? 0) ?> maszyn operacyjnych
+                </div>
             </a>
 
-            <a href="/assets" class="stat-card-link">
-                <article class="stat-card">
-                    <div class="stat-card__top">
-                        <span class="stat-card__title">Park Maszynowy</span>
-                        <span class="stat-card__icon"><i class="fa-solid fa-server" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="stat-card__value">12</div>
-                    <div class="stat-card__desc">
-                        <i class="fa-solid fa-circle text-green text-xs"></i> 10 online • 2 w przeglądzie
-                    </div>
-                </article>
+            <a href="/assets" class="stat-card">
+                <div class="stat-card__top">
+                    <span class="stat-card__title">Park Maszynowy</span>
+                    <span class="stat-card__icon"><i class="fa-solid fa-server" aria-hidden="true"></i></span>
+                </div>
+                <div class="stat-card__value"><?= (int) ($assetStats['total'] ?? 0) ?></div>
+                <div class="stat-card__desc">
+                    <i class="fa-solid fa-circle text-green text-xs"></i> <?= $operationalAssets ?> online • <?= $inServiceAssets ?> w serwisie
+                </div>
             </a>
         </section>
 
@@ -137,89 +136,46 @@
             <section class="tasks" aria-labelledby="today-tasks-title">
                 <div class="section-header">
                     <h2 id="today-tasks-title" class="section-title">
-                        <i class="fa-solid fa-list-check" aria-hidden="true"></i> Przydzielone zlecenia na dziś
+                        <i class="fa-solid fa-list-check" aria-hidden="true"></i> Najpilniejsze aktywne zlecenia
                     </h2>
-                    <span class="badge-blue">3 aktywne</span>
+                    <span class="badge-blue"><?= (int) ($ticketStats['active_count'] ?? 0) ?> aktywnych</span>
                 </div>
 
                 <div class="tasks-list">
-                    <!-- Zlecenie 1 (Krytyczne) -->
-                    <article class="task-card border-red">
-                        <div class="task-header">
-                            <span class="task-id">#WO-2024-8841</span>
-                            <span class="badge-red"><i class="fa-solid fa-circle text-xs"></i> KRYTYCZNY (SLA 2H)</span>
-                        </div>
-                        <h3 class="task-title">Awaria sprężarki śrubowej Atlas Copco GA 75 VSD+</h3>
-                        <p class="task-location">
-                            <i class="fa-solid fa-building" aria-hidden="true"></i>
-                            Zakład Produkcyjny Solaris Bus & Coach, Bolechowo
-                        </p>
-                        <div class="task-tags">
-                            <span class="tag red-light"><i class="fa-solid fa-wave-square" aria-hidden="true"></i> Wysoka wibracja łożyska</span>
-                            <span class="tag gray-light"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 4.2 km stąd</span>
-                            <span class="tag blue-light"><i class="fa-solid fa-robot" aria-hidden="true"></i> AI Diagnoza gotowa</span>
-                        </div>
-                        <div class="task-footer">
-                            <span class="task-time">
-                                <i class="fa-regular fa-clock" aria-hidden="true"></i> 08:30 - 10:30
-                            </span>
-                            <div class="flex-row gap-sm">
-                                <a href="/tickets/1" class="btn-primary">
-                                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Otwórz zlecenie
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Zlecenie 2 (W toku) -->
-                    <article class="task-card border-amber">
-                        <div class="task-header">
-                            <span class="task-id">#WO-2024-8839</span>
-                            <span class="badge-amber"><i class="fa-solid fa-spinner fa-spin text-xs"></i> W TRAKCIE NAPRAWY</span>
-                        </div>
-                        <h3 class="task-title">Winda Osobowa KONE B3 – Błąd czujnika drzwi</h3>
-                        <p class="task-location">
-                            <i class="fa-solid fa-building" aria-hidden="true"></i>
-                            Biurowiec Pixel, ul. Grunwaldzka, Poznań
-                        </p>
-                        <div class="task-tags">
-                            <span class="tag amber-light"><i class="fa-solid fa-door-closed" aria-hidden="true"></i> Blokada piętra 4</span>
-                            <span class="tag gray-light"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 8.7 km stąd</span>
-                        </div>
-                        <div class="task-footer">
-                            <span class="task-time">
-                                <i class="fa-regular fa-clock" aria-hidden="true"></i> 11:00 - 13:00
-                            </span>
-                            <a href="/tickets/2" class="btn-secondary">
-                                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Szczegóły
-                            </a>
-                        </div>
-                    </article>
-
-                    <!-- Zlecenie 3 (Zaplanowane) -->
-                    <article class="task-card border-green">
-                        <div class="task-header">
-                            <span class="task-id">#WO-2024-8835</span>
-                            <span class="badge-green"><i class="fa-solid fa-calendar-check text-xs"></i> ZAPLANOWANY PRZEGLĄD</span>
-                        </div>
-                        <h3 class="task-title">Agregat Chłodniczy Carrier 30XA – Kontrola szczelności</h3>
-                        <p class="task-location">
-                            <i class="fa-solid fa-building" aria-hidden="true"></i>
-                            Centrum Logistyczne Komorniki
-                        </p>
-                        <div class="task-tags">
-                            <span class="tag green-light"><i class="fa-solid fa-snowflake" aria-hidden="true"></i> Okresowa inspekcja</span>
-                            <span class="tag gray-light"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 14.1 km stąd</span>
-                        </div>
-                        <div class="task-footer">
-                            <span class="task-time">
-                                <i class="fa-regular fa-clock" aria-hidden="true"></i> 14:00 - 16:30
-                            </span>
-                            <a href="/tickets/3" class="btn-secondary">
-                                <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Szczegóły
-                            </a>
-                        </div>
-                    </article>
+                    <?php if (empty($activeTickets)): ?>
+                        <p class="text-muted">Brak aktywnych zleceń w bazie danych.</p>
+                    <?php else: ?>
+                        <?php foreach ($activeTickets as $item): ?>
+                            <article class="task-card <?= $item->priority->borderClass() ?>">
+                                <div class="task-header">
+                                    <span class="task-id">#WO-<?= $item->id ?></span>
+                                    <span class="<?= $item->priority->badgeClass() ?>"><i class="fa-solid fa-circle text-xs"></i> <?= htmlspecialchars($item->priority->label()) ?></span>
+                                </div>
+                                <h3 class="task-title"><?= htmlspecialchars($item->title) ?></h3>
+                                <p class="task-location">
+                                    <i class="fa-solid fa-building" aria-hidden="true"></i>
+                                    <?= htmlspecialchars($item->assetName) ?> — <?= htmlspecialchars($item->clientName) ?>, <?= htmlspecialchars($item->clientCity) ?>
+                                </p>
+                                <div class="task-tags">
+                                    <span class="tag gray-light"><i class="fa-solid fa-barcode" aria-hidden="true"></i> <?= htmlspecialchars($item->assetSerialNumber) ?></span>
+                                    <?php if ($item->aiSuggestion !== null && $item->aiSuggestion !== ''): ?>
+                                        <span class="tag blue-light"><i class="fa-solid fa-robot" aria-hidden="true"></i> AI Diagnoza gotowa</span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="task-footer">
+                                    <span class="task-time">
+                                        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                                        <?= htmlspecialchars(substr($item->createdAt, 0, 16)) ?>
+                                    </span>
+                                    <div class="flex-row gap-sm">
+                                        <a href="/tickets/<?= $item->id ?>" class="btn-primary">
+                                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Otwórz zlecenie
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </section>
 
@@ -236,32 +192,38 @@
                     <span class="ai-badge">Aktywny</span>
                 </div>
 
-                <div class="ai-telemetry-box">
-                    <div class="text-xs font-bold text-muted mb-sm">
-                        Telemetria na żywo: Turbina V90 #04
+                <?php if ($criticalIncident !== null): ?>
+                    <div class="ai-telemetry-box">
+                        <div class="text-xs font-bold text-muted mb-sm">
+                            Incydent priorytetowy: <?= htmlspecialchars($criticalIncident->assetName) ?>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Numer seryjny:</span>
+                            <span class="telemetry-value font-mono"><?= htmlspecialchars($criticalIncident->assetSerialNumber) ?></span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Klient / Lokalizacja:</span>
+                            <span class="telemetry-value"><?= htmlspecialchars($criticalIncident->clientCity) ?></span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Status zgłoszenia:</span>
+                            <span class="telemetry-value text-red"><?= htmlspecialchars($criticalIncident->status->label()) ?></span>
+                        </div>
                     </div>
-                    <div class="telemetry-row">
-                        <span class="telemetry-label">Drgania osiowe FFT:</span>
-                        <span class="telemetry-value text-red">8.4 mm/s (kryt.)</span>
-                    </div>
-                    <div class="telemetry-row">
-                        <span class="telemetry-label">Temperatura oleju:</span>
-                        <span class="telemetry-value text-amber">78.2 °C (podwyższona)</span>
-                    </div>
-                    <div class="telemetry-row">
-                        <span class="telemetry-label">Ciśnienie w układzie:</span>
-                        <span class="telemetry-value text-green">3.4 bar (w normie)</span>
-                    </div>
-                </div>
 
-                <div class="ai-suggestion-box">
-                    <strong><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Sugerowana akcja serwisowa:</strong>
-                    Wykryto mikropęknięcia bieżni wewnętrznej łożyska oporowego wału głównego. Zaleca się natychmiastowe wstrzymanie cyklu roboczego oraz inspekcję zespołu łożyskowego przed wystąpieniem zatarcia.
-                </div>
+                    <div class="ai-suggestion-box">
+                        <strong><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Sugerowana akcja serwisowa:</strong>
+                        <?= htmlspecialchars($criticalIncident->aiSuggestion ?? $criticalIncident->description) ?>
+                    </div>
 
-                <a href="/tickets/1" class="btn-ai btn-full">
-                    <i class="fa-solid fa-microchip" aria-hidden="true"></i> Zobacz pełną analizę AI
-                </a>
+                    <a href="/tickets/<?= $criticalIncident->id ?>" class="btn-ai btn-full">
+                        <i class="fa-solid fa-microchip" aria-hidden="true"></i> Zobacz pełną analizę AI
+                    </a>
+                <?php else: ?>
+                    <div class="ai-suggestion-box">
+                        Brak krytycznych incydentów wymagających interwencji AI.
+                    </div>
+                <?php endif; ?>
             </aside>
 
         </div>

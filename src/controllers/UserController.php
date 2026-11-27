@@ -4,37 +4,33 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
+
 final class UserController extends AppController
 {
+    public function __construct(
+        private UserRepository $userRepository,
+    ) {
+    }
+
     // Trasa zwykła: /admin/users (Panel zarządzania zespołem i uprawnieniami)
     public function index(): void
     {
         $this->render('users', [
             'pageTitle' => 'Zarządzanie Zespołem i Uprawnieniami',
-            'totalUsers' => 12,
-            'activeTechnicians' => 8,
-            'onDutyTechnicians' => 3,
-            'avgSlaResponseMinutes' => 38,
+            'users' => $this->userRepository->findAll(),
+            'stats' => $this->userRepository->getStats(),
         ]);
     }
 
     // Trasa zwykła: /profile (Karta profilowa serwisanta i uprawnienia)
     public function profile(): void
     {
+        $user = $this->userRepository->findDefaultTechnician();
+
         $this->render('profile', [
-            'pageTitle' => 'Karta Serwisanta – Piotr Kowalski',
-            'employeeId' => 'TECH-042',
-            'name' => 'Piotr Kowalski',
-            'role' => 'TECHNICIAN',
-            'roleTitle' => 'Główny Technik Serwisu (Lead Field Engineer)',
-            'email' => 'piotr.kowalski@assetfix.ai',
-            'phone' => '+48 601 234 567',
-            'baseLocation' => 'Poznań (Region Wielkopolska)',
-            'hireDate' => '2022-03-01',
-            'completedTicketsCount' => 142,
-            'firstTimeFixRate' => 94.2,
-            'avgRepairHours' => 1.8,
-            'slaComplianceRate' => 99.1,
+            'pageTitle' => 'Karta Serwisanta – ' . ($user !== null ? $user->fullName() : 'Profil'),
+            'user' => $user,
         ]);
     }
 

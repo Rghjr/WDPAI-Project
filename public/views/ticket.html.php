@@ -1,9 +1,16 @@
+<?php
+
+declare(strict_types=1);
+
+$ticketId = $ticket->id;
+$statusValue = $ticket->status->value;
+?>
 <!doctype html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle) ?></title>
+    <title><?= htmlspecialchars((string) $pageTitle) ?></title>
     <link rel="stylesheet" href="/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/1c520e4603.js" crossorigin="anonymous"></script>
@@ -12,8 +19,6 @@
     <?php require __DIR__ . '/partials/navigation.html.php'; ?>
 
     <main class="container">
-        
-        <!-- Pasek powrotu i akcji -->
         <div class="flex-between mb-lg">
             <a href="/tickets" class="btn-secondary btn-sm">
                 <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Wróć do rejestru zleceń
@@ -25,49 +30,42 @@
             </div>
         </div>
 
-        <!-- Układ szczegółów zlecenia -->
         <div class="detail-layout">
-            
-            <!-- Lewa kolumna: Szczegóły usterki, zmiana statusu i załączniki -->
             <div class="detail-main">
-                
                 <article class="card-block">
                     <div class="flex-between mb-md">
                         <div>
-                            <span class="task-id">Zlecenie serwisowe #<?= htmlspecialchars((string) $ticketId) ?></span>
+                            <span class="task-id">Zlecenie serwisowe #WO-<?= $ticketId ?></span>
                             <h1 class="text-xl font-extrabold">
-                                <?= htmlspecialchars($assetName) ?>
+                                <?= htmlspecialchars($ticket->title) ?>
                             </h1>
                             <div class="mt-xs">
-                                <a href="/assets/1" class="text-xs text-blue font-semibold">
-                                    <i class="fa-solid fa-passport"></i> Otwórz paszport techniczny maszyny w EAM &rarr;
+                                <a href="/assets/<?= $ticket->assetId ?>" class="text-xs text-blue font-semibold">
+                                    <i class="fa-solid fa-passport"></i> Otwórz paszport techniczny maszyny: <?= htmlspecialchars($ticket->assetName) ?> &rarr;
                                 </a>
                             </div>
                         </div>
                         <div>
-                            <?php if ($status === 'w_trakcie'): ?>
-                                <span class="badge-amber"><i class="fa-solid fa-clock"></i> W TRAKCIE NAPRAWY</span>
-                            <?php elseif ($status === 'rozwiazane'): ?>
-                                <span class="badge-green"><i class="fa-solid fa-check"></i> ROZWIĄZANE</span>
-                            <?php else: ?>
-                                <span class="badge-blue"><i class="fa-solid fa-envelope-open"></i> OTWARTE</span>
-                            <?php endif; ?>
+                            <span class="<?= $ticket->status->badgeClass() ?>"><i class="fa-solid <?= $ticket->status->iconClass() ?>"></i> <?= htmlspecialchars($ticket->status->label()) ?></span>
                         </div>
                     </div>
 
-                    <!-- Siatka metadanych -->
                     <div class="meta-grid">
                         <div class="meta-item">
                             <div class="meta-label">Numer seryjny maszyny</div>
-                            <div class="meta-value font-mono"><?= htmlspecialchars($serialNumber) ?></div>
+                            <div class="meta-value font-mono"><?= htmlspecialchars($ticket->assetSerialNumber) ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Data i czas zgłoszenia</div>
-                            <div class="meta-value"><?= htmlspecialchars($createdAt) ?></div>
+                            <div class="meta-value"><?= htmlspecialchars(substr($ticket->createdAt, 0, 16)) ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Poziom SLA / Priorytet</div>
-                            <div class="meta-value text-red"><i class="fa-solid fa-fire"></i> KRYTYCZNY (2H)</div>
+                            <div class="meta-value text-red"><i class="fa-solid fa-fire"></i> <?= htmlspecialchars($ticket->priority->slaLabel()) ?></div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Przypisany technik</div>
+                            <div class="meta-value"><?= htmlspecialchars($ticket->technicianName) ?></div>
                         </div>
                     </div>
 
@@ -76,22 +74,25 @@
                             <i class="fa-solid fa-align-left" aria-hidden="true"></i> Opis usterki wprowadzony przez operatora
                         </h2>
                         <div class="description-box">
-                            <?= htmlspecialchars($description) ?>
+                            <?= htmlspecialchars($ticket->description) ?>
                         </div>
                     </div>
                 </article>
 
-                <!-- Formularz aktualizacji statusu przez serwisanta -->
                 <section class="card-block">
                     <h2><i class="fa-solid fa-sliders" aria-hidden="true"></i> Aktualizacja statusu przez serwisanta</h2>
-                    <form action="/tickets/<?= htmlspecialchars((string) $ticketId) ?>" method="POST">
+                    <form action="/tickets/<?= $ticketId ?>" method="POST">
                         <div class="form-group">
                             <label for="status">Zmień bieżący status zlecenia:</label>
                             <select id="status" name="status" class="form-select">
-                                <option value="otwarte" <?= $status === 'otwarte' ? 'selected' : '' ?>>Otwarte (Oczekuje na podjęcie)</option>
-                                <option value="w_trakcie" <?= $status === 'w_trakcie' ? 'selected' : '' ?>>W trakcie naprawy</option>
-                                <option value="rozwiazane" <?= $status === 'rozwiazane' ? 'selected' : '' ?>>Rozwiązane (Zakończono serwis)</option>
+                                <option value="OPEN" <?= $statusValue === 'OPEN' ? 'selected' : '' ?>>Otwarte (Oczekuje na podjęcie)</option>
+                                <option value="IN_PROGRESS" <?= $statusValue === 'IN_PROGRESS' ? 'selected' : '' ?>>W trakcie naprawy</option>
+                                <option value="RESOLVED" <?= $statusValue === 'RESOLVED' ? 'selected' : '' ?>>Rozwiązane (Zakończono serwis)</option>
+                                <option value="CLOSED" <?= $statusValue === 'CLOSED' ? 'selected' : '' ?>>Zamknięte</option>
                             </select>
+                            <?php if (isset($statusError)): ?>
+                                <p class="text-red" role="alert"><?= htmlspecialchars($statusError) ?></p>
+                            <?php endif; ?>
                         </div>
                         <div class="form-group">
                             <label for="notes">Notatka serwisowa / podsumowanie podjętych czynności:</label>
@@ -103,25 +104,56 @@
                     </form>
                 </section>
 
-                <!-- Dokumentacja fotograficzna i załączniki -->
                 <section class="card-block">
-                    <h2><i class="fa-solid fa-camera" aria-hidden="true"></i> Dokumentacja fotograficzna usterki / naprawy</h2>
-                    <p class="text-muted text-sm mb-md">
-                        Dodaj zdjęcia uszkodzonego elementu lub protokół zakończenia prac (obsługiwane: JPEG, PNG, WebP do 5MB).
-                    </p>
+                    <h2><i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i> Historia zmian statusu (<?= count($history) ?>)</h2>
+                    <?php if (empty($history)): ?>
+                        <p class="text-muted text-sm">Brak wpisów w historii.</p>
+                    <?php else: ?>
+                        <ul class="asset-meta-list">
+                            <?php foreach ($history as $entry): ?>
+                                <li class="flex-between">
+                                    <div>
+                                        <strong><?= htmlspecialchars((string) $entry['new_status']) ?></strong>
+                                        <?php if (!empty($entry['old_status'])): ?>
+                                            <span class="text-muted text-xs">(z <?= htmlspecialchars((string) $entry['old_status']) ?>)</span>
+                                        <?php endif; ?>
+                                        <div class="text-muted text-xs">
+                                            <?= htmlspecialchars((string) ($entry['note'] ?? '')) ?>
+                                            • <?= htmlspecialchars(trim((string) ($entry['changed_by_name'] ?? '')) ?: 'System') ?>
+                                        </div>
+                                    </div>
+                                    <span class="text-muted text-xs font-mono"><?= htmlspecialchars(substr((string) $entry['created_at'], 0, 16)) ?></span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </section>
+
+                <section class="card-block">
+                    <h2><i class="fa-solid fa-camera" aria-hidden="true"></i> Dokumentacja fotograficzna (<?= count($photos) ?>)</h2>
+                    <?php if (!empty($photos)): ?>
+                        <ul class="asset-meta-list mb-md">
+                            <?php foreach ($photos as $photo): ?>
+                                <li class="flex-between">
+                                    <span>
+                                        <i class="fa-regular fa-image" aria-hidden="true"></i>
+                                        <strong><?= htmlspecialchars((string) $photo['original_name']) ?></strong>
+                                        <span class="text-muted text-xs">(<?= htmlspecialchars((string) $photo['mime_type']) ?>, <?= number_format((int) $photo['size_bytes'] / 1024, 1) ?> KB)</span>
+                                    </span>
+                                    <span class="text-muted text-xs"><?= htmlspecialchars(trim((string) ($photo['uploaded_by_name'] ?? '')) ?: 'Technik') ?></span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
                     <div class="upload-dropzone">
                         <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
                         <p class="font-semibold text-sm">Przeciągnij i upuść pliki lub kliknij poniżej</p>
                         <input type="file" id="ticket-photos" name="photos[]" multiple accept="image/jpeg,image/png,image/webp" class="mt-sm">
                     </div>
                 </section>
-
             </div>
 
-            <!-- Prawa kolumna: Smart Diagnosis AI & Informacje o zasobie -->
             <aside class="detail-sidebar">
-                
-                <!-- Widżet AI Smart Diagnosis -->
                 <div class="ai-diagnosis-widget mb-lg">
                     <div class="ai-widget-header">
                         <div class="ai-widget-brand">
@@ -136,47 +168,43 @@
 
                     <div class="ai-suggestion-box">
                         <strong><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Wygenerowana rekomendacja:</strong>
-                        <p><?= htmlspecialchars($aiSuggestion) ?></p>
+                        <p><?= htmlspecialchars($ticket->aiSuggestion ?? 'Brak wygenerowanej diagnozy AI dla tego zgłoszenia.') ?></p>
                     </div>
 
                     <div class="text-muted text-xs">
                         <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-                        Sugestia wygenerowana na podstawie danych telemetrii, historii poprzednich awarii tego modelu oraz analizy wektorowej.
+                        Sugestia zapisana w bazie PostgreSQL na podstawie analizy objawów i historii awarii.
                     </div>
                 </div>
 
-                <!-- Karta informacji o maszynie -->
                 <div class="card-block">
                     <h2><i class="fa-solid fa-industry" aria-hidden="true"></i> Karta maszyny</h2>
                     <div class="asset-meta-list">
                         <div class="flex-between">
                             <span class="text-muted">Nazwa:</span>
-                            <strong><?= htmlspecialchars($assetName) ?></strong>
+                            <strong><?= htmlspecialchars($ticket->assetName) ?></strong>
                         </div>
                         <div class="flex-between">
                             <span class="text-muted">Numer seryjny:</span>
-                            <span class="font-mono"><?= htmlspecialchars($serialNumber) ?></span>
+                            <span class="font-mono"><?= htmlspecialchars($ticket->assetSerialNumber) ?></span>
                         </div>
                         <div class="flex-between">
-                            <span class="text-muted">Lokalizacja:</span>
-                            <span>Bolechowo (Hala Produkcyjna A)</span>
+                            <span class="text-muted">Klient / Miasto:</span>
+                            <span><?= htmlspecialchars($ticket->clientName) ?> (<?= htmlspecialchars($ticket->clientCity) ?>)</span>
                         </div>
                         <div class="flex-between">
                             <span class="text-muted">Kategoria:</span>
-                            <span>Sprężarki i kompresory</span>
+                            <span><?= htmlspecialchars($ticket->categoryName) ?></span>
                         </div>
                     </div>
                     <div class="mt-md pt-md border-top">
-                        <a href="/assets" class="btn-secondary btn-full">
+                        <a href="/assets/<?= $ticket->assetId ?>" class="btn-secondary btn-full">
                             <i class="fa-solid fa-circle-nodes" aria-hidden="true"></i> Otwórz w EAM maszyn
                         </a>
                     </div>
                 </div>
-
             </aside>
-
         </div>
-
     </main>
 </body>
 </html>
