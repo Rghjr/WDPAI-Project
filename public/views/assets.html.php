@@ -109,33 +109,26 @@ $due30Days = (int) ($stats['due_30_days'] ?? 0);
                             </tr>
                         <?php else: ?>
                             <?php foreach ($assets as $asset): ?>
-                                <?php
-                                $statusBadge = match ($asset['status']) {
-                                    'OUT_OF_SERVICE' => ['badge-red', 'fa-triangle-exclamation', 'AWARIA'],
-                                    'IN_REPAIR' => ['badge-amber', 'fa-clock', 'W NAPRAWIE'],
-                                    default => ['badge-green', 'fa-check', 'SPRAWNA'],
-                                };
-                                ?>
                                 <tr>
-                                    <td class="font-mono">#<?= (int) $asset['id'] ?></td>
+                                    <td class="font-mono">#<?= $asset->id ?></td>
                                     <td>
-                                        <a href="/assets/<?= (int) $asset['id'] ?>" class="font-bold text-blue"><?= htmlspecialchars((string) $asset['name']) ?></a>
-                                        <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars((string) $asset['client_name']) ?>, <?= htmlspecialchars((string) $asset['client_city']) ?></div>
+                                        <a href="/assets/<?= $asset->id ?>" class="font-bold text-blue"><?= htmlspecialchars($asset->name) ?></a>
+                                        <div class="text-muted text-xs"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($asset->clientName) ?>, <?= htmlspecialchars($asset->clientCity) ?></div>
                                     </td>
                                     <td>
-                                        <span class="badge-serial"><?= htmlspecialchars((string) $asset['serial_number']) ?></span>
+                                        <span class="badge-serial"><?= htmlspecialchars($asset->serialNumber) ?></span>
                                     </td>
-                                    <td><?= htmlspecialchars((string) $asset['category_name']) ?></td>
+                                    <td><?= htmlspecialchars($asset->categoryName) ?></td>
                                     <td>
-                                        <span class="<?= $statusBadge[0] ?>"><i class="fa-solid <?= $statusBadge[1] ?>"></i> <?= $statusBadge[2] ?></span>
+                                        <span class="<?= $asset->status->badgeClass() ?>"><i class="fa-solid <?= $asset->status->iconClass() ?>"></i> <?= $asset->status->label() ?></span>
                                     </td>
-                                    <td><?= htmlspecialchars((string) ($asset['next_inspection_at'] ?? 'Brak danych')) ?></td>
+                                    <td><?= htmlspecialchars($asset->nextInspectionAt ?? 'Brak danych') ?></td>
                                     <td class="text-right">
-                                        <a href="/assets/<?= (int) $asset['id'] ?>" class="btn-secondary btn-sm">
+                                        <a href="/assets/<?= $asset->id ?>" class="btn-secondary btn-sm">
                                             <i class="fa-solid fa-passport"></i> Paszport EAM
                                         </a>
-                                        <?php if (!empty($asset['active_ticket_id'])): ?>
-                                            <a href="/tickets/<?= (int) $asset['active_ticket_id'] ?>" class="btn-primary btn-sm">
+                                        <?php if ($asset->activeTicketId !== null): ?>
+                                            <a href="/tickets/<?= $asset->activeTicketId ?>" class="btn-primary btn-sm">
                                                 <i class="fa-solid fa-wrench"></i> Serwis
                                             </a>
                                         <?php endif; ?>

@@ -130,16 +130,16 @@ $totalTicketsCount = (int) ($ticketStats['total'] ?? 0);
                         <tbody>
                             <?php foreach ($scheduledTickets as $item): ?>
                                 <tr>
-                                    <td><a href="/tickets/<?= (int) $item['id'] ?>" class="ticket-code">#WO-<?= (int) $item['id'] ?></a></td>
+                                    <td><a href="/tickets/<?= $item->id ?>" class="ticket-code">#WO-<?= $item->id ?></a></td>
                                     <td>
-                                        <div class="font-semibold"><?= htmlspecialchars((string) $item['title']) ?></div>
-                                        <div class="text-xs text-muted"><?= htmlspecialchars((string) $item['asset_name']) ?> • <?= htmlspecialchars((string) $item['client_city']) ?></div>
+                                        <div class="font-semibold"><?= htmlspecialchars($item->title) ?></div>
+                                        <div class="text-xs text-muted"><?= htmlspecialchars($item->assetName) ?> • <?= htmlspecialchars($item->clientCity) ?></div>
                                     </td>
-                                    <td><span class="badge-amber"><?= htmlspecialchars((string) $item['priority']) ?></span></td>
-                                    <td><span class="badge-blue"><?= htmlspecialchars((string) $item['status']) ?></span></td>
-                                    <td><?= htmlspecialchars(trim((string) ($item['technician_name'] ?? '')) ?: 'Nieprzypisane') ?></td>
+                                    <td><span class="<?= $item->priority->badgeClass() ?>"><?= htmlspecialchars($item->priority->label()) ?></span></td>
+                                    <td><span class="<?= $item->status->badgeClass() ?>"><?= htmlspecialchars($item->status->label()) ?></span></td>
+                                    <td><?= htmlspecialchars($item->technicianName) ?></td>
                                     <td class="text-right">
-                                        <a href="/tickets/<?= (int) $item['id'] ?>" class="btn-secondary btn-sm">Szczegóły</a>
+                                        <a href="/tickets/<?= $item->id ?>" class="btn-secondary btn-sm">Szczegóły</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

@@ -16,10 +16,10 @@
         <!-- Powitanie i status operacyjny -->
         <header class="dashboard-header">
             <div class="greeting-info">
-                <h1>Cześć, <?= htmlspecialchars((string) ($currentUser['first_name'] ?? 'Serwisant')) ?>! 👋</h1>
+                <h1>Cześć, <?= htmlspecialchars($currentUser?->firstName ?? 'Serwisant') ?>! 👋</h1>
                 <p class="greeting-subtitle">
                     <i class="fa-solid fa-wrench" aria-hidden="true"></i>
-                    <?= htmlspecialchars((string) ($currentUser['employee_code'] ?? 'TECH')) ?> • <?= htmlspecialchars((string) ($currentUser['base_location'] ?? 'Centrala')) ?>
+                    <?= htmlspecialchars($currentUser?->employeeCode ?? 'TECH') ?> • <?= htmlspecialchars($currentUser?->baseLocation ?? 'Centrala') ?>
                 </p>
             </div>
             <div class="greeting-meta">
@@ -146,47 +146,29 @@
                         <p class="text-muted">Brak aktywnych zleceń w bazie danych.</p>
                     <?php else: ?>
                         <?php foreach ($activeTickets as $item): ?>
-                            <?php
-                            $borderClass = match ($item['priority']) {
-                                'CRITICAL' => 'border-red',
-                                'HIGH' => 'border-amber',
-                                default => 'border-green',
-                            };
-                            $badgeClass = match ($item['priority']) {
-                                'CRITICAL' => 'badge-red',
-                                'HIGH' => 'badge-amber',
-                                default => 'badge-blue',
-                            };
-                            $priorityLabel = match ($item['priority']) {
-                                'CRITICAL' => 'KRYTYCZNY',
-                                'HIGH' => 'WYSOKI',
-                                'MEDIUM' => 'ŚREDNI',
-                                default => 'NISKI',
-                            };
-                            ?>
-                            <article class="task-card <?= $borderClass ?>">
+                            <article class="task-card <?= $item->priority->borderClass() ?>">
                                 <div class="task-header">
-                                    <span class="task-id">#WO-<?= (int) $item['id'] ?></span>
-                                    <span class="<?= $badgeClass ?>"><i class="fa-solid fa-circle text-xs"></i> <?= htmlspecialchars($priorityLabel) ?></span>
+                                    <span class="task-id">#WO-<?= $item->id ?></span>
+                                    <span class="<?= $item->priority->badgeClass() ?>"><i class="fa-solid fa-circle text-xs"></i> <?= htmlspecialchars($item->priority->label()) ?></span>
                                 </div>
-                                <h3 class="task-title"><?= htmlspecialchars((string) $item['title']) ?></h3>
+                                <h3 class="task-title"><?= htmlspecialchars($item->title) ?></h3>
                                 <p class="task-location">
                                     <i class="fa-solid fa-building" aria-hidden="true"></i>
-                                    <?= htmlspecialchars((string) $item['asset_name']) ?> — <?= htmlspecialchars((string) $item['client_name']) ?>, <?= htmlspecialchars((string) $item['client_city']) ?>
+                                    <?= htmlspecialchars($item->assetName) ?> — <?= htmlspecialchars($item->clientName) ?>, <?= htmlspecialchars($item->clientCity) ?>
                                 </p>
                                 <div class="task-tags">
-                                    <span class="tag gray-light"><i class="fa-solid fa-barcode" aria-hidden="true"></i> <?= htmlspecialchars((string) $item['asset_serial_number']) ?></span>
-                                    <?php if (!empty($item['ai_suggestion'])): ?>
+                                    <span class="tag gray-light"><i class="fa-solid fa-barcode" aria-hidden="true"></i> <?= htmlspecialchars($item->assetSerialNumber) ?></span>
+                                    <?php if ($item->aiSuggestion !== null && $item->aiSuggestion !== ''): ?>
                                         <span class="tag blue-light"><i class="fa-solid fa-robot" aria-hidden="true"></i> AI Diagnoza gotowa</span>
                                     <?php endif; ?>
                                 </div>
                                 <div class="task-footer">
                                     <span class="task-time">
                                         <i class="fa-regular fa-clock" aria-hidden="true"></i>
-                                        <?= htmlspecialchars(substr((string) $item['created_at'], 0, 16)) ?>
+                                        <?= htmlspecialchars(substr($item->createdAt, 0, 16)) ?>
                                     </span>
                                     <div class="flex-row gap-sm">
-                                        <a href="/tickets/<?= (int) $item['id'] ?>" class="btn-primary">
+                                        <a href="/tickets/<?= $item->id ?>" class="btn-primary">
                                             <i class="fa-solid fa-arrow-right" aria-hidden="true"></i> Otwórz zlecenie
                                         </a>
                                     </div>
@@ -213,28 +195,28 @@
                 <?php if ($criticalIncident !== null): ?>
                     <div class="ai-telemetry-box">
                         <div class="text-xs font-bold text-muted mb-sm">
-                            Incydent priorytetowy: <?= htmlspecialchars((string) $criticalIncident['asset_name']) ?>
+                            Incydent priorytetowy: <?= htmlspecialchars($criticalIncident->assetName) ?>
                         </div>
                         <div class="telemetry-row">
                             <span class="telemetry-label">Numer seryjny:</span>
-                            <span class="telemetry-value font-mono"><?= htmlspecialchars((string) $criticalIncident['asset_serial_number']) ?></span>
+                            <span class="telemetry-value font-mono"><?= htmlspecialchars($criticalIncident->assetSerialNumber) ?></span>
                         </div>
                         <div class="telemetry-row">
                             <span class="telemetry-label">Klient / Lokalizacja:</span>
-                            <span class="telemetry-value"><?= htmlspecialchars((string) $criticalIncident['client_city']) ?></span>
+                            <span class="telemetry-value"><?= htmlspecialchars($criticalIncident->clientCity) ?></span>
                         </div>
                         <div class="telemetry-row">
                             <span class="telemetry-label">Status zgłoszenia:</span>
-                            <span class="telemetry-value text-red"><?= htmlspecialchars((string) $criticalIncident['status']) ?></span>
+                            <span class="telemetry-value text-red"><?= htmlspecialchars($criticalIncident->status->label()) ?></span>
                         </div>
                     </div>
 
                     <div class="ai-suggestion-box">
                         <strong><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Sugerowana akcja serwisowa:</strong>
-                        <?= htmlspecialchars((string) ($criticalIncident['ai_suggestion'] ?? $criticalIncident['description'])) ?>
+                        <?= htmlspecialchars($criticalIncident->aiSuggestion ?? $criticalIncident->description) ?>
                     </div>
 
-                    <a href="/tickets/<?= (int) $criticalIncident['id'] ?>" class="btn-ai btn-full">
+                    <a href="/tickets/<?= $criticalIncident->id ?>" class="btn-ai btn-full">
                         <i class="fa-solid fa-microchip" aria-hidden="true"></i> Zobacz pełną analizę AI
                     </a>
                 <?php else: ?>

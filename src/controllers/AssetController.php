@@ -46,7 +46,7 @@ final class AssetController extends AppController
         }
 
         $this->render('asset', [
-            'pageTitle' => 'Paszport EAM – ' . $asset['name'],
+            'pageTitle' => 'Paszport EAM – ' . $asset->name,
             'asset' => $asset,
         ]);
     }

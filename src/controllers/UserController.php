@@ -27,7 +27,7 @@ final class UserController extends AppController
         $user = $userRepo->findDefaultTechnician();
 
         $this->render('profile', [
-            'pageTitle' => 'Karta Serwisanta – ' . ($user !== null ? $user['first_name'] . ' ' . $user['last_name'] : 'Profil'),
+            'pageTitle' => 'Karta Serwisanta – ' . ($user !== null ? $user->fullName() : 'Profil'),
             'user' => $user,
         ]);
     }

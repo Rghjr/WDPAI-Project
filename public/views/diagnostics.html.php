@@ -30,19 +30,19 @@ $totalAssets = (int) ($assetStats['total'] ?? 0);
                         </div>
                         <div>
                             <div class="flex-row flex-wrap gap-xs mb-xs">
-                                <span class="badge-red text-xs font-bold uppercase tracking-wider">Priorytetowy Incydent #WO-<?= (int) $criticalIncident['id'] ?></span>
-                                <span class="font-mono text-xs font-semibold"><?= htmlspecialchars((string) $criticalIncident['asset_serial_number']) ?></span>
+                                <span class="badge-red text-xs font-bold uppercase tracking-wider">Priorytetowy Incydent #WO-<?= $criticalIncident->id ?></span>
+                                <span class="font-mono text-xs font-semibold"><?= htmlspecialchars($criticalIncident->assetSerialNumber) ?></span>
                                 <span class="text-muted">•</span>
-                                <span class="text-xs text-muted"><?= htmlspecialchars((string) $criticalIncident['client_name']) ?> (<?= htmlspecialchars((string) $criticalIncident['client_city']) ?>)</span>
+                                <span class="text-xs text-muted"><?= htmlspecialchars($criticalIncident->clientName) ?> (<?= htmlspecialchars($criticalIncident->clientCity) ?>)</span>
                             </div>
                             <h1 class="text-lg font-extrabold text-main leading-tight">
-                                <?= htmlspecialchars((string) $criticalIncident['title']) ?>
+                                <?= htmlspecialchars($criticalIncident->title) ?>
                             </h1>
                         </div>
                     </div>
 
                     <div class="ai-p1-actions">
-                        <a href="/tickets/<?= (int) $criticalIncident['id'] ?>" class="btn-primary btn-sm">
+                        <a href="/tickets/<?= $criticalIncident->id ?>" class="btn-primary btn-sm">
                             <i class="fa-solid fa-wrench"></i> Otwórz zgłoszenie
                         </a>
                     </div>
@@ -94,15 +94,15 @@ $totalAssets = (int) ($assetStats['total'] ?? 0);
                     <tbody>
                         <?php foreach ($aiDiagnosedTickets as $item): ?>
                             <tr>
-                                <td><a href="/tickets/<?= (int) $item['id'] ?>" class="ticket-code">#WO-<?= (int) $item['id'] ?></a></td>
+                                <td><a href="/tickets/<?= $item->id ?>" class="ticket-code">#WO-<?= $item->id ?></a></td>
                                 <td>
-                                    <div class="font-semibold"><?= htmlspecialchars((string) $item['asset_name']) ?></div>
-                                    <div class="text-xs font-mono text-muted"><?= htmlspecialchars((string) $item['asset_serial_number']) ?></div>
+                                    <div class="font-semibold"><?= htmlspecialchars($item->assetName) ?></div>
+                                    <div class="text-xs font-mono text-muted"><?= htmlspecialchars($item->assetSerialNumber) ?></div>
                                 </td>
-                                <td class="text-sm"><?= htmlspecialchars((string) $item['ai_suggestion']) ?></td>
-                                <td><span class="badge-blue"><?= htmlspecialchars((string) $item['status']) ?></span></td>
+                                <td class="text-sm"><?= htmlspecialchars($item->aiSuggestion ?? '') ?></td>
+                                <td><span class="<?= $item->status->badgeClass() ?>"><?= htmlspecialchars($item->status->label()) ?></span></td>
                                 <td class="text-right">
-                                    <a href="/tickets/<?= (int) $item['id'] ?>" class="btn-secondary btn-sm">Szczegóły</a>
+                                    <a href="/tickets/<?= $item->id ?>" class="btn-secondary btn-sm">Szczegóły</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

@@ -2,23 +2,8 @@
 
 declare(strict_types=1);
 
-$ticketId = (int) $ticket['id'];
-$status = (string) $ticket['status'];
-$priority = (string) $ticket['priority'];
-
-$statusBadge = match ($status) {
-    'IN_PROGRESS' => ['badge-amber', 'fa-clock', 'W TRAKCIE NAPRAWY'],
-    'RESOLVED' => ['badge-green', 'fa-check', 'ROZWIĄZANE'],
-    'CLOSED' => ['badge-green', 'fa-lock', 'ZAMKNIĘTE'],
-    default => ['badge-blue', 'fa-envelope-open', 'OTWARTE'],
-};
-
-$priorityLabel = match ($priority) {
-    'CRITICAL' => 'KRYTYCZNY (SLA 2H)',
-    'HIGH' => 'WYSOKI (SLA 4H)',
-    'MEDIUM' => 'ŚREDNI (SLA 24H)',
-    default => 'NISKI (SLA 72H)',
-};
+$ticketId = $ticket->id;
+$statusValue = $ticket->status->value;
 ?>
 <!doctype html>
 <html lang="pl">
@@ -52,35 +37,35 @@ $priorityLabel = match ($priority) {
                         <div>
                             <span class="task-id">Zlecenie serwisowe #WO-<?= $ticketId ?></span>
                             <h1 class="text-xl font-extrabold">
-                                <?= htmlspecialchars((string) $ticket['title']) ?>
+                                <?= htmlspecialchars($ticket->title) ?>
                             </h1>
                             <div class="mt-xs">
-                                <a href="/assets/<?= (int) $ticket['asset_id'] ?>" class="text-xs text-blue font-semibold">
-                                    <i class="fa-solid fa-passport"></i> Otwórz paszport techniczny maszyny: <?= htmlspecialchars((string) $ticket['asset_name']) ?> &rarr;
+                                <a href="/assets/<?= $ticket->assetId ?>" class="text-xs text-blue font-semibold">
+                                    <i class="fa-solid fa-passport"></i> Otwórz paszport techniczny maszyny: <?= htmlspecialchars($ticket->assetName) ?> &rarr;
                                 </a>
                             </div>
                         </div>
                         <div>
-                            <span class="<?= $statusBadge[0] ?>"><i class="fa-solid <?= $statusBadge[1] ?>"></i> <?= $statusBadge[2] ?></span>
+                            <span class="<?= $ticket->status->badgeClass() ?>"><i class="fa-solid <?= $ticket->status->iconClass() ?>"></i> <?= htmlspecialchars($ticket->status->label()) ?></span>
                         </div>
                     </div>
 
                     <div class="meta-grid">
                         <div class="meta-item">
                             <div class="meta-label">Numer seryjny maszyny</div>
-                            <div class="meta-value font-mono"><?= htmlspecialchars((string) $ticket['asset_serial_number']) ?></div>
+                            <div class="meta-value font-mono"><?= htmlspecialchars($ticket->assetSerialNumber) ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Data i czas zgłoszenia</div>
-                            <div class="meta-value"><?= htmlspecialchars(substr((string) $ticket['created_at'], 0, 16)) ?></div>
+                            <div class="meta-value"><?= htmlspecialchars(substr($ticket->createdAt, 0, 16)) ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Poziom SLA / Priorytet</div>
-                            <div class="meta-value text-red"><i class="fa-solid fa-fire"></i> <?= htmlspecialchars($priorityLabel) ?></div>
+                            <div class="meta-value text-red"><i class="fa-solid fa-fire"></i> <?= htmlspecialchars($ticket->priority->slaLabel()) ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Przypisany technik</div>
-                            <div class="meta-value"><?= htmlspecialchars(trim((string) ($ticket['technician_name'] ?? '')) ?: 'Nieprzypisane') ?></div>
+                            <div class="meta-value"><?= htmlspecialchars($ticket->technicianName) ?></div>
                         </div>
                     </div>
 
@@ -89,7 +74,7 @@ $priorityLabel = match ($priority) {
                             <i class="fa-solid fa-align-left" aria-hidden="true"></i> Opis usterki wprowadzony przez operatora
                         </h2>
                         <div class="description-box">
-                            <?= htmlspecialchars((string) $ticket['description']) ?>
+                            <?= htmlspecialchars($ticket->description) ?>
                         </div>
                     </div>
                 </article>
@@ -100,10 +85,10 @@ $priorityLabel = match ($priority) {
                         <div class="form-group">
                             <label for="status">Zmień bieżący status zlecenia:</label>
                             <select id="status" name="status" class="form-select">
-                                <option value="OPEN" <?= $status === 'OPEN' ? 'selected' : '' ?>>Otwarte (Oczekuje na podjęcie)</option>
-                                <option value="IN_PROGRESS" <?= $status === 'IN_PROGRESS' ? 'selected' : '' ?>>W trakcie naprawy</option>
-                                <option value="RESOLVED" <?= $status === 'RESOLVED' ? 'selected' : '' ?>>Rozwiązane (Zakończono serwis)</option>
-                                <option value="CLOSED" <?= $status === 'CLOSED' ? 'selected' : '' ?>>Zamknięte</option>
+                                <option value="OPEN" <?= $statusValue === 'OPEN' ? 'selected' : '' ?>>Otwarte (Oczekuje na podjęcie)</option>
+                                <option value="IN_PROGRESS" <?= $statusValue === 'IN_PROGRESS' ? 'selected' : '' ?>>W trakcie naprawy</option>
+                                <option value="RESOLVED" <?= $statusValue === 'RESOLVED' ? 'selected' : '' ?>>Rozwiązane (Zakończono serwis)</option>
+                                <option value="CLOSED" <?= $statusValue === 'CLOSED' ? 'selected' : '' ?>>Zamknięte</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -180,7 +165,7 @@ $priorityLabel = match ($priority) {
 
                     <div class="ai-suggestion-box">
                         <strong><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> Wygenerowana rekomendacja:</strong>
-                        <p><?= htmlspecialchars((string) ($ticket['ai_suggestion'] ?? 'Brak wygenerowanej diagnozy AI dla tego zgłoszenia.')) ?></p>
+                        <p><?= htmlspecialchars($ticket->aiSuggestion ?? 'Brak wygenerowanej diagnozy AI dla tego zgłoszenia.') ?></p>
                     </div>
 
                     <div class="text-muted text-xs">
@@ -194,23 +179,23 @@ $priorityLabel = match ($priority) {
                     <div class="asset-meta-list">
                         <div class="flex-between">
                             <span class="text-muted">Nazwa:</span>
-                            <strong><?= htmlspecialchars((string) $ticket['asset_name']) ?></strong>
+                            <strong><?= htmlspecialchars($ticket->assetName) ?></strong>
                         </div>
                         <div class="flex-between">
                             <span class="text-muted">Numer seryjny:</span>
-                            <span class="font-mono"><?= htmlspecialchars((string) $ticket['asset_serial_number']) ?></span>
+                            <span class="font-mono"><?= htmlspecialchars($ticket->assetSerialNumber) ?></span>
                         </div>
                         <div class="flex-between">
                             <span class="text-muted">Klient / Miasto:</span>
-                            <span><?= htmlspecialchars((string) $ticket['client_name']) ?> (<?= htmlspecialchars((string) $ticket['client_city']) ?>)</span>
+                            <span><?= htmlspecialchars($ticket->clientName) ?> (<?= htmlspecialchars($ticket->clientCity) ?>)</span>
                         </div>
                         <div class="flex-between">
                             <span class="text-muted">Kategoria:</span>
-                            <span><?= htmlspecialchars((string) $ticket['category_name']) ?></span>
+                            <span><?= htmlspecialchars($ticket->categoryName) ?></span>
                         </div>
                     </div>
                     <div class="mt-md pt-md border-top">
-                        <a href="/assets/<?= (int) $ticket['asset_id'] ?>" class="btn-secondary btn-full">
+                        <a href="/assets/<?= $ticket->assetId ?>" class="btn-secondary btn-full">
                             <i class="fa-solid fa-circle-nodes" aria-hidden="true"></i> Otwórz w EAM maszyn
                         </a>
                     </div>

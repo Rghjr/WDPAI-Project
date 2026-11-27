@@ -2,14 +2,8 @@
 
 declare(strict_types=1);
 
-$assetId = (int) $asset['id'];
-$statusBadge = match ($asset['status']) {
-    'OUT_OF_SERVICE' => ['badge-red', 'fa-triangle-exclamation', 'AWARIA / WYŁĄCZONA Z EKSPLOATACJI'],
-    'IN_REPAIR' => ['badge-amber', 'fa-clock', 'W TRAKCIE NAPRAWY'],
-    default => ['badge-green', 'fa-circle-check', 'STAN OPERACYJNY PRAWIDŁOWY'],
-};
-$nextInspection = $asset['next_inspection_at'] ?? null;
-$isInspectionSoon = $nextInspection !== null && strtotime((string) $nextInspection) < strtotime('+14 days');
+$assetId = $asset->id;
+$isInspectionSoon = $asset->isInspectionSoon();
 ?>
 <!doctype html>
 <html lang="pl">
@@ -29,9 +23,9 @@ $isInspectionSoon = $nextInspection !== null && strtotime((string) $nextInspecti
             <div class="flex-row gap-xs text-xs text-muted">
                 <a href="/assets" class="text-muted hover-underline">Park maszynowy</a>
                 <span class="text-dim">/</span>
-                <span class="text-muted"><?= htmlspecialchars((string) $asset['category_name']) ?></span>
+                <span class="text-muted"><?= htmlspecialchars($asset->categoryName) ?></span>
                 <span class="text-dim">/</span>
-                <span class="font-mono bg-card px-xs py-0.5 rounded text-main font-semibold">SN: <?= htmlspecialchars((string) $asset['serial_number']) ?></span>
+                <span class="font-mono bg-card px-xs py-0.5 rounded text-main font-semibold">SN: <?= htmlspecialchars($asset->serialNumber) ?></span>
             </div>
             <div class="flex-row gap-xs font-mono text-xs">
                 <span class="text-muted">Paszport EAM:</span>
@@ -44,20 +38,20 @@ $isInspectionSoon = $nextInspection !== null && strtotime((string) $nextInspecti
                 <div>
                     <div class="flex-row flex-wrap gap-sm mb-xs">
                         <h1 class="text-xl font-extrabold text-main">
-                            <?= htmlspecialchars((string) $asset['name']) ?>
+                            <?= htmlspecialchars($asset->name) ?>
                         </h1>
-                        <?php if (!empty($asset['model'])): ?>
-                            <span class="text-muted text-sm font-normal">• <?= htmlspecialchars((string) $asset['model']) ?></span>
+                        <?php if ($asset->model !== null && $asset->model !== ''): ?>
+                            <span class="text-muted text-sm font-normal">• <?= htmlspecialchars($asset->model) ?></span>
                         <?php endif; ?>
                     </div>
 
                     <div class="flex-row flex-wrap gap-xs">
-                        <span class="<?= $statusBadge[0] ?>"><i class="fa-solid <?= $statusBadge[1] ?>"></i> <?= $statusBadge[2] ?></span>
+                        <span class="<?= $asset->status->badgeClass() ?>"><i class="fa-solid <?= $asset->status->iconClass() ?>"></i> <?= htmlspecialchars($asset->status->label()) ?></span>
                         <span class="meta-pill text-xs">
-                            <i class="fa-solid fa-tag"></i> Kategoria: <?= htmlspecialchars((string) $asset['category_name']) ?>
+                            <i class="fa-solid fa-tag"></i> Kategoria: <?= htmlspecialchars($asset->categoryName) ?>
                         </span>
                         <span class="meta-pill text-xs">
-                            <i class="fa-solid fa-location-dot text-red"></i> <?= htmlspecialchars((string) $asset['client_name']) ?> (<?= htmlspecialchars((string) $asset['client_city']) ?>)
+                            <i class="fa-solid fa-location-dot text-red"></i> <?= htmlspecialchars($asset->clientName) ?> (<?= htmlspecialchars($asset->clientCity) ?>)
                         </span>
                     </div>
                 </div>
@@ -84,27 +78,27 @@ $isInspectionSoon = $nextInspection !== null && strtotime((string) $nextInspecti
                     <div class="meta-grid">
                         <div class="meta-item">
                             <div class="meta-label">Producent urządzenia</div>
-                            <div class="meta-value font-bold"><?= htmlspecialchars((string) ($asset['manufacturer'] ?? 'Brak danych')) ?></div>
+                            <div class="meta-value font-bold"><?= htmlspecialchars($asset->manufacturer ?? 'Brak danych') ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Model i wariant</div>
-                            <div class="meta-value"><?= htmlspecialchars((string) ($asset['model'] ?? 'Brak danych')) ?></div>
+                            <div class="meta-value"><?= htmlspecialchars($asset->model ?? 'Brak danych') ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Rok produkcji</div>
-                            <div class="meta-value"><?= htmlspecialchars((string) ($asset['production_year'] ?? 'Brak danych')) ?></div>
+                            <div class="meta-value"><?= htmlspecialchars($asset->productionYear !== null ? (string) $asset->productionYear : 'Brak danych') ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Przepracowane motogodziny</div>
-                            <div class="meta-value text-blue font-bold font-mono"><?= number_format((float) ($asset['operating_hours'] ?? 0), 0, ',', ' ') ?> h</div>
+                            <div class="meta-value text-blue font-bold font-mono"><?= number_format((float) $asset->operatingHours, 0, ',', ' ') ?> h</div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Adres klienta</div>
-                            <div class="meta-value"><?= htmlspecialchars((string) $asset['client_address']) ?>, <?= htmlspecialchars((string) $asset['client_city']) ?></div>
+                            <div class="meta-value"><?= htmlspecialchars($asset->clientAddress) ?>, <?= htmlspecialchars($asset->clientCity) ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Lokalizacja na obiekcie</div>
-                            <div class="meta-value text-xs text-muted"><i class="fa-solid fa-location-dot text-red"></i> <?= htmlspecialchars((string) ($asset['location_details'] ?? 'Brak danych')) ?></div>
+                            <div class="meta-value text-xs text-muted"><i class="fa-solid fa-location-dot text-red"></i> <?= htmlspecialchars($asset->locationDetails ?? 'Brak danych') ?></div>
                         </div>
                     </div>
                 </article>
@@ -120,22 +114,22 @@ $isInspectionSoon = $nextInspection !== null && strtotime((string) $nextInspecti
                     <div class="meta-grid">
                         <div class="meta-item">
                             <div class="meta-label">Numer księgi rewizyjnej UDT</div>
-                            <div class="meta-value font-mono font-bold"><?= htmlspecialchars((string) ($asset['udt_number'] ?? 'Nie podlega UDT')) ?></div>
+                            <div class="meta-value font-mono font-bold"><?= htmlspecialchars($asset->udtNumber ?? 'Nie podlega UDT') ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Ostatnie badanie okresowe</div>
-                            <div class="meta-value"><?= htmlspecialchars((string) ($asset['last_inspection_at'] ?? 'Brak danych')) ?></div>
+                            <div class="meta-value"><?= htmlspecialchars($asset->lastInspectionAt ?? 'Brak danych') ?></div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Termin kolejnego przeglądu</div>
                             <div class="meta-value font-bold <?= $isInspectionSoon ? 'text-red' : 'text-green' ?>">
-                                <i class="fa-solid fa-calendar-day"></i> <?= htmlspecialchars((string) ($nextInspection ?? 'Brak terminu')) ?>
+                                <i class="fa-solid fa-calendar-day"></i> <?= htmlspecialchars($asset->nextInspectionAt ?? 'Brak terminu') ?>
                             </div>
                         </div>
                         <div class="meta-item">
                             <div class="meta-label">Decyzja eksploatacyjna UDT</div>
                             <div class="meta-value text-green font-bold">
-                                <?= !empty($asset['udt_valid_until']) ? 'Ważna do: ' . htmlspecialchars((string) $asset['udt_valid_until']) : 'Nie dotyczy' ?>
+                                <?= $asset->udtValidUntil !== null ? 'Ważna do: ' . htmlspecialchars($asset->udtValidUntil) : 'Nie dotyczy' ?>
                             </div>
                         </div>
                     </div>
@@ -148,19 +142,19 @@ $isInspectionSoon = $nextInspection !== null && strtotime((string) $nextInspecti
                     <div class="asset-meta-list">
                         <div class="flex-between">
                             <span class="text-muted">Technik prowadzący:</span>
-                            <strong><?= htmlspecialchars(trim((string) ($asset['technician_name'] ?? '')) ?: 'Nieprzypisany') ?></strong>
+                            <strong><?= htmlspecialchars($asset->technicianName) ?></strong>
                         </div>
-                        <?php if (!empty($asset['technician_code'])): ?>
+                        <?php if ($asset->technicianCode !== null): ?>
                             <div class="flex-between">
                                 <span class="text-muted">Kod pracownika:</span>
-                                <span class="font-mono"><?= htmlspecialchars((string) $asset['technician_code']) ?></span>
+                                <span class="font-mono"><?= htmlspecialchars($asset->technicianCode) ?></span>
                             </div>
                         <?php endif; ?>
                     </div>
-                    <?php if (!empty($asset['active_ticket_id'])): ?>
+                    <?php if ($asset->activeTicketId !== null): ?>
                         <div class="mt-md pt-md border-top">
-                            <a href="/tickets/<?= (int) $asset['active_ticket_id'] ?>" class="btn-primary btn-full">
-                                <i class="fa-solid fa-wrench" aria-hidden="true"></i> Aktywne zlecenie #WO-<?= (int) $asset['active_ticket_id'] ?>
+                            <a href="/tickets/<?= $asset->activeTicketId ?>" class="btn-primary btn-full">
+                                <i class="fa-solid fa-wrench" aria-hidden="true"></i> Aktywne zlecenie #WO-<?= $asset->activeTicketId ?>
                             </a>
                         </div>
                     <?php endif; ?>

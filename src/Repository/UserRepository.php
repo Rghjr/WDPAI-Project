@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Database;
+use App\Model\User;
 use PDO;
 
 final class UserRepository
@@ -17,7 +18,7 @@ final class UserRepository
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * @return array<int, User>
      */
     public function findAll(): array
     {
@@ -33,19 +34,17 @@ final class UserRepository
                 u.is_active,
                 u.created_at,
                 r.name AS role_name,
-                fn_open_tickets_for_technician(u.id) AS open_tickets_count
+                fn_open_tickets_for_technician(u.id) AS open_tickets_count,
+                0 AS completed_tickets_count
              FROM users u
              JOIN roles r ON r.id = u.role_id
              ORDER BY r.name ASC, u.last_name ASC"
         );
 
-        return $stmt->fetchAll();
+        return array_map(User::fromRow(...), $stmt->fetchAll());
     }
 
-    /**
-     * @return array<string, mixed>|null
-     */
-    public function findDefaultTechnician(): ?array
+    public function findDefaultTechnician(): ?User
     {
         $stmt = $this->pdo->query(
             "SELECT
@@ -73,7 +72,7 @@ final class UserRepository
         );
         $row = $stmt->fetch();
 
-        return $row === false ? null : $row;
+        return $row === false ? null : User::fromRow($row);
     }
 
     /**

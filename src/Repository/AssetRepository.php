@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Database;
+use App\Model\Asset;
 use PDO;
 
 final class AssetRepository
@@ -17,7 +18,7 @@ final class AssetRepository
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * @return array<int, Asset>
      */
     public function findAll(?string $category = null, ?string $status = null, ?string $search = null): array
     {
@@ -28,6 +29,7 @@ final class AssetRepository
                     c.city AS client_city,
                     c.address AS client_address,
                     CONCAT(u.first_name, ' ', u.last_name) AS technician_name,
+                    u.employee_code AS technician_code,
                     (
                         SELECT t.id
                         FROM tickets t
@@ -63,13 +65,10 @@ final class AssetRepository
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
 
-        return $stmt->fetchAll();
+        return array_map(Asset::fromRow(...), $stmt->fetchAll());
     }
 
-    /**
-     * @return array<string, mixed>|null
-     */
-    public function findById(int $id): ?array
+    public function findById(int $id): ?Asset
     {
         $stmt = $this->pdo->prepare(
             "SELECT
@@ -99,7 +98,7 @@ final class AssetRepository
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
 
-        return $row === false ? null : $row;
+        return $row === false ? null : Asset::fromRow($row);
     }
 
     /**

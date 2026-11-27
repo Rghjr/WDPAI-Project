@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Database;
+use App\Model\Ticket;
 use PDO;
 
 final class TicketRepository
@@ -17,7 +18,7 @@ final class TicketRepository
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * @return array<int, Ticket>
      */
     public function findAll(
         ?string $status = null,
@@ -56,23 +57,20 @@ final class TicketRepository
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
 
-        return $stmt->fetchAll();
+        return array_map(Ticket::fromRow(...), $stmt->fetchAll());
     }
 
-    /**
-     * @return array<string, mixed>|null
-     */
-    public function findById(int $id): ?array
+    public function findById(int $id): ?Ticket
     {
         $stmt = $this->pdo->prepare('SELECT * FROM v_ticket_overview WHERE id = :id LIMIT 1');
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
 
-        return $row === false ? null : $row;
+        return $row === false ? null : Ticket::fromRow($row);
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * @return array<int, Ticket>
      */
     public function findLatestActive(int $limit = 5): array
     {
@@ -85,7 +83,7 @@ final class TicketRepository
         $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return array_map(Ticket::fromRow(...), $stmt->fetchAll());
     }
 
     /**
@@ -124,10 +122,7 @@ final class TicketRepository
         return $stmt->fetchAll();
     }
 
-    /**
-     * @return array<string, mixed>|null
-     */
-    public function findLatestCriticalIncident(): ?array
+    public function findLatestCriticalIncident(): ?Ticket
     {
         $stmt = $this->pdo->query(
             "SELECT * FROM v_ticket_overview
@@ -137,11 +132,11 @@ final class TicketRepository
         );
         $row = $stmt->fetch();
 
-        return $row === false ? null : $row;
+        return $row === false ? null : Ticket::fromRow($row);
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * @return array<int, Ticket>
      */
     public function findAiDiagnosed(int $limit = 8): array
     {
@@ -154,7 +149,7 @@ final class TicketRepository
         $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return array_map(Ticket::fromRow(...), $stmt->fetchAll());
     }
 
     /**

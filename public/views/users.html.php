@@ -80,38 +80,34 @@ $activeAdmins = (int) ($stats['active_admins'] ?? 0);
                     </thead>
                     <tbody>
                         <?php foreach ($users as $member): ?>
-                            <?php
-                            $isAdmin = $member['role_name'] === 'ADMIN';
-                            $isActive = (bool) $member['is_active'];
-                            ?>
                             <tr>
                                 <td>
                                     <div class="flex-row">
                                         <div class="avatar-circle">
-                                            <i class="fa-solid <?= $isAdmin ? 'fa-user-shield' : 'fa-user-gear' ?>"></i>
+                                            <i class="fa-solid <?= $member->isAdmin() ? 'fa-user-shield' : 'fa-user-gear' ?>"></i>
                                         </div>
                                         <div>
-                                            <div class="font-bold text-sm"><?= htmlspecialchars((string) $member['first_name'] . ' ' . $member['last_name']) ?></div>
-                                            <div class="text-xs text-muted font-mono"><?= htmlspecialchars((string) ($member['employee_code'] ?? '—')) ?> • <?= htmlspecialchars((string) $member['email']) ?></div>
+                                            <div class="font-bold text-sm"><?= htmlspecialchars($member->fullName()) ?></div>
+                                            <div class="text-xs text-muted font-mono"><?= htmlspecialchars($member->employeeCode ?? '—') ?> • <?= htmlspecialchars($member->email) ?></div>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <span class="<?= $isAdmin ? 'badge-red' : 'badge-blue' ?> font-bold">
-                                        <?= htmlspecialchars((string) $member['role_name']) ?>
+                                    <span class="<?= $member->isAdmin() ? 'badge-red' : 'badge-blue' ?> font-bold">
+                                        <?= htmlspecialchars($member->roleName) ?>
                                     </span>
                                 </td>
-                                <td class="font-mono text-xs"><?= htmlspecialchars((string) ($member['phone'] ?? '—')) ?></td>
-                                <td><?= htmlspecialchars((string) ($member['base_location'] ?? '—')) ?></td>
+                                <td class="font-mono text-xs"><?= htmlspecialchars($member->phone ?? '—') ?></td>
+                                <td><?= htmlspecialchars($member->baseLocation ?? '—') ?></td>
                                 <td>
-                                    <?php if ($isActive): ?>
+                                    <?php if ($member->isActive): ?>
                                         <span class="badge-green"><i class="fa-solid fa-circle-check"></i> AKTYWNY</span>
                                     <?php else: ?>
                                         <span class="badge-amber"><i class="fa-solid fa-pause"></i> NIEAKTYWNY</span>
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <span class="font-bold"><?= (int) ($member['open_tickets_count'] ?? 0) ?></span>
+                                    <span class="font-bold"><?= $member->openTicketsCount ?></span>
                                 </td>
                                 <td class="text-right">
                                     <a href="/profile" class="btn-secondary btn-sm"><i class="fa-solid fa-id-card"></i> Karta</a>

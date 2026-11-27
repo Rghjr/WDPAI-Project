@@ -35,15 +35,15 @@
             <div class="detail-main">
                 
                 <?php
-                $employeeId = (string) ($user['employee_code'] ?? 'TECH-000');
-                $name = trim((string) (($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? ''))) ?: 'Serwisant';
-                $roleTitle = ($user['role_name'] ?? 'TECHNICIAN') === 'ADMIN' ? 'Menedżer Serwisu (ADMIN)' : 'Technik Serwisu (TECHNICIAN)';
-                $email = (string) ($user['email'] ?? '—');
-                $phone = (string) ($user['phone'] ?? '—');
-                $baseLocation = (string) ($user['base_location'] ?? '—');
-                $hireDate = substr((string) ($user['created_at'] ?? ''), 0, 10) ?: '—';
-                $completedTicketsCount = (int) ($user['completed_tickets_count'] ?? 0);
-                $openTicketsCount = (int) ($user['open_tickets_count'] ?? 0);
+                $employeeId = $user?->employeeCode ?? 'TECH-000';
+                $name = $user?->fullName() ?? 'Serwisant';
+                $roleTitle = ($user?->isAdmin() ?? false) ? 'Menedżer Serwisu (ADMIN)' : 'Technik Serwisu (TECHNICIAN)';
+                $email = $user?->email ?? '—';
+                $phone = $user?->phone ?? '—';
+                $baseLocation = $user?->baseLocation ?? '—';
+                $hireDate = $user !== null ? (substr($user->createdAt, 0, 10) ?: '—') : '—';
+                $completedTicketsCount = $user?->completedTicketsCount ?? 0;
+                $openTicketsCount = $user?->openTicketsCount ?? 0;
                 ?>
                 <!-- Karta tożsamości -->
                 <article class="card-block">
@@ -169,7 +169,7 @@
                         </div>
                         <div class="telemetry-item">
                             <span class="telemetry-label">Rola w systemie</span>
-                            <span class="telemetry-val"><?= htmlspecialchars((string) ($user['role_name'] ?? 'TECHNICIAN')) ?></span>
+                            <span class="telemetry-val"><?= htmlspecialchars($user?->roleName ?? 'TECHNICIAN') ?></span>
                         </div>
                     </div>
                 </div>

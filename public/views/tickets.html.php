@@ -76,52 +76,38 @@ $resolvedCount = (int) ($stats['resolved_count'] ?? 0);
                             </tr>
                         <?php else: ?>
                             <?php foreach ($tickets as $ticket): ?>
-                                <?php
-                                $priorityBadge = match ($ticket['priority']) {
-                                    'CRITICAL' => ['badge-red', 'fa-fire', 'KRYTYCZNY'],
-                                    'HIGH' => ['badge-amber', 'fa-triangle-exclamation', 'WYSOKI'],
-                                    'MEDIUM' => ['badge-blue', 'fa-circle-info', 'ŚREDNI'],
-                                    default => ['badge-green', 'fa-circle-check', 'NISKI'],
-                                };
-                                $statusBadge = match ($ticket['status']) {
-                                    'IN_PROGRESS' => ['badge-amber', 'fa-clock', 'W trakcie'],
-                                    'RESOLVED' => ['badge-green', 'fa-check', 'Rozwiązane'],
-                                    'CLOSED' => ['badge-green', 'fa-lock', 'Zamknięte'],
-                                    default => ['badge-blue', 'fa-envelope-open', 'Otwarte'],
-                                };
-                                ?>
                                 <tr>
                                     <td>
-                                        <a href="/tickets/<?= (int) $ticket['id'] ?>" class="ticket-code">
-                                            #WO-<?= (int) $ticket['id'] ?>
+                                        <a href="/tickets/<?= $ticket->id ?>" class="ticket-code">
+                                            #WO-<?= $ticket->id ?>
                                         </a>
                                     </td>
                                     <td>
-                                        <div class="font-semibold"><?= htmlspecialchars((string) $ticket['asset_name']) ?></div>
-                                        <span class="badge-serial"><?= htmlspecialchars((string) $ticket['asset_serial_number']) ?></span>
+                                        <div class="font-semibold"><?= htmlspecialchars($ticket->assetName) ?></div>
+                                        <span class="badge-serial"><?= htmlspecialchars($ticket->assetSerialNumber) ?></span>
                                     </td>
                                     <td>
-                                        <div class="font-semibold"><?= htmlspecialchars((string) $ticket['title']) ?></div>
-                                        <?php if (!empty($ticket['ai_suggestion'])): ?>
+                                        <div class="font-semibold"><?= htmlspecialchars($ticket->title) ?></div>
+                                        <?php if ($ticket->aiSuggestion !== null && $ticket->aiSuggestion !== ''): ?>
                                             <span class="text-muted text-xs"><i class="fa-solid fa-wand-magic-sparkles text-ai"></i> Smart Diagnosis dostępna</span>
                                         <?php else: ?>
-                                            <span class="text-muted text-xs"><?= htmlspecialchars((string) $ticket['client_name']) ?></span>
+                                            <span class="text-muted text-xs"><?= htmlspecialchars($ticket->clientName) ?></span>
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <span class="<?= $priorityBadge[0] ?>"><i class="fa-solid <?= $priorityBadge[1] ?>" aria-hidden="true"></i> <?= $priorityBadge[2] ?></span>
+                                        <span class="<?= $ticket->priority->badgeClass() ?>"><i class="fa-solid <?= $ticket->priority->iconClass() ?>" aria-hidden="true"></i> <?= $ticket->priority->label() ?></span>
                                     </td>
                                     <td>
-                                        <span class="<?= $statusBadge[0] ?>"><i class="fa-solid <?= $statusBadge[1] ?>" aria-hidden="true"></i> <?= $statusBadge[2] ?></span>
+                                        <span class="<?= $ticket->status->badgeClass() ?>"><i class="fa-solid <?= $ticket->status->iconClass() ?>" aria-hidden="true"></i> <?= $ticket->status->label() ?></span>
                                     </td>
                                     <td>
                                         <div class="flex-row gap-xs">
                                             <span class="user-pill__avatar"><i class="fa-solid fa-user"></i></span>
-                                            <span><?= htmlspecialchars(trim((string) ($ticket['technician_name'] ?? '')) ?: 'Nieprzypisane') ?></span>
+                                            <span><?= htmlspecialchars($ticket->technicianName) ?></span>
                                         </div>
                                     </td>
                                     <td class="text-right">
-                                        <a href="/tickets/<?= (int) $ticket['id'] ?>" class="btn-secondary btn-sm">
+                                        <a href="/tickets/<?= $ticket->id ?>" class="btn-secondary btn-sm">
                                             Szczegóły <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                         </a>
                                     </td>
