@@ -98,13 +98,13 @@
                 <span class="section-subtitle">Gotowość do akcji mobilnej</span>
             </div>
             <div class="actions-grid">
-                <button class="action-btn blue" type="button">
+                <a href="/assets" class="action-btn blue" style="display: inline-block;" onclick="event.preventDefault(); alert('Skanowanie kodu QR: Otwórz aplikację Kamerą telefonu i naszkiecz kod znajdujący się na płytce/zewnętrznej etykiecie maszyny. Link do rejestracji urządzenia: /assets');">
                     <i class="fa-solid fa-qrcode" aria-hidden="true"></i>
                     <div>
                         <strong>Skanuj kod QR</strong>
                         <div class="text-xs text-muted">Identyfikacja maszyny</div>
                     </div>
-                </button>
+                </a>
                 <a href="/tickets/add" class="action-btn red">
                     <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
                     <div>
@@ -112,20 +112,20 @@
                         <div class="text-xs text-muted">Priorytet krytyczny</div>
                     </div>
                 </a>
-                <button class="action-btn dark" type="button">
+<a href="/map" class="action-btn dark" style="display: inline-block;">
                     <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
                     <div>
                         <strong>Mapa obiektów</strong>
                         <div class="text-xs text-muted">Trasy dojazdu</div>
                     </div>
-                </button>
-                <button class="action-btn purple" type="button">
+                </a>
+<a href="/diagnostics" class="action-btn purple" style="display: inline-block;">
                     <i class="fa-solid fa-brain" aria-hidden="true"></i>
                     <div>
                         <strong>Smart Diagnosis AI</strong>
                         <div class="text-xs text-muted">Silnik Ollama</div>
                     </div>
-                </button>
+                </a>
             </div>
         </section>
 

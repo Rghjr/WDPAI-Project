@@ -45,10 +45,14 @@ $due30Days = (int) ($stats['due_30_days'] ?? 0);
         </header>
 
         <section class="stats-grid mb-lg" aria-label="Status floty">
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Aktywne urządzenia</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-check-double"></i></span>
+            <a href="/assets" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Aktywne urządzenia</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-check-double"></i></span>
+                    </div>
+                    <div class="stat-card__value">10</div>
+                    <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> Stan operacyjny OK</div>
                 </div>
                 <div class="stat-card__value"><?= $operationalCount ?></div>
                 <div class="stat-card__desc text-green"><i class="fa-solid fa-circle text-xs"></i> Stan operacyjny OK</div>
@@ -63,10 +67,14 @@ $due30Days = (int) ($stats['due_30_days'] ?? 0);
                 <div class="stat-card__desc"><i class="fa-solid fa-fire"></i> Wymagana obsługa serwisowa</div>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-card__top">
-                    <span class="stat-card__title">Przeglądy w 30 dni</span>
-                    <span class="stat-card__icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <a href="/schedule" class="stat-card-link">
+                <div class="stat-card">
+                    <div class="stat-card__top">
+                        <span class="stat-card__title">Przeglądy w 30 dni</span>
+                        <span class="stat-card__icon"><i class="fa-solid fa-calendar-days"></i></span>
+                    </div>
+                    <div class="stat-card__value">2</div>
+                    <div class="stat-card__desc"><i class="fa-solid fa-bell"></i> Wymagany audyt CRON</div>
                 </div>
                 <div class="stat-card__value"><?= $due30Days ?></div>
                 <div class="stat-card__desc"><i class="fa-solid fa-bell"></i> Dozór UDT i CRON</div>
