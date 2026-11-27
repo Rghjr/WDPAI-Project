@@ -44,7 +44,7 @@ Aplikacja: http://localhost:8080
 
 Schemat bazy PostgreSQL 16 znajduje się w katalogu [`docker/db/`](docker/db/) i jest automatycznie ładowany przy pierwszym starcie kontenera bazy danych:
 - `01-schema.sql` — typy `ENUM`, 9 tabel relacyjnych, klucze obce (`ON DELETE RESTRICT` / `SET NULL` / `CASCADE`), ograniczenia `CHECK` i indeksy.
-- `02-seed.sql` — dane demonstracyjne (role `ADMIN` i `TECHNICIAN`, użytkownicy z hashami bcrypt, klienci, kategorie, 8 maszyn, 10 zgłoszeń, historia oraz log CRON).
+- `02-seed.sql` — dane demonstracyjne (role `ADMIN` i `TECHNICIAN`, 8 użytkowników z hashami bcrypt, 8 klientów z GIS, 6 kategorii, 15 maszyn, 20 zgłoszeń, historia, 6 metadanych zdjęć oraz logi CRON).
 - `03-logic.sql` — widoki (`v_ticket_overview`, `v_upcoming_inspections`), triggery (`trg_ticket_status_history`, `trg_ticket_sync_closed_at`, `trg_*_updated_at`) oraz funkcje (`fn_open_tickets_for_technician`, `fn_create_ticket`).
 
 > Uwaga: przy zmianie schematu w istniejącym środowisku należy zresetować wolumen bazy danych (`docker compose down -v && docker compose up --build -d`), aby skrypty z `docker/db/` wykonały się ponownie.
