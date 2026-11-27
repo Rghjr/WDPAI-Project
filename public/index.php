@@ -6,16 +6,13 @@ use App\Controller\AssetController;
 use App\Controller\DefaultController;
 use App\Controller\DiagnosticController;
 use App\Controller\DispatchController;
-use App\Controller\ProjectController;
 use App\Controller\TicketController;
 use App\Controller\UserController;
 use App\Database;
 use App\Repository\AssetRepository;
 use App\Repository\TicketRepository;
 use App\Repository\UserRepository;
-use App\Repository\ProjectRepository;
 use App\Routing;
-use App\Service\ProjectFormValidator;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -23,8 +20,6 @@ $database = Database::getConnection();
 $ticketRepository = new TicketRepository($database);
 $assetRepository = new AssetRepository($database);
 $userRepository = new UserRepository($database);
-$projectRepository = new ProjectRepository($database);
-$projectFormValidator = new ProjectFormValidator();
 
 $routing = new Routing();
 
@@ -51,10 +46,6 @@ $routing->register(
 $routing->register(
     DiagnosticController::class,
     static fn (): DiagnosticController => new DiagnosticController($ticketRepository, $assetRepository),
-);
-$routing->register(
-    ProjectController::class,
-    static fn (): ProjectController => new ProjectController($projectRepository, $projectFormValidator),
 );
 
 // Strona główna (Pulpit operacyjny)
@@ -83,14 +74,6 @@ $routing->get('/diagnostics', DiagnosticController::class, 'index');
 $routing->get('/admin/users', UserController::class, 'index');
 $routing->get('/profile', UserController::class, 'profile');
 $routing->get('/login', UserController::class, 'login');
-
-$routing->get('/projects', ProjectController::class, 'index');
-$routing->get('/projects/add', ProjectController::class, 'add');
-$routing->get('/projects/{id}', ProjectController::class, 'show');
-$routing->get('/projects/{id}/edit', ProjectController::class, 'edit');
-$routing->post('/projects', ProjectController::class, 'create');
-$routing->post('/projects/{id}', ProjectController::class, 'update');
-$routing->post('/projects/{id}/delete', ProjectController::class, 'delete');
 
 $routeFound = $routing->dispatch(
     $_SERVER['REQUEST_METHOD'],
