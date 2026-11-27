@@ -64,6 +64,7 @@ $routing->get('/', DefaultController::class, 'index');
 $routing->get('/tickets', TicketController::class, 'index');
 $routing->get('/tickets/add', TicketController::class, 'add');
 $routing->get('/tickets/{id}', TicketController::class, 'show');
+$routing->post('/tickets/{id}', TicketController::class, 'updateStatus');
 
 // Moduł EAM – Park Maszynowy i Paszport Techniczny (AssetController)
 $routing->get('/assets', AssetController::class, 'index');

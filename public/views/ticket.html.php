@@ -90,6 +90,9 @@ $statusValue = $ticket->status->value;
                                 <option value="RESOLVED" <?= $statusValue === 'RESOLVED' ? 'selected' : '' ?>>Rozwiązane (Zakończono serwis)</option>
                                 <option value="CLOSED" <?= $statusValue === 'CLOSED' ? 'selected' : '' ?>>Zamknięte</option>
                             </select>
+                            <?php if (isset($statusError)): ?>
+                                <p class="text-red" role="alert"><?= htmlspecialchars($statusError) ?></p>
+                            <?php endif; ?>
                         </div>
                         <div class="form-group">
                             <label for="notes">Notatka serwisowa / podsumowanie podjętych czynności:</label>

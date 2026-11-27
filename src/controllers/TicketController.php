@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Repository\AssetRepository;
 use App\Repository\TicketRepository;
+use App\Model\TicketStatus;
 
 final class TicketController extends AppController
 {
@@ -65,5 +66,39 @@ final class TicketController extends AppController
             'pageTitle' => 'Zgłoś Nową Awarię',
             'assets' => $this->assetRepository->findAll(),
         ]);
+    }
+
+    public function updateStatus(int $id): void
+    {
+        $ticket = $this->ticketRepository->findById($id);
+
+        if ($ticket === null) {
+            http_response_code(404);
+            $this->render('not-found', ['pageTitle' => 'Nie znaleziono zgłoszenia']);
+            return;
+        }
+
+        $statusValue = isset($_POST['status']) && is_string($_POST['status'])
+            ? strtoupper($_POST['status'])
+            : '';
+        $status = TicketStatus::tryFrom($statusValue);
+
+        if ($status === null) {
+            http_response_code(422);
+            $this->render('ticket', [
+                'pageTitle' => 'Szczegóły Awarii #' . $id,
+                'ticket' => $ticket,
+                'history' => $this->ticketRepository->findHistoryByTicketId($id),
+                'photos' => $this->ticketRepository->findPhotosByTicketId($id),
+                'statusError' => 'Wybierz poprawny status zgłoszenia.',
+            ]);
+            return;
+        }
+
+        $note = isset($_POST['notes']) && is_string($_POST['notes']) ? trim($_POST['notes']) : null;
+        $this->ticketRepository->updateStatus($id, $status, null, $note);
+
+        header('Location: /tickets/' . $id, true, 303);
+        exit;
     }
 }
